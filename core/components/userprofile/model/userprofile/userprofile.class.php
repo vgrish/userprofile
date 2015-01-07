@@ -76,9 +76,14 @@ class userprofile {
 
 
 		$mode = $this->modx->getOption('mode', $sp);
+		if ($mode == 'new') {
+			return;
+		}
+/*		elseif (!$this->enableTemplates($res)) {
+			return;
+		}*/
 		$this->modx->controller->addLexiconTopic('userprofile:default');
 
-		$this->modx->log(1, print_r($mode, 1));
 		//$this->modx->log(1, print_r($sp, 1));
 
 		$data_js = preg_replace(array('/^\n/', '/\t{6}/'), '', '
