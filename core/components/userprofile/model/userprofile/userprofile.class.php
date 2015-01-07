@@ -88,7 +88,7 @@ class userprofile {
 
 		$data_js = preg_replace(array('/^\n/', '/\t{6}/'), '', '
 			userprofile = {};
-			userprofile.config = ' . $this->modx->toJSON($this->config) . ';
+			userprofile.config = ' . $this->modx->toJSON(array()) . ';
 		');
 		$this->modx->regClientStartupScript("<script type=\"text/javascript\">\n" . $data_js . "\n</script>", true);
 		//$this->modx->regClientStartupScript($this->getOption('jsUrl') . 'mgr/misc/pas.combo.js');
