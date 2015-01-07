@@ -1,7 +1,9 @@
 <?php
 include_once 'setting.inc.php';
 
-$_lang['userprofile'] = 'Профиль пользователя'; 
+$_lang['userprofile'] = 'Профиль пользователя';
+$_lang['up_introtext'] = 'Здесь вы можете редактировать дополнительный профиль пользователя.';
+
 
 $_lang['userprofile_menu_desc'] = 'Пример расширения для разработки.';
 $_lang['userprofile_intro_msg'] = 'Вы можете выделять сразу несколько предметов при помощи Shift или Ctrl.';
