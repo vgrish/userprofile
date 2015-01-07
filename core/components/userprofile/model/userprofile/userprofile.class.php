@@ -73,7 +73,23 @@ class userprofile {
 	public function OnUserFormPrerender($sp)
 	{
 		$this->modx->log(1, print_r('OnUserFormPrerender', 1));
+
+
+		$mode = $this->modx->getOption('mode', $sp);
+		$this->modx->controller->addLexiconTopic('userprofile:default');
+
+		$this->modx->log(1, print_r($mode, 1));
 		//$this->modx->log(1, print_r($sp, 1));
+
+		$data_js = preg_replace(array('/^\n/', '/\t{6}/'), '', '
+			userprofile = {};
+			userprofile.config = ' . $this->modx->toJSON($this->config) . ';
+		');
+		$this->modx->regClientStartupScript("<script type=\"text/javascript\">\n" . $data_js . "\n</script>", true);
+		//$this->modx->regClientStartupScript($this->getOption('jsUrl') . 'mgr/misc/pas.combo.js');
+		//$this->modx->regClientStartupScript($this->getOption('jsUrl') . 'mgr/inject/grid.js');
+		$this->modx->regClientStartupScript($this->getOption('jsUrl') . 'mgr/inject/tab.js');
+
 
 	}
 
