@@ -73,7 +73,7 @@ class userprofile {
 	public function OnUserFormPrerender($sp)
 	{
 		$this->modx->log(1, print_r('OnUserFormPrerender', 1));
-		$this->modx->log(1, print_r($sp, 1));
+		//$this->modx->log(1, print_r($sp, 1));
 
 	}
 
