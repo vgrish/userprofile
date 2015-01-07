@@ -20,17 +20,17 @@ $tmp = array(
 
 				'assets_path' => array(
 					'xtype' => 'textfield',
-					'value' => '{base_path}payandsee/assets/components/payandsee/',
+					'value' => '{base_path}userprofile/assets/components/userprofile/',
 					'area' => 'userprofile_temp',
 				),
 				'assets_url' => array(
 					'xtype' => 'textfield',
-					'value' => '/payandsee/assets/components/payandsee/',
+					'value' => '/userprofile/assets/components/userprofile/',
 					'area' => 'userprofile_temp',
 				),
 				'core_path' => array(
 					'xtype' => 'textfield',
-					'value' => '{base_path}payandsee/core/components/payandsee/',
+					'value' => '{base_path}userprofile/core/components/userprofile/',
 					'area' => 'userprofile_temp',
 				),
 
