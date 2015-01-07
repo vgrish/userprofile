@@ -7,6 +7,12 @@ class userprofile {
 	/* @var modX $modx */
 	public $modx;
 
+	public $namespace = 'userprofile';
+	public $cache = null;
+	public $config = array();
+
+	public $active = false;
+
 
 	/**
 	 * @param modX $modx
@@ -15,6 +21,7 @@ class userprofile {
 	function __construct(modX &$modx, array $config = array()) {
 		$this->modx =& $modx;
 
+		$this->namespace = $this->getOption('userprofile', $config, 'userprofile');
 		$corePath = $this->modx->getOption('userprofile_core_path', $config, $this->modx->getOption('core_path') . 'components/userprofile/');
 		$assetsUrl = $this->modx->getOption('userprofile_assets_url', $config, $this->modx->getOption('assets_url') . 'components/userprofile/');
 		$connectorUrl = $assetsUrl . 'connector.php';
@@ -37,6 +44,37 @@ class userprofile {
 
 		$this->modx->addPackage('userprofile', $this->config['modelPath']);
 		$this->modx->lexicon->load('userprofile:default');
+
+		$this->active = $this->modx->getOption('userprofile_active', $config, false);
+
+	}
+
+	/**
+	 * @param $key
+	 * @param array $config
+	 * @param null $default
+	 * @return mixed|null
+	 */
+	public function getOption($key, $config = array(), $default = null)
+	{
+		$option = $default;
+		if (!empty($key) && is_string($key)) {
+			if ($config != null && array_key_exists($key, $config)) {
+				$option = $config[$key];
+			} elseif (array_key_exists($key, $this->config)) {
+				$option = $this->config[$key];
+			} elseif (array_key_exists("{$this->namespace}.{$key}", $this->modx->config)) {
+				$option = $this->modx->getOption("{$this->namespace}.{$key}");
+			}
+		}
+		return $option;
+	}
+
+	public function OnUserFormPrerender($sp)
+	{
+		$this->modx->log(1, print_r('OnUserFormPrerender', 1));
+		$this->modx->log(1, print_r($sp, 1));
+
 	}
 
 }
