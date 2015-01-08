@@ -93,9 +93,30 @@ class userprofile {
 		$this->modx->regClientStartupScript("<script type=\"text/javascript\">\n" . $data_js . "\n</script>", true);
 		//$this->modx->regClientStartupScript($this->getOption('jsUrl') . 'mgr/misc/pas.combo.js');
 		//$this->modx->regClientStartupScript($this->getOption('jsUrl') . 'mgr/inject/grid.js');
+
+		$this->modx->regClientStartupScript($this->getOption('jsUrl') . 'mgr/misc/up.combo.js');
+		$this->modx->regClientStartupScript($this->getOption('jsUrl') . 'mgr/inject/up.panel.js');
 		$this->modx->regClientStartupScript($this->getOption('jsUrl') . 'mgr/inject/tab.js');
 
 
 	}
+
+	public function OnBeforeUserFormSave($sp)
+	{
+
+
+		if ($sp['mode'] == 'new') {
+			return;
+		}
+/*		elseif (!$this->enableTemplates($sp['resource'])) {
+			return;
+		}*/
+
+		$this->modx->log(1, print_r('OnBeforeUserFormSave', 1));
+
+		
+
+	}
+
 
 }
