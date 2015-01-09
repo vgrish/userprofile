@@ -42,7 +42,7 @@ class userprofile {
 			'processorsPath' => $corePath . 'processors/'
 		), $config);
 
-		$this->modx->addPackage('userprofile', $this->config['modelPath']);
+		//$this->modx->addPackage('userprofile', $this->config['modelPath']);
 		$this->modx->lexicon->load('userprofile:default');
 
 		$this->active = $this->modx->getOption('userprofile_active', $config, false);
@@ -88,14 +88,23 @@ class userprofile {
 
 		$data_js = preg_replace(array('/^\n/', '/\t{6}/'), '', '
 			userprofile = {};
-			userprofile.config = ' . $this->modx->toJSON(array()) . ';
+			userprofile.config = ' . $this->modx->toJSON(array(
+				'connectorUrl' => $this->config['connectorUrl']
+			)) . ';
 		');
 		$this->modx->regClientStartupScript("<script type=\"text/javascript\">\n" . $data_js . "\n</script>", true);
 		//$this->modx->regClientStartupScript($this->getOption('jsUrl') . 'mgr/misc/pas.combo.js');
 		//$this->modx->regClientStartupScript($this->getOption('jsUrl') . 'mgr/inject/grid.js');
 
+
+
+		$this->modx->regClientCSS($this->getOption('cssUrl') . 'mgr/main.css');
+
 		$this->modx->regClientStartupScript($this->getOption('jsUrl') . 'mgr/misc/up.combo.js');
-		$this->modx->regClientStartupScript($this->getOption('jsUrl') . 'mgr/inject/up.panel.js');
+		//$this->modx->regClientStartupScript($this->getOption('jsUrl') . 'mgr/inject/up.panel.js');
+		$this->modx->regClientStartupScript($this->getOption('jsUrl') . 'mgr/inject/extended.grid.js');
+
+
 		$this->modx->regClientStartupScript($this->getOption('jsUrl') . 'mgr/inject/tab.js');
 
 
@@ -114,7 +123,10 @@ class userprofile {
 
 		$this->modx->log(1, print_r('OnBeforeUserFormSave', 1));
 
-		
+		$this->modx->log(1, print_r($sp['data'], 1));
+
+		$data = $sp['data'];
+
 
 	}
 

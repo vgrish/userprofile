@@ -67,3 +67,10 @@ a.x-menu-item .x-menu-item-text .icon {
 ul.userprofile-row-actions .actions-menu {width: 40px;}
 ul.userprofile-row-actions .actions-menu:after {content: " \f107";}
 */
+
+.up-avatar {
+    display: block;
+    width: 100%;
+    margin: 10px 0px 0px 0px;
+    height: 193px;
+}
