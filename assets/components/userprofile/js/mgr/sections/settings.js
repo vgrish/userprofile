@@ -32,7 +32,7 @@ userprofile.panel.Settings = function(config) {
             ,stateEvents: ['tabchange']
             ,getState:function() {return { activeTab:this.items.indexOf(this.getActiveTab())};}
             ,items: [{
-                title: _('ms2_deliveries')
+                title: _('up_extended')
                 ,deferredRender: true
                 ,items: [{
                     html: '<p>'+_('up_extended_intro')+'</p>'
