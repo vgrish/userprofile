@@ -6,8 +6,7 @@ $tmp = array(
 	'up' => array(
 		'description' => 'up_menu_desc',
 		'action' => array(
-			//'controller' => 'index',
-			'controller' => 'controllers/mgr/settings1'
+			'controller' => 'index',
 		),
 	),
 	'up_settings' => array(
