@@ -90,16 +90,6 @@ Ext.extend(userprofile.grid.Extended,MODx.grid.Grid,{
         this.addContextMenuItem(m);
     }
 
-    ,renderLogo: function(value) {
-        if (/(jpg|png|gif|jpeg)$/i.test(value)) {
-            if (!/^\//.test(value)) {value = '/' + value;}
-            return '<img src="'+value+'" height="35" />';
-        }
-        else {
-            return '';
-        }
-    }
-
     ,createExtended: function(btn,e) {
         if (!this.windows.createExtended) {
             this.windows.createExtended = MODx.load({
@@ -156,7 +146,7 @@ Ext.extend(userprofile.grid.Extended,MODx.grid.Grid,{
             ,{xtype: 'textarea', fieldLabel: _('up_description'), name: 'description', anchor: '99%', id: 'userprofile-extended-description-'+type}
             ,{xtype: 'textfield',fieldLabel: _('up_tabs'), name: 'tabs', allowBlank: false, anchor: '99%', id: 'userprofile-extended-tabs-'+type}
             ,{xtype: 'textfield',fieldLabel: _('up_fields'), name: 'fields', allowBlank: false, anchor: '99%', id: 'userprofile-extended-fields-'+type}
-            ,{xtype: 'textfield',fieldLabel: _('up_requires'), name: 'requires', allowBlank: false, anchor: '99%', id: 'userprofile-extended-requires-'+type}
+            ,{xtype: 'textfield',fieldLabel: _('up_requires'), name: 'requires', allowBlank: true, anchor: '99%', id: 'userprofile-extended-requires-'+type}
             ,{xtype: 'textfield',fieldLabel: _('up_class'), name: 'class', anchor: '99%', id: 'userprofile-extended-class-'+type}
             ,{xtype: 'xcheckbox', fieldLabel: '', boxLabel: _('up_active'), name: 'active', id: 'userprofile-extended-active-'+type}
         ];
@@ -170,10 +160,6 @@ Ext.extend(userprofile.grid.Extended,MODx.grid.Grid,{
     }
 });
 Ext.reg('userprofile-grid-extended',userprofile.grid.Extended);
-
-
-// userprofile.window.CreateExtended
-// userprofile.window.CreateExtended
 
 userprofile.window.CreateExtended = function(config) {
     config = config || {};
@@ -196,10 +182,6 @@ userprofile.window.CreateExtended = function(config) {
 };
 Ext.extend(userprofile.window.CreateExtended,MODx.Window);
 Ext.reg('userprofile-window-extended-create',userprofile.window.CreateExtended);
-
-
-// userprofile.window.UpdateExtended
-// userprofile.window.UpdateExtended
 
 userprofile.window.UpdateExtended = function(config) {
     config = config || {};
