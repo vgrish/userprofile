@@ -19,6 +19,7 @@ if ($object->xpdo) {
 					,'fields' => 'lastname,firstname,secondname,facebook,vk,odnoklassniki,mail,twitter'
 					,'requires' => 'lastname,firstname,secondname'
 					,'active' => 1
+					,'default' => 1
 					,'rank' => 0
 					), '', true);
 				$extended->save();

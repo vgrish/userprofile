@@ -54,6 +54,8 @@
 
         <field key="rank" dbtype="tinyint" precision="1" attributes="unsigned" phptype="integer" null="true" default="0" />
         <field key="active" dbtype="tinyint" precision="1" phptype="integer" null="true" default="1" />
+        <field key="default" dbtype="tinyint" precision="1" phptype="integer" null="true" default="1" />
+
         <field key="class" dbtype="varchar" precision="50" phptype="string" null="true" />
         <field key="properties" dbtype="text" phptype="json" null="true" />
     </object>

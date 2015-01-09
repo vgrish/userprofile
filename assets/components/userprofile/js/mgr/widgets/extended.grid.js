@@ -39,7 +39,7 @@ userprofile.grid.Extended = function(config) {
         ,baseParams: {
             action: 'mgr/settings/extended/getlist'
         }
-        ,fields: ['id','name','description','rank','active','class', 'tabs', 'fields', 'requires']
+        ,fields: ['id','name','description','rank','active', 'default','class', 'tabs', 'fields', 'requires']
         ,autoHeight: true
         ,paging: true
         ,remoteSort: true
@@ -50,6 +50,7 @@ userprofile.grid.Extended = function(config) {
             ,{header: _('up_id'),dataIndex: 'id',width: 50}
             ,{header: _('up_name'),dataIndex: 'name',width: 100, description: 'description', editor: {xtype: 'textfield', allowBlank: false}}
             ,{header: _('up_active'),dataIndex: 'active',width: 50, editor: {xtype: 'combo-boolean', renderer: 'boolean'}}
+            ,{header: _('up_default'),dataIndex: 'default',width: 50, editor: {xtype: 'combo-boolean', renderer: 'boolean'}}
             ,{header: _('up_class'),dataIndex: 'class',width: 75, editor: {xtype: 'textfield'}}
 
         ]
@@ -150,6 +151,7 @@ Ext.extend(userprofile.grid.Extended,MODx.grid.Grid,{
             ,{xtype: 'textfield',fieldLabel: _('up_requires'), name: 'requires', allowBlank: true, anchor: '99%', id: 'userprofile-extended-requires-'+type}
             ,{xtype: 'textfield',fieldLabel: _('up_class'), name: 'class', anchor: '99%', id: 'userprofile-extended-class-'+type}
             ,{xtype: 'xcheckbox', fieldLabel: '', boxLabel: _('up_active'), name: 'active', id: 'userprofile-extended-active-'+type}
+            ,{xtype: 'xcheckbox', fieldLabel: '', boxLabel: _('up_default'), name: 'default', id: 'userprofile-extended-default-'+type}
         ];
     }
 

@@ -13,6 +13,7 @@ $xpdo_meta_map['upExtendedSetting']= array (
     'requires' => '',
     'rank' => 0,
     'active' => 1,
+    'default' => 1,
     'class' => NULL,
     'properties' => NULL,
   ),
@@ -65,6 +66,14 @@ $xpdo_meta_map['upExtendedSetting']= array (
       'default' => 0,
     ),
     'active' => 
+    array (
+      'dbtype' => 'tinyint',
+      'precision' => '1',
+      'phptype' => 'integer',
+      'null' => true,
+      'default' => 1,
+    ),
+    'default' => 
     array (
       'dbtype' => 'tinyint',
       'precision' => '1',
