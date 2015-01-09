@@ -6,8 +6,17 @@ $tmp = array(
 	'userprofile' => array(
 		'description' => 'userprofile_menu_desc',
 		'action' => array(
-			'controller' => 'index',
+			//'controller' => 'index',
+			'controller' => 'controllers/mgr/settings'
 		),
+	),
+	'up_settings' => array(
+		'description' => 'up_settings_desc',
+		'parent' => 'userprofile',
+		'menuindex' => 1,
+		'action' => array(
+			'controller' => 'controllers/mgr/settings'
+		)
 	),
 );
 
