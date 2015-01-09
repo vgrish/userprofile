@@ -41,3 +41,17 @@ $_lang['userprofile_item_err_save'] = 'Ошибка при сохранении 
 
 $_lang['userprofile_grid_search'] = 'Поиск';
 $_lang['userprofile_grid_actions'] = 'Действия';
+
+
+// 
+
+$_lang['up_btn_create'] = 'Создать';
+$_lang['up_btn_save'] = 'Сохранить';
+$_lang['up_btn_edit'] = 'Изменить';
+$_lang['up_btn_view'] = 'Просмотр';
+$_lang['up_btn_delete'] = 'Удалить';
+$_lang['up_btn_undelete'] = 'Восстановить';
+$_lang['up_btn_publish'] = 'Включить';
+$_lang['up_btn_unpublish'] = 'Отключить';
+$_lang['up_btn_cancel'] = 'Отмена';
+$_lang['up_btn_duplicate'] = 'Сделать копию';

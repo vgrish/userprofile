@@ -1,296 +1,227 @@
-userprofile.grid.Extended = function (config) {
+userprofile.grid.Extended = function(config) {
     config = config || {};
-    if (!config.id) {
-        config.id = 'userprofile-grid-extended';
-    }
-    Ext.applyIf(config, {
-        url: userprofile.config.connector_url,
-        fields: this.getFields(config),
-        columns: this.getColumns(config),
-        tbar: this.getTopBar(config),
-        sm: new Ext.grid.CheckboxSelectionModel(),
-        baseParams: {
-            action: 'mgr/item/getlist'
-        },
-        listeners: {
-            rowDblClick: function (grid, rowIndex, e) {
-                var row = grid.store.getAt(rowIndex);
-                this.updateItem(grid, e, row);
-            }
-        },
-        viewConfig: {
-            forceFit: true,
-            enableRowBody: true,
-            autoFill: true,
-            showPreview: true,
-            scrollOffset: 0,
-            getRowClass: function (rec, ri, p) {
-                return !rec.data.active
-                    ? 'userprofile-row-disabled'
-                    : '';
-            }
-        },
-        paging: true,
-        remoteSort: true,
-        autoHeight: true,
+
+    this.exp = new Ext.grid.RowExpander({
+        expandOnDblClick: false
+        ,tpl : new Ext.Template('<p class="desc">{description}</p>')
+        ,renderer : function(v, p, record){return record.data.description != '' && record.data.description != null ? '<div class="x-grid3-row-expander">&#160;</div>' : '&#160;';}
     });
-    userprofile.grid.Extended.superclass.constructor.call(this, config);
+    this.dd = function(grid) {
+        this.dropTarget = new Ext.dd.DropTarget(grid.container, {
+            ddGroup : 'dd',
+            copy:false,
+            notifyDrop : function(dd, e, data) {
+                var store = grid.store.data.items;
+                var target = store[dd.getDragData(e).rowIndex].id;
+                var source = store[data.rowIndex].id;
+                if (target != source) {
+                    dd.el.mask(_('loading'),'x-mask-loading');
+                    MODx.Ajax.request({
+                        url: userprofile.config.connectorUrl
+                        ,params: {
+                            action: config.action || 'mgr/settings/extended/sort'
+                            ,source: source
+                            ,target: target
+                        }
+                        ,listeners: {
+                            success: {fn:function(r) {dd.el.unmask();grid.refresh();},scope:grid}
+                            ,failure: {fn:function(r) {dd.el.unmask();},scope:grid}
+                        }
+                    });
+                }
+            }
+        });
+    };
 
-    // Clear selection on grid refresh
-    this.store.on('load', function () {
-        if (this._getSelectedIds().length) {
-            this.getSelectionModel().clearSelections();
+    Ext.applyIf(config,{
+        id: 'userprofile-grid-extended'
+        ,url: userprofile.config.connectorUrl
+        ,baseParams: {
+            action: 'mgr/settings/extended/getlist'
         }
-    }, this);
+        ,fields: ['id','name','description','price','logo','rank','active','class']
+        ,autoHeight: true
+        ,paging: true
+        ,remoteSort: true
+        ,save_action: 'mgr/settings/extended/updatefromgrid'
+        ,autosave: true
+        ,plugins: this.exp
+        ,columns: [this.exp
+            ,{header: _('up_id'),dataIndex: 'id',width: 50}
+            ,{header: _('up_name'),dataIndex: 'name',width: 100, editor: {xtype: 'textfield', allowBlank: false}}
+            ,{header: _('up_add_cost'),dataIndex: 'price',width: 50, editor: {xtype: 'textfield'}}
+            ,{header: _('up_logo'),dataIndex: 'logo',width: 75, renderer: this.renderLogo}
+            ,{header: _('up_active'),dataIndex: 'active',width: 50, editor: {xtype: 'combo-boolean', renderer: 'boolean'}}
+            ,{header: _('up_class'),dataIndex: 'class',width: 75, editor: {xtype: 'textfield'}}
+        ]
+        ,tbar: [{
+            text: _('up_btn_create')
+            ,handler: this.createExtended
+            ,scope: this
+        }]
+        ,ddGroup: 'dd'
+        ,enableDragDrop: true
+        ,listeners: {render: {fn: this.dd, scope: this}}
+    });
+    userprofile.grid.Extended.superclass.constructor.call(this,config);
+
+    this.store.on('load', function(store) {
+        userprofile.PaymentsArray = [];
+        var items = store.data.items;
+        for (i in items) {
+            if (items.hasOwnProperty(i) ) {
+                userprofile.PaymentsArray.push({id: items[i].id, name: items[i].data.name})
+            }
+        }
+    })
 };
-Ext.extend(userprofile.grid.Extended, MODx.grid.Grid, {
-    windows: {},
+Ext.extend(userprofile.grid.Extended,MODx.grid.Grid,{
+    windows: {}
 
-    getMenu: function (grid, rowIndex) {
-        var ids = this._getSelectedIds();
-
-        var row = grid.getStore().getAt(rowIndex);
-        var menu = userprofile.utils.getMenu(row.data['actions'], this, ids);
-
-        this.addContextMenuItem(menu);
-    },
-
-    createItem: function (btn, e) {
-        var w = MODx.load({
-            xtype: 'userprofile-item-window-create',
-            id: Ext.id(),
-            listeners: {
-                success: {
-                    fn: function () {
-                        this.refresh();
-                    }, scope: this
-                }
-            }
+    ,getMenu: function() {
+        var m = [];
+        m.push({
+            text: _('up_menu_update')
+            ,handler: this.updateExtended
         });
-        w.reset();
-        w.setValues({active: true});
-        w.show(e.target);
-    },
-
-    updateItem: function (btn, e, row) {
-        if (typeof(row) != 'undefined') {
-            this.menu.record = row.data;
-        }
-        else if (!this.menu.record) {
-            return false;
-        }
-        var id = this.menu.record.id;
-
-        MODx.Ajax.request({
-            url: this.config.url,
-            params: {
-                action: 'mgr/item/get',
-                id: id
-            },
-            listeners: {
-                success: {
-                    fn: function (r) {
-                        var w = MODx.load({
-                            xtype: 'userprofile-item-window-update',
-                            id: Ext.id(),
-                            record: r,
-                            listeners: {
-                                success: {
-                                    fn: function () {
-                                        this.refresh();
-                                    }, scope: this
-                                }
-                            }
-                        });
-                        w.reset();
-                        w.setValues(r.object);
-                        w.show(e.target);
-                    }, scope: this
-                }
-            }
+        m.push('-');
+        m.push({
+            text: _('up_menu_remove')
+            ,handler: this.removeExtended
         });
-    },
+        this.addContextMenuItem(m);
+    }
 
-    removeItem: function (act, btn, e) {
-        var ids = this._getSelectedIds();
-        if (!ids.length) {
-            return false;
+    ,renderLogo: function(value) {
+        if (/(jpg|png|gif|jpeg)$/i.test(value)) {
+            if (!/^\//.test(value)) {value = '/' + value;}
+            return '<img src="'+value+'" height="35" />';
         }
+        else {
+            return '';
+        }
+    }
+
+    ,createExtended: function(btn,e) {
+        if (!this.windows.createExtended) {
+            this.windows.createExtended = MODx.load({
+                xtype: 'userprofile-window-extended-create'
+                ,fields: this.getExtendedFields('create')
+                ,listeners: {
+                    success: {fn:function() { this.refresh(); },scope:this}
+                }
+            });
+        }
+        this.windows.createExtended.fp.getForm().reset();
+        this.windows.createExtended.show(e.target);
+    }
+    ,updateExtended: function(btn,e) {
+        if (!this.menu.record || !this.menu.record.id) return false;
+        var r = this.menu.record;
+
+        if (!this.windows.updateExtended) {
+            this.windows.updateExtended = MODx.load({
+                xtype: 'userprofile-window-extended-update'
+                ,record: r
+                ,fields: this.getExtendedFields('update')
+                ,listeners: {
+                    success: {fn:function() { this.refresh(); },scope:this}
+                }
+            });
+        }
+        this.windows.updateExtended.fp.getForm().reset();
+        this.windows.updateExtended.fp.getForm().setValues(r);
+        this.windows.updateExtended.show(e.target);
+    }
+
+    ,removeExtended: function(btn,e) {
+        if (!this.menu.record) return false;
+
         MODx.msg.confirm({
-            title: ids.length > 1
-                ? _('userprofile_items_remove')
-                : _('userprofile_item_remove'),
-            text: ids.length > 1
-                ? _('userprofile_items_remove_confirm')
-                : _('userprofile_item_remove_confirm'),
-            url: this.config.url,
-            params: {
-                action: 'mgr/item/remove',
-                ids: Ext.util.JSON.encode(ids),
-            },
-            listeners: {
-                success: {
-                    fn: function (r) {
-                        this.refresh();
-                    }, scope: this
-                }
+            title: _('up_menu_remove') + '"' + this.menu.record.name + '"'
+            ,text: _('up_menu_remove_confirm')
+            ,url: this.config.url
+            ,params: {
+                action: 'mgr/settings/extended/remove'
+                ,id: this.menu.record.id
+            }
+            ,listeners: {
+                success: {fn:function(r) {this.refresh();}, scope:this}
             }
         });
-        return true;
-    },
+    }
 
-    disableItem: function (act, btn, e) {
-        var ids = this._getSelectedIds();
-        if (!ids.length) {
-            return false;
+    ,getExtendedFields: function(type) {
+        return [
+            {xtype: 'hidden',name: 'id', id: 'userprofile-extended-id-'+type}
+            ,{xtype: 'textfield',fieldLabel: _('up_name'), name: 'name', allowBlank: false, anchor: '99%', id: 'userprofile-extended-name-'+type}
+            ,{xtype: 'textfield',fieldLabel: _('up_add_cost'), name: 'price', description: _('up_add_cost_help') ,allowBlank: true, anchor: '50%', id: 'userprofile-extended-price-'+type}
+            ,{xtype: 'up-combo-browser',fieldLabel: _('up_logo'), name: 'logo', anchor: '99%',  id: 'userprofile-extended-logo-'+type}
+            ,{xtype: 'textarea', fieldLabel: _('up_description'), name: 'description', anchor: '99%', id: 'userprofile-extended-description-'+type}
+            ,{xtype: 'textfield',fieldLabel: _('up_class'), name: 'class', anchor: '99%', id: 'userprofile-extended-class-'+type}
+            ,{xtype: 'xcheckbox', fieldLabel: '', boxLabel: _('up_active'), name: 'active', id: 'userprofile-extended-active-'+type}
+        ];
+    }
+
+    ,beforeDestroy: function() {
+        if (this.rendered) {
+            this.dropTarget.destroy();
         }
-        MODx.Ajax.request({
-            url: this.config.url,
-            params: {
-                action: 'mgr/item/disable',
-                ids: Ext.util.JSON.encode(ids),
-            },
-            listeners: {
-                success: {
-                    fn: function () {
-                        this.refresh();
-                    }, scope: this
-                }
-            }
-        })
-    },
-
-    enableItem: function (act, btn, e) {
-        var ids = this._getSelectedIds();
-        if (!ids.length) {
-            return false;
-        }
-        MODx.Ajax.request({
-            url: this.config.url,
-            params: {
-                action: 'mgr/item/enable',
-                ids: Ext.util.JSON.encode(ids),
-            },
-            listeners: {
-                success: {
-                    fn: function () {
-                        this.refresh();
-                    }, scope: this
-                }
-            }
-        })
-    },
-
-    getFields: function (config) {
-        return ['id', 'name', 'description', 'active', 'actions'];
-    },
-
-    getColumns: function (config) {
-        return [{
-            header: _('userprofile_item_id'),
-            dataIndex: 'id',
-            sortable: true,
-            width: 70
-        }, {
-            header: _('userprofile_item_name'),
-            dataIndex: 'name',
-            sortable: true,
-            width: 200,
-        }, {
-            header: _('userprofile_item_description'),
-            dataIndex: 'description',
-            sortable: false,
-            width: 250,
-        }, {
-            header: _('userprofile_item_active'),
-            dataIndex: 'active',
-            renderer: userprofile.utils.renderBoolean,
-            sortable: true,
-            width: 100,
-        }, {
-            header: _('userprofile_grid_actions'),
-            dataIndex: 'actions',
-            renderer: userprofile.utils.renderActions,
-            sortable: false,
-            width: 100,
-            id: 'actions'
-        }];
-    },
-
-    getTopBar: function (config) {
-        return [{
-            text: '<i class="icon icon-plus">&nbsp;' + _('userprofile_item_create'),
-            handler: this.createItem,
-            scope: this
-        }, '->', {
-            xtype: 'textfield',
-            name: 'query',
-            width: 200,
-            id: config.id + '-search-field',
-            emptyText: _('userprofile_grid_search'),
-            listeners: {
-                render: {
-                    fn: function (tf) {
-                        tf.getEl().addKeyListener(Ext.EventObject.ENTER, function () {
-                            this._doSearch(tf);
-                        }, this);
-                    }, scope: this
-                }
-            }
-        }, {
-            xtype: 'button',
-            id: config.id + '-search-clear',
-            text: '<i class="icon icon-times"></i>',
-            listeners: {
-                click: {fn: this._clearSearch, scope: this}
-            }
-        }];
-    },
-
-    onClick: function (e) {
-        var elem = e.getTarget();
-        if (elem.nodeName == 'BUTTON') {
-            var row = this.getSelectionModel().getSelected();
-            if (typeof(row) != 'undefined') {
-                var action = elem.getAttribute('action');
-                if (action == 'showMenu') {
-                    var ri = this.getStore().find('id', row.id);
-                    return this._showMenu(this, ri, e);
-                }
-                else if (typeof this[action] === 'function') {
-                    this.menu.record = row.data;
-                    return this[action](this, e);
-                }
-            }
-        }
-        return this.processEvent('click', e);
-    },
-
-    _getSelectedIds: function () {
-        var ids = [];
-        var selected = this.getSelectionModel().getSelections();
-
-        for (var i in selected) {
-            if (!selected.hasOwnProperty(i)) {
-                continue;
-            }
-            ids.push(selected[i]['id']);
-        }
-
-        return ids;
-    },
-
-    _doSearch: function (tf, nv, ov) {
-        this.getStore().baseParams.query = tf.getValue();
-        this.getBottomToolbar().changePage(1);
-        this.refresh();
-    },
-
-    _clearSearch: function (btn, e) {
-        this.getStore().baseParams.query = '';
-        Ext.getCmp(this.config.id + '-search-field').setValue('');
-        this.getBottomToolbar().changePage(1);
-        this.refresh();
+        userprofile.grid.Extended.superclass.beforeDestroy.call(this);
     }
 });
-Ext.reg('userprofile-grid-extended', userprofile.grid.Extended);
+Ext.reg('userprofile-grid-extended',userprofile.grid.Extended);
+
+
+// userprofile.window.CreateExtended
+// userprofile.window.CreateExtended
+
+userprofile.window.CreateExtended = function(config) {
+    config = config || {};
+    this.ident = config.ident || 'mecitem'+Ext.id();
+    Ext.applyIf(config,{
+        title: _('up_menu_create')
+        ,width: 600
+        ,autoHeight: true
+        ,labelAlign: 'left'
+        ,labelWidth: 180
+        ,url: userprofile.config.connectorUrl
+        ,action: 'mgr/settings/extended/create'
+        ,fields: [
+            {xtype: 'textfield',fieldLabel: _('name'),name: 'name',id: 'userprofile-'+this.ident+'-name',width: 300}
+            ,{xtype: 'textarea',fieldLabel: _('description'),name: 'description',id: 'userprofile-'+this.ident+'-description',width: 300}
+        ]
+        ,keys: [{key: Ext.EventObject.ENTER,shift: true,fn: function() {this.submit() },scope: this}]
+    });
+    userprofile.window.CreateExtended.superclass.constructor.call(this,config);
+};
+Ext.extend(userprofile.window.CreateExtended,MODx.Window);
+Ext.reg('userprofile-window-extended-create',userprofile.window.CreateExtended);
+
+
+// userprofile.window.UpdateExtended
+// userprofile.window.UpdateExtended
+
+userprofile.window.UpdateExtended = function(config) {
+    config = config || {};
+    this.ident = config.ident || 'meuitem'+Ext.id();
+    Ext.applyIf(config,{
+        title: _('up_menu_update')
+        ,id: this.ident
+        ,width: 600
+        ,autoHeight: true
+        ,labelAlign: 'left'
+        ,labelWidth: 180
+        ,url: userprofile.config.connectorUrl
+        ,action: 'mgr/settings/extended/update'
+        ,fields: [
+            {xtype: 'hidden',name: 'id',id: 'userprofile-'+this.ident+'-id'}
+            ,{xtype: 'textfield',fieldLabel: _('name'),name: 'name',id: 'userprofile-'+this.ident+'-name',width: 300}
+            ,{xtype: 'textarea',fieldLabel: _('description'),name: 'description',id: 'userprofile-'+this.ident+'-description',width: 300}
+        ]
+        ,keys: [{key: Ext.EventObject.ENTER,shift: true,fn: function() {this.submit() },scope: this}]
+    });
+    userprofile.window.UpdateExtended.superclass.constructor.call(this,config);
+};
+Ext.extend(userprofile.window.UpdateExtended,MODx.Window);
+Ext.reg('userprofile-window-extended-update',userprofile.window.UpdateExtended);
