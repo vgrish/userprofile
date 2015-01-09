@@ -12,7 +12,7 @@ $tmp = array(
 	),
 	'up_settings' => array(
 		'description' => 'up_settings_desc',
-		'parent' => 'up',
+		'parent' => 'up', 
 		'menuindex' => 0,
 		'action' => array(
 			'controller' => 'controllers/mgr/settings'
