@@ -3,7 +3,7 @@
 $menus = array();
 
 $tmp = array(
-	'userprofile' => array(
+	'up' => array(
 		'description' => 'up_menu_desc',
 		'action' => array(
 			//'controller' => 'index',
@@ -12,7 +12,7 @@ $tmp = array(
 	),
 	'up_settings' => array(
 		'description' => 'up_settings_desc',
-		'parent' => 'userprofile',
+		'parent' => 'up',
 		'menuindex' => 0,
 		'action' => array(
 			'controller' => 'controllers/mgr/settings'
