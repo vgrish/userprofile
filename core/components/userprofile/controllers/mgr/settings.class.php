@@ -27,7 +27,7 @@ class userprofileSettingsManagerController extends userprofileMainController {
 		//$this->addJavascript($this->Up->config['jsUrl'] . 'mgr/settings/status.grid.js');
 		//$this->addJavascript($this->Up->config['jsUrl'] . 'mgr/settings/type.grid.js');
 		//$this->addJavascript($this->Up->config['jsUrl'] . 'mgr/settings/passivebonus.grid.js');
-		$this->addJavascript($this->Up->config['jsUrl'] . 'mgr/sections/settings.js');
+		$this->addJavascript($this->userprofile->config['jsUrl'] . 'mgr/sections/settings.js');
 
 		$this->addHtml(str_replace('			', '', '
 			<script type="text/javascript">

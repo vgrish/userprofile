@@ -37,6 +37,7 @@ class userprofile {
 			'modelPath' => $corePath . 'model/',
 			'chunksPath' => $corePath . 'elements/chunks/',
 			'templatesPath' => $corePath . 'elements/templates/',
+
 			'chunkSuffix' => '.chunk.tpl',
 			'snippetsPath' => $corePath . 'elements/snippets/',
 			'processorsPath' => $corePath . 'processors/'
