@@ -70,3 +70,10 @@ $_lang['up_btn_publish'] = 'Включить';
 $_lang['up_btn_unpublish'] = 'Отключить';
 $_lang['up_btn_cancel'] = 'Отмена';
 $_lang['up_btn_duplicate'] = 'Сделать копию';
+
+$_lang['up_menu_add'] = 'Добавить';
+$_lang['up_menu_update'] = 'Изменить';
+$_lang['up_menu_remove'] = 'Удалить';
+$_lang['up_menu_remove_multiple'] = 'Удалить выбранное';
+$_lang['up_menu_remove_confirm'] = 'Вы уверены, что хотите удалить эту запись?';
+$_lang['up_menu_remove_multiple_confirm'] = 'Вы уверены, что хотите удалить все выбранные записи?';
