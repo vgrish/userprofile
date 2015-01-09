@@ -18,7 +18,7 @@ userprofile.panel.Settings = function(config) {
         ,deferredRender: true
         ,baseCls: 'modx-formpanel'
         ,items: [{
-            html: '<h2>'+_('minishop2') + ' :: ' + _('ms2_settings')+'</h2>'
+            html: '<h2>'+_('userprofile') + ' :: ' + _('up_settings')+'</h2>'
             ,border: false
             ,cls: 'modx-page-header container'
         },{
@@ -35,7 +35,7 @@ userprofile.panel.Settings = function(config) {
                 title: _('ms2_deliveries')
                 ,deferredRender: true
                 ,items: [{
-                    html: '<p>'+_('ms2_deliveries_intro')+'</p>'
+                    html: '<p>'+_('up_extended_intro')+'</p>'
                     ,border: false
                     ,bodyCssClass: 'panel-desc'
                     ,bodyStyle: 'margin-bottom: 10px'

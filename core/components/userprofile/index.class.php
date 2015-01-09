@@ -55,6 +55,6 @@ class IndexManagerController extends userprofileMainController {
 	 * @return string
 	 */
 	public static function getDefaultController() {
-		return 'home';
+		return 'mgr/settings';
 	}
 }

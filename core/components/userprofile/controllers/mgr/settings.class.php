@@ -21,12 +21,7 @@ class userprofileSettingsManagerController extends userprofileMainController {
 	}
 
 	public function loadCustomCssJs() {
-		//$this->addJavascript(MODX_MANAGER_URL . 'assets/modext/util/datetime.js');
-		//$this->addJavascript($this->Up->config['jsUrl'] . 'mgr/misc/utils.js');
-		//$this->addJavascript($this->Up->config['jsUrl'] . 'mgr/misc/ref.combo.js');
-		//$this->addJavascript($this->Up->config['jsUrl'] . 'mgr/settings/status.grid.js');
 		$this->addJavascript($this->userprofile->config['jsUrl'] . 'mgr/widgets/extended.grid.js');
-		//$this->addJavascript($this->Up->config['jsUrl'] . 'mgr/settings/passivebonus.grid.js');
 		$this->addJavascript($this->userprofile->config['jsUrl'] . 'mgr/sections/settings.js');
 
 		$this->addHtml(str_replace('			', '', '
