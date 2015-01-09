@@ -43,7 +43,7 @@ class userprofile {
 			'processorsPath' => $corePath . 'processors/'
 		), $config);
 
-		//$this->modx->addPackage('userprofile', $this->config['modelPath']);
+		$this->modx->addPackage('userprofile', $this->config['modelPath']);
 		$this->modx->lexicon->load('userprofile:default');
 
 		$this->active = $this->modx->getOption('userprofile_active', $config, false);

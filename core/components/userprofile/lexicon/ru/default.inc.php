@@ -48,6 +48,18 @@ $_lang['up_firstname'] = 'Имя';
 $_lang['up_secondname'] = 'Отчество';
 
 
+// title
+
+$_lang['up_id'] = 'Id';
+$_lang['up_name'] = 'Имя';
+$_lang['up_active'] = 'Включен';
+$_lang['up_class'] = 'Класс-обработчик';
+$_lang['up_description'] = 'Описание';
+$_lang['up_status'] = 'Статус';
+
+up_name
+up_active
+up_class
 
 
 // 

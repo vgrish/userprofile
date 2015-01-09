@@ -1,4 +1,5 @@
 <?php
+
 class upExtendedGetListProcessor extends modObjectGetListProcessor {
 	public $classKey = 'upExtendedSetting';
 	public $defaultSortField = 'rank';
