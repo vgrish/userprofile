@@ -13,7 +13,7 @@ $tmp = array(
 	'up_settings' => array(
 		'description' => 'up_settings_desc',
 		'parent' => 'userprofile',
-		'menuindex' => 1,
+		'menuindex' => 0,
 		'action' => array(
 			'controller' => 'controllers/mgr/settings'
 		)
