@@ -48,7 +48,7 @@ userprofile.grid.Extended = function(config) {
         ,plugins: this.exp
         ,columns: [this.exp
             ,{header: _('up_id'),dataIndex: 'id',width: 50}
-            ,{header: _('up_name'),dataIndex: 'name',width: 100, editor: {xtype: 'textfield', allowBlank: false}}
+            ,{header: _('up_name'),dataIndex: 'name',width: 100, description: 'description', editor: {xtype: 'textfield', allowBlank: false}}
             ,{header: _('up_active'),dataIndex: 'active',width: 50, editor: {xtype: 'combo-boolean', renderer: 'boolean'}}
             ,{header: _('up_class'),dataIndex: 'class',width: 75, editor: {xtype: 'textfield'}}
         ]
@@ -153,9 +153,10 @@ Ext.extend(userprofile.grid.Extended,MODx.grid.Grid,{
         return [
             {xtype: 'hidden',name: 'id', id: 'userprofile-extended-id-'+type}
             ,{xtype: 'textfield',fieldLabel: _('up_name'), name: 'name', allowBlank: false, anchor: '99%', id: 'userprofile-extended-name-'+type}
-            ,{xtype: 'textfield',fieldLabel: _('up_add_cost'), name: 'price', description: _('up_add_cost_help') ,allowBlank: true, anchor: '50%', id: 'userprofile-extended-price-'+type}
-            ,{xtype: 'up-combo-browser',fieldLabel: _('up_logo'), name: 'logo', anchor: '99%',  id: 'userprofile-extended-logo-'+type}
             ,{xtype: 'textarea', fieldLabel: _('up_description'), name: 'description', anchor: '99%', id: 'userprofile-extended-description-'+type}
+            ,{xtype: 'textfield',fieldLabel: _('up_tabs'), name: 'tabs', allowBlank: false, anchor: '99%', id: 'userprofile-extended-tabs-'+type}
+            ,{xtype: 'textfield',fieldLabel: _('up_fields'), name: 'fields', allowBlank: false, anchor: '99%', id: 'userprofile-extended-fields-'+type}
+            ,{xtype: 'textfield',fieldLabel: _('up_requires'), name: 'requires', allowBlank: false, anchor: '99%', id: 'userprofile-extended-requires-'+type}
             ,{xtype: 'textfield',fieldLabel: _('up_class'), name: 'class', anchor: '99%', id: 'userprofile-extended-class-'+type}
             ,{xtype: 'xcheckbox', fieldLabel: '', boxLabel: _('up_active'), name: 'active', id: 'userprofile-extended-active-'+type}
         ];
