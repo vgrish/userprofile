@@ -4,7 +4,7 @@
  * The home manager controller for userprofile.
  *
  */
-class UpHomeManagerController extends UpMainController {
+class userprofileHomeManagerController extends userprofileMainController {
 	/* @var userprofile $userprofile */
 	public $userprofile;
 

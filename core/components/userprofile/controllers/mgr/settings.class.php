@@ -2,7 +2,7 @@
 
 require_once dirname(dirname(dirname(__FILE__))) . '/index.class.php';
 
-class ControllersSettingsManagerController extends UpMainController {
+class ControllersSettingsManagerController extends userprofileMainController {
 
 	public static function getDefaultController() {
 		return 'settings';
@@ -10,7 +10,7 @@ class ControllersSettingsManagerController extends UpMainController {
 
 }
 
-class UpSettingsManagerController extends UpMainController {
+class UpSettingsManagerController extends userprofileMainController {
 
 	public function getPageTitle() {
 		return $this->modx->lexicon('userprofile') . ' :: ' . $this->modx->lexicon('up_settings');
@@ -53,6 +53,6 @@ class ControllersMgrSettingsManagerController extends ControllersSettingsManager
 
 }
 
-class UpMgrSettingsManagerController extends UpSettingsManagerController {
+class userprofileMgrSettingsManagerController extends userprofileSettingsManagerController {
 
 }

@@ -3,7 +3,7 @@
 /**
  * Class userprofileMainController
  */
-abstract class UpMainController extends modExtraManagerController {
+abstract class userprofileMainController extends modExtraManagerController {
 	/** @var userprofile $userprofile */
 	public $userprofile;
 
@@ -49,7 +49,7 @@ abstract class UpMainController extends modExtraManagerController {
 /**
  * Class IndexManagerController
  */
-class IndexManagerController extends UpMainController {
+class IndexManagerController extends userprofileMainController {
 
 	/**
 	 * @return string
