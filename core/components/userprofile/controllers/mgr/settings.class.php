@@ -21,6 +21,8 @@ class userprofileSettingsManagerController extends userprofileMainController {
 	}
 
 	public function loadCustomCssJs() {
+
+		$this->addJavascript($this->userprofile->config['jsUrl'] . 'mgr/misc/up.combo.js');
 		$this->addJavascript($this->userprofile->config['jsUrl'] . 'mgr/widgets/extended.grid.js');
 		$this->addJavascript($this->userprofile->config['jsUrl'] . 'mgr/sections/settings.js');
 
