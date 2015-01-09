@@ -39,7 +39,7 @@ userprofile.grid.Extended = function(config) {
         ,baseParams: {
             action: 'mgr/settings/extended/getlist'
         }
-        ,fields: ['id','name','description','rank','active','class']
+        ,fields: ['id','name','description','rank','active','class', 'tabs', 'fields', 'requires']
         ,autoHeight: true
         ,paging: true
         ,remoteSort: true
@@ -51,6 +51,7 @@ userprofile.grid.Extended = function(config) {
             ,{header: _('up_name'),dataIndex: 'name',width: 100, description: 'description', editor: {xtype: 'textfield', allowBlank: false}}
             ,{header: _('up_active'),dataIndex: 'active',width: 50, editor: {xtype: 'combo-boolean', renderer: 'boolean'}}
             ,{header: _('up_class'),dataIndex: 'class',width: 75, editor: {xtype: 'textfield'}}
+
         ]
         ,tbar: [{
             text: _('up_btn_create')
@@ -145,7 +146,7 @@ Ext.extend(userprofile.grid.Extended,MODx.grid.Grid,{
             ,{xtype: 'textfield',fieldLabel: _('up_name'), name: 'name', allowBlank: false, anchor: '99%', id: 'userprofile-extended-name-'+type}
             ,{xtype: 'textarea', fieldLabel: _('up_description'), name: 'description', anchor: '99%', id: 'userprofile-extended-description-'+type}
             ,{xtype: 'textfield',fieldLabel: _('up_tabs'), name: 'tabs', allowBlank: false, anchor: '99%', id: 'userprofile-extended-tabs-'+type}
-            ,{xtype: 'textfield',fieldLabel: _('up_fields'), name: 'fields', allowBlank: false, anchor: '99%', id: 'userprofile-extended-fields-'+type}
+            ,{xtype: 'textarea',fieldLabel: _('up_fields'), name: 'fields', allowBlank: false, anchor: '99%', id: 'userprofile-extended-fields-'+type}
             ,{xtype: 'textfield',fieldLabel: _('up_requires'), name: 'requires', allowBlank: true, anchor: '99%', id: 'userprofile-extended-requires-'+type}
             ,{xtype: 'textfield',fieldLabel: _('up_class'), name: 'class', anchor: '99%', id: 'userprofile-extended-class-'+type}
             ,{xtype: 'xcheckbox', fieldLabel: '', boxLabel: _('up_active'), name: 'active', id: 'userprofile-extended-active-'+type}
@@ -172,10 +173,7 @@ userprofile.window.CreateExtended = function(config) {
         ,labelWidth: 180
         ,url: userprofile.config.connectorUrl
         ,action: 'mgr/settings/extended/create'
-        ,fields: [
-            {xtype: 'textfield',fieldLabel: _('name'),name: 'name',id: 'userprofile-'+this.ident+'-name',width: 300}
-            ,{xtype: 'textarea',fieldLabel: _('description'),name: 'description',id: 'userprofile-'+this.ident+'-description',width: 300}
-        ]
+        ,fields: config.fields
         ,keys: [{key: Ext.EventObject.ENTER,shift: true,fn: function() {this.submit() },scope: this}]
     });
     userprofile.window.CreateExtended.superclass.constructor.call(this,config);
@@ -195,11 +193,7 @@ userprofile.window.UpdateExtended = function(config) {
         ,labelWidth: 180
         ,url: userprofile.config.connectorUrl
         ,action: 'mgr/settings/extended/update'
-        ,fields: [
-            {xtype: 'hidden',name: 'id',id: 'userprofile-'+this.ident+'-id'}
-            ,{xtype: 'textfield',fieldLabel: _('name'),name: 'name',id: 'userprofile-'+this.ident+'-name',width: 300}
-            ,{xtype: 'textarea',fieldLabel: _('description'),name: 'description',id: 'userprofile-'+this.ident+'-description',width: 300}
-        ]
+        ,fields: config.fields
         ,keys: [{key: Ext.EventObject.ENTER,shift: true,fn: function() {this.submit() },scope: this}]
     });
     userprofile.window.UpdateExtended.superclass.constructor.call(this,config);

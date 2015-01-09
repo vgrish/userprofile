@@ -1,6 +1,7 @@
 <?php
+
 require_once (dirname(__FILE__).'/update.class.php');
-class upExtendedFromGridProcessor extends msDeliveryUpdateProcessor {
+class upExtendedFromGridProcessor extends upExtendedUpdateProcessor {
 	/** {@inheritDoc} */
 	public static function getInstance(modX &$modx,$className,$properties = array()) {
 		/** @var modProcessor $processor */
