@@ -18,17 +18,20 @@ Ext.ComponentMgr.onAvailable('modx-user-tabs', function () {
 
             var separator = ',';
             var tabsList = config.extSetting.tabs.split(separator);
-
-            console.log(tabsList);
-
             var tabsItemsList = [];
             Ext.each(tabsList, function(tab) {
-                if (tab.id == 'tab_files') {
-                    return false;
+
+                console.log('-'+tab+'-');
+
+
+                if (tab in ['activity', 'personal', '']) {
+
+                    console.log('d');
+                    //return false;
                 }
                 var tabItems = [];
                 for (v in fields[tab]) {
-                    var tabItem = {xtype: 'textfield', fieldLabel: _('up_' + v), description: _('up_' + v + '_help'), name: v, allowBlank: true, value: fields[tab][v], anchor: '99%', id: 'up-extended-current-' + v + '-' + type};
+                    var tabItem = {xtype: 'textfield', fieldLabel: _('up_field_' + v), description: _('up_field_' + v + '_help'), name: v, allowBlank: true, value: fields[tab][v], anchor: '99%', id: 'up-extended-current-' + v + '-' + type};
                     tabItems.push(tabItem);
                 }
 
@@ -65,7 +68,7 @@ Ext.ComponentMgr.onAvailable('modx-user-tabs', function () {
 
         };
 
-        var fields = ['edfe','efe'];//properties.fields;
+        var fields = ['lastname','firstname'];//properties.fields;
 
         var upBottomTabs = getCurrentContractsFields('update', fields);
 
