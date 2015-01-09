@@ -42,6 +42,13 @@ $_lang['userprofile_item_err_save'] = 'Ошибка при сохранении 
 $_lang['userprofile_grid_search'] = 'Поиск';
 $_lang['userprofile_grid_actions'] = 'Действия';
 
+// fields
+$_lang['up_lastname'] = 'Фамилия';
+$_lang['up_firstname'] = 'Имя';
+$_lang['up_secondname'] = 'Отчество';
+
+
+
 
 // 
 
