@@ -39,7 +39,7 @@ class UpSettingsManagerController extends UpMainController {
 	}
 
 	public function getTemplateFile() {
-		return $this->Up->config['templatesPath'] . 'mgr/settings.tpl';
+		return $this->userprofile->config['templatesPath'] . 'mgr/settings.tpl';
 	}
 
 }
