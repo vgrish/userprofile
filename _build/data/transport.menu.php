@@ -4,7 +4,7 @@ $menus = array();
 
 $tmp = array(
 	'userprofile' => array(
-		'description' => 'userprofile_menu_desc',
+		'description' => 'up_menu_desc',
 		'action' => array(
 			//'controller' => 'index',
 			'controller' => 'controllers/mgr/settings'
