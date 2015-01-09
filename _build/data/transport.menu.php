@@ -3,7 +3,7 @@
 $menus = array();
 
 $tmp = array(
-	'up' => array(
+	'userprofile' => array(
 		'description' => 'up_menu_desc',
 		'action' => array(
 			'controller' => 'index',
