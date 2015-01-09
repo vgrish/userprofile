@@ -32,7 +32,7 @@ class userprofileSettingsManagerController extends userprofileMainController {
 		$this->addHtml(str_replace('			', '', '
 			<script type="text/javascript">
 				Ext.onReady(function() {
-					MODx.load({ xtype: "up-page-settings"});
+					MODx.load({ xtype: "userprofile-page-settings"});
 				});
 			</script>'
 		));
