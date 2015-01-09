@@ -4,6 +4,7 @@
 
     <object class="upExtended" table="up_extended" extends="xPDOSimpleObject">
         <field key="user_id" dbtype="int" precision="10" attributes="unsigned" phptype="integer" null="false" />
+        <field key="type_id" dbtype="int" precision="10" attributes="unsigned" phptype="integer" null="false" />
         <field key="lastname" dbtype="varchar" precision="255" phptype="string" null="false" />
         <field key="firstname" dbtype="varchar" precision="255" phptype="string" null="false" />
         <field key="secondname" dbtype="varchar" precision="255" phptype="string" null="false" />
@@ -15,6 +16,9 @@
 
         <index alias="user_id" name="user_id" primary="false" unique="false" type="BTREE" >
             <column key="user_id" length="" collation="A" null="false" />
+        </index>
+        <index alias="type_id" name="type_id" primary="false" unique="false" type="BTREE" >
+            <column key="type_id" length="" collation="A" null="false" />
         </index>
         <index alias="lastname" name="lastname" primary="false" unique="false" type="BTREE" >
             <column key="lastname" length="" collation="A" null="false" />
