@@ -57,10 +57,6 @@ $_lang['up_class'] = 'Класс-обработчик';
 $_lang['up_description'] = 'Описание';
 $_lang['up_status'] = 'Статус';
 
-up_name
-up_active
-up_class
-
 
 // 
 
