@@ -10,7 +10,7 @@ class ControllersSettingsManagerController extends userprofileMainController {
 
 }
 
-class UpSettingsManagerController extends userprofileMainController {
+class userprofileSettingsManagerController extends userprofileMainController {
 
 	public function getPageTitle() {
 		return $this->modx->lexicon('userprofile') . ' :: ' . $this->modx->lexicon('up_settings');
