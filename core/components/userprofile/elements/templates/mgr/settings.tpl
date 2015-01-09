@@ -1,1 +1,1 @@
-<div id="up-panel-settings-div"></div>
+<div id="userprofile-panel-settings-div"></div>

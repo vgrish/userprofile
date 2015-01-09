@@ -1,17 +1,17 @@
-up.page.Settings = function(config) {
+userprofile.page.Settings = function(config) {
     config = config || {};
     Ext.applyIf(config,{
         components: [{
-            xtype: 'up-panel-settings'
-            ,renderTo: 'up-panel-settings-div'
+            xtype: 'userprofile-panel-settings'
+            ,renderTo: 'userprofile-panel-settings-div'
         }]
     });
-    up.page.Settings.superclass.constructor.call(this,config);
+    userprofile.page.Settings.superclass.constructor.call(this,config);
 };
-Ext.extend(up.page.Settings,MODx.Component);
-Ext.reg('up-page-settings',up.page.Settings);
+Ext.extend(userprofile.page.Settings,MODx.Component);
+Ext.reg('userprofile-page-settings',userprofile.page.Settings);
 
-up.panel.Settings = function(config) {
+userprofile.panel.Settings = function(config) {
     config = config || {};
     Ext.apply(config,{
         border: false
@@ -28,7 +28,7 @@ up.panel.Settings = function(config) {
             ,border: true
             ,hideMode: 'offsets'
             ,stateful: true
-            ,stateId: 'up-settings-tabpanel'
+            ,stateId: 'userprofile-settings-tabpanel'
             ,stateEvents: ['tabchange']
             ,getState:function() {return { activeTab:this.items.indexOf(this.getActiveTab())};}
             ,items: [{
@@ -40,12 +40,12 @@ up.panel.Settings = function(config) {
                     ,bodyCssClass: 'panel-desc'
                     ,bodyStyle: 'margin-bottom: 10px'
                 },{
-                    xtype: 'up-grid-extended'
+                    xtype: 'userprofile-grid-extended'
                 }]
             }]
         }]
     });
-    up.panel.Settings.superclass.constructor.call(this,config);
+    userprofile.panel.Settings.superclass.constructor.call(this,config);
 };
-Ext.extend(up.panel.Settings,MODx.Panel);
-Ext.reg('up-panel-settings',up.panel.Settings);
+Ext.extend(userprofile.panel.Settings,MODx.Panel);
+Ext.reg('userprofile-panel-settings',userprofile.panel.Settings);
