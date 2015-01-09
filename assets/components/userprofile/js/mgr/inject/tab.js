@@ -12,7 +12,7 @@ Ext.ComponentMgr.onAvailable('modx-user-tabs', function () {
                 + '<div id="up-avatar"></div>'
         };
 
-        var getCurrentContractsFields =  function(type, fields) {
+        var getCurrentContractsFields =  function(type, fields) { 
 
             console.log('33');
 
