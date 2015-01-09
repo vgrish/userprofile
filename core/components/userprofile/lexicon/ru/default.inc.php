@@ -1,5 +1,6 @@
 <?php
 include_once 'setting.inc.php';
+include_once 'tabs.inc.php';
 
 $_lang['userprofile'] = 'Профиль пользователя';
 $_lang['up_menu_desc'] = 'Пример расширения для разработки.';

@@ -1,12 +1,15 @@
 Ext.ComponentMgr.onAvailable('modx-user-tabs', function () {
     this.on('beforerender', function () {
 
-        var data = {
-            url: '/inc/2.jpg'
-        };
+        var config = userprofile.config;
+        var avatarSrc = (config.profile.photo != '')
+            ? MODx.config.connectors_url + 'system/phpthumb.php?h=230&w=294&src=' + config.profile.photo + '&wctx=MODx.ctx&source=1'
+            : config.profile.gravatar;
 
         var avatar = {
-            html: '<img src="' + MODx.config.connectors_url + 'system/phpthumb.php?h=230&w=294&src=' + data.url + '&wctx=MODx.ctx&source=1" alt="" / class="up-avatar">',
+            html: '<div id="up-avatar">'
+                + '<img src="' + avatarSrc +'" alt="" / class="up-avatar">'
+                + '<div id="up-avatar"></div>'
         };
 
         var getCurrentContractsFields =  function(type, fields) {
@@ -14,9 +17,15 @@ Ext.ComponentMgr.onAvailable('modx-user-tabs', function () {
             console.log('33');
 
             var separator = ',';
-            var tabsList = MODx.config.referral_tabs_contract_fields.split(separator);
+            var tabsList = config.extSetting.tabs.split(separator);
+
+            console.log(tabsList);
+
             var tabsItemsList = [];
             Ext.each(tabsList, function(tab) {
+                if (tab.id == 'tab_files') {
+                    return false;
+                }
                 var tabItems = [];
                 for (v in fields[tab]) {
                     var tabItem = {xtype: 'textfield', fieldLabel: _('up_' + v), description: _('up_' + v + '_help'), name: v, allowBlank: true, value: fields[tab][v], anchor: '99%', id: 'up-extended-current-' + v + '-' + type};
@@ -31,10 +40,7 @@ Ext.ComponentMgr.onAvailable('modx-user-tabs', function () {
                 tabsItemsList.push(tabContent);
             }, this);
 
-
             return {
-                // referral-grid-currentcontracts
-                //xtype: 'userprofile-page-tabs',
                 xtype: 'modx-tabs',
                 autoHeight: true,
                 deferredRender: false,
@@ -129,7 +135,8 @@ Ext.ComponentMgr.onAvailable('modx-user-tabs', function () {
                                                     fieldLabel: 'def',//_('ms2_logo'),
                                                     name: 'up-data[logo]',
                                                     anchor: '100%',
-                                                    id: 'up-combo-browser'
+                                                    id: 'up-combo-browser',
+                                                    value: config.profile.photo || ''
                                                 },
                                                 avatar
                                             ]

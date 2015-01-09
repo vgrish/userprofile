@@ -75,37 +75,47 @@ class userprofile {
 	{
 		$this->modx->log(1, print_r('OnUserFormPrerender', 1));
 
-
+		$this->modx->controller->addLexiconTopic('userprofile:default');
 		$mode = $this->modx->getOption('mode', $sp);
 		if ($mode == 'new') {
 			return;
 		}
+		$id = $sp['id'];
+		$user = $sp['user'];
+		$profile = $user->getOne('Profile')->toArray();
+		$profile = array_merge($profile, array(
+			'gravatar' => 'http://www.gravatar.com/avatar/'. md5(strtolower($profile['email'])) .'?s=300',
+
+			)
+		);
+
 /*		elseif (!$this->enableTemplates($res)) {
 			return;
 		}*/
-		$this->modx->controller->addLexiconTopic('userprofile:default');
 
-		//$this->modx->log(1, print_r($sp, 1));
+
+		$this->modx->log(1, print_r($user->toArray(), 1));
+		$this->modx->log(1, print_r($profile, 1));
+
+
+		if (!$extSetting = $this->modx->getObject('upExtendedSetting', array('id' => $id))) {
+			$extSetting = $this->modx->getObject('upExtendedSetting', array('active' => 1));
+		}
+		$ext_setting = $extSetting->toArray();
 
 		$data_js = preg_replace(array('/^\n/', '/\t{6}/'), '', '
 			userprofile = {};
 			userprofile.config = ' . $this->modx->toJSON(array(
-				'connectorUrl' => $this->config['connectorUrl']
+				'connectorUrl' => $this->config['connectorUrl'],
+				'extSetting' => $ext_setting,
+				'profile' => $profile,
 			)) . ';
 		');
 		$this->modx->regClientStartupScript("<script type=\"text/javascript\">\n" . $data_js . "\n</script>", true);
-		//$this->modx->regClientStartupScript($this->getOption('jsUrl') . 'mgr/misc/pas.combo.js');
-		//$this->modx->regClientStartupScript($this->getOption('jsUrl') . 'mgr/inject/grid.js');
-
-
 
 		$this->modx->regClientCSS($this->getOption('cssUrl') . 'mgr/main.css');
-
 		$this->modx->regClientStartupScript($this->getOption('jsUrl') . 'mgr/misc/up.combo.js');
-		//$this->modx->regClientStartupScript($this->getOption('jsUrl') . 'mgr/inject/up.panel.js');
-		$this->modx->regClientStartupScript($this->getOption('jsUrl') . 'mgr/inject/extended.grid.js');
-
-
+		//$this->modx->regClientStartupScript($this->getOption('jsUrl') . 'mgr/inject/extended.grid.js');
 		$this->modx->regClientStartupScript($this->getOption('jsUrl') . 'mgr/inject/tab.js');
 
 

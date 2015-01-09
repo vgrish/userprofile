@@ -47,9 +47,7 @@ Ext.extend(up.combo.Browser,Ext.form.TriggerField,{
                     'select': {fn: function(data) {
                         this.setValue(data.fullRelativeUrl);
                         this.fireEvent('select',data);
-
-
-
+                        Ext.get('up-avatar').update('<img src="'+MODx.config.connectors_url+'system/phpthumb.php?h=230&w=294&src='+data.fullRelativeUrl+'&wctx=MODx.ctx&source=1" class="up-avatar" alt="" />');
                     },scope:this}
                 }
             });
