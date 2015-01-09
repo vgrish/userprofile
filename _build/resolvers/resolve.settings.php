@@ -10,8 +10,8 @@ if ($object->xpdo) {
 			$modx->addPackage('userprofile', $modelPath);
 
 		/* @var upExtended $delivery */
-			if (!$extended = $modx->getObject('upSettingExtended', 1)) {
-				$extended = $modx->newObject('upSettingExtended');
+			if (!$extended = $modx->getObject('upExtendedSetting', 1)) {
+				$extended = $modx->newObject('upExtendedSetting');
 				$extended->fromArray(array(
 					'id' => 1
 					,'name' => 'профиль #1'

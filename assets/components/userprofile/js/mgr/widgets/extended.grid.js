@@ -39,7 +39,7 @@ userprofile.grid.Extended = function(config) {
         ,baseParams: {
             action: 'mgr/settings/extended/getlist'
         }
-        ,fields: ['id','name','description','price','logo','rank','active','class']
+        ,fields: ['id','name','description','rank','active','class']
         ,autoHeight: true
         ,paging: true
         ,remoteSort: true
@@ -49,8 +49,8 @@ userprofile.grid.Extended = function(config) {
         ,columns: [this.exp
             ,{header: _('up_id'),dataIndex: 'id',width: 50}
             ,{header: _('up_name'),dataIndex: 'name',width: 100, editor: {xtype: 'textfield', allowBlank: false}}
-            ,{header: _('up_add_cost'),dataIndex: 'price',width: 50, editor: {xtype: 'textfield'}}
-            ,{header: _('up_logo'),dataIndex: 'logo',width: 75, renderer: this.renderLogo}
+            //,{header: _('up_add_cost'),dataIndex: 'price',width: 50, editor: {xtype: 'textfield'}}
+            //,{header: _('up_logo'),dataIndex: 'logo',width: 75, renderer: this.renderLogo}
             ,{header: _('up_active'),dataIndex: 'active',width: 50, editor: {xtype: 'combo-boolean', renderer: 'boolean'}}
             ,{header: _('up_class'),dataIndex: 'class',width: 75, editor: {xtype: 'textfield'}}
         ]
