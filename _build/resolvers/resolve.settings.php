@@ -15,8 +15,7 @@ if ($object->xpdo) {
 				$extended->fromArray(array(
 					'id' => 1
 					,'name' => 'профиль #1'
-					,'tabs' => 'activity,personal,social'
-					,'fields' => 'lastname,firstname,secondname,facebook,vk,odnoklassniki,mail,twitter'
+					,'tabfields' => '{"activity":{"registration":"","lastactivity":"","ip":""},"personal":{"lastname":"","firstname":"","secondname":""},"social":{"facebook":"","odnoklassniki":"","vk":"","mail":"","twitter":""}}'
 					,'requires' => 'lastname,firstname,secondname'
 					,'active' => 1
 					,'default' => 1

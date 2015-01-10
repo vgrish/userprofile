@@ -39,7 +39,7 @@ userprofile.grid.Extended = function(config) {
         ,baseParams: {
             action: 'mgr/settings/extended/getlist'
         }
-        ,fields: ['id','name','description','rank','active', 'default','class', 'tabs', 'fields', 'requires']
+        ,fields: ['id','name','description','rank','active', 'default','class', 'tabfields', 'requires']
         ,autoHeight: true
         ,paging: true
         ,remoteSort: true
@@ -146,8 +146,7 @@ Ext.extend(userprofile.grid.Extended,MODx.grid.Grid,{
             {xtype: 'hidden',name: 'id', id: 'userprofile-extended-id-'+type}
             ,{xtype: 'textfield',fieldLabel: _('up_name'), name: 'name', allowBlank: false, anchor: '99%', id: 'userprofile-extended-name-'+type}
             ,{xtype: 'textarea', fieldLabel: _('up_description'), name: 'description', anchor: '99%', id: 'userprofile-extended-description-'+type}
-            ,{xtype: 'textfield',fieldLabel: _('up_tabs'), name: 'tabs', allowBlank: false, anchor: '99%', id: 'userprofile-extended-tabs-'+type}
-            ,{xtype: 'textarea',fieldLabel: _('up_fields'), name: 'fields', allowBlank: false, anchor: '99%', id: 'userprofile-extended-fields-'+type}
+            ,{xtype: 'textarea',fieldLabel: _('up_tabfields'), name: 'tabfields', allowBlank: false, anchor: '99%', id: 'userprofile-extended-tabfields-'+type}
             ,{xtype: 'textfield',fieldLabel: _('up_requires'), name: 'requires', allowBlank: true, anchor: '99%', id: 'userprofile-extended-requires-'+type}
             ,{xtype: 'textfield',fieldLabel: _('up_class'), name: 'class', anchor: '99%', id: 'userprofile-extended-class-'+type}
             ,{xtype: 'xcheckbox', fieldLabel: '', boxLabel: _('up_active'), name: 'active', id: 'userprofile-extended-active-'+type}

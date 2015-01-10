@@ -8,8 +8,7 @@ $xpdo_meta_map['upExtendedSetting']= array (
   array (
     'name' => NULL,
     'description' => NULL,
-    'tabs' => 'activity,personal,social',
-    'fields' => '',
+    'tabfields' => '',
     'requires' => '',
     'rank' => 0,
     'active' => 1,
@@ -32,15 +31,7 @@ $xpdo_meta_map['upExtendedSetting']= array (
       'phptype' => 'string',
       'null' => true,
     ),
-    'tabs' => 
-    array (
-      'dbtype' => 'varchar',
-      'precision' => '255',
-      'phptype' => 'string',
-      'null' => true,
-      'default' => 'activity,personal,social',
-    ),
-    'fields' => 
+    'tabfields' => 
     array (
       'dbtype' => 'varchar',
       'precision' => '255',

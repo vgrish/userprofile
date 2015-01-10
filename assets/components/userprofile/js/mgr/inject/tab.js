@@ -12,7 +12,7 @@ Ext.ComponentMgr.onAvailable('modx-user-tabs', function () {
                 + '<div id="up-avatar"></div>'
         };
 
-        var getCurrentContractsFields =  function(type, fields) { 
+        var getCurrentContractsFields =  function(type, fields) {
 
             console.log('33');
 
@@ -31,6 +31,10 @@ Ext.ComponentMgr.onAvailable('modx-user-tabs', function () {
                 }
                 var tabItems = [];
                 for (v in fields[tab]) {
+
+                    console.log(tab);
+                    console.log(v);
+
                     var tabItem = {xtype: 'textfield', fieldLabel: _('up_field_' + v), description: _('up_field_' + v + '_help'), name: v, allowBlank: true, value: fields[tab][v], anchor: '99%', id: 'up-extended-current-' + v + '-' + type};
                     tabItems.push(tabItem);
                 }
