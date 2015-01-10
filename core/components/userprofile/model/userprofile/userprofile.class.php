@@ -40,7 +40,10 @@ class userprofile {
 
 			'chunkSuffix' => '.chunk.tpl',
 			'snippetsPath' => $corePath . 'elements/snippets/',
-			'processorsPath' => $corePath . 'processors/'
+			'processorsPath' => $corePath . 'processors/',
+
+			'json_response' => 0,
+
 		), $config);
 
 		$this->modx->addPackage('userprofile', $this->config['modelPath']);
@@ -73,8 +76,6 @@ class userprofile {
 
 	public function OnUserFormPrerender($sp)
 	{
-		$this->modx->log(1, print_r('OnUserFormPrerender', 1));
-
 		$this->modx->controller->addLexiconTopic('userprofile:default');
 		$mode = $this->modx->getOption('mode', $sp);
 		if ($mode == 'new') {
@@ -89,32 +90,20 @@ class userprofile {
 
 			)
 		);
-
-/*		elseif (!$this->enableTemplates($res)) {
-			return;  extended
-		}*/
-
-
-		$this->modx->log(1, print_r($user->toArray(), 1));
-		$this->modx->log(1, print_r($profile, 1));
-
 		if ($upExtended = $this->modx->getObject('upExtended', array('user_id' => $id))) {
 			$up_extended = $upExtended->toArray();
 		}
-		$up_extended = array_merge($profile['extended'], $up_extended);
-
-
+		$up_extended = array_merge($profile['extended'], array(
+			'real' => $up_extended,
+			'personal' => $up_extended,
+			'activity' => $up_extended,
+		));
 		if (!$extSetting = $this->modx->getObject('upExtendedSetting', array('id' => $up_extended['type_id']))) {
 			$extSetting = $this->modx->getObject('upExtendedSetting', array('active' => 1));
 		}
 		$ext_setting = $extSetting->toArray();
 
-		$this->modx->log(1, print_r($ext_setting, 1));
-
-		//$this->modx->log(1, print_r( implode(',', array_keys($this->modx->fromJSON($ext_setting['tabfields']))) , 1));
-
-		$this->modx->log(1, print_r($up_extended, 1));
-
+//		$this->modx->log(1, print_r($ext_setting, 1));
 
 		$data_js = preg_replace(array('/^\n/', '/\t{6}/'), '', '
 			userprofile = {};
@@ -128,34 +117,85 @@ class userprofile {
 		');
 
 		$this->modx->regClientStartupScript("<script type=\"text/javascript\">\n" . $data_js . "\n</script>", true);
-
 		$this->modx->regClientCSS($this->getOption('cssUrl') . 'mgr/main.css');
 		$this->modx->regClientStartupScript($this->getOption('jsUrl') . 'mgr/misc/up.combo.js');
-		//$this->modx->regClientStartupScript($this->getOption('jsUrl') . 'mgr/inject/extended.grid.js');
 		$this->modx->regClientStartupScript($this->getOption('jsUrl') . 'mgr/inject/tab.js');
-
-
 	}
 
 	public function OnBeforeUserFormSave($sp)
 	{
-
-
 		if ($sp['mode'] == 'new') {
 			return;
 		}
-/*		elseif (!$this->enableTemplates($sp['resource'])) {
-			return;
-		}*/
-
-		$this->modx->log(1, print_r('OnBeforeUserFormSave', 1));
-
-		$this->modx->log(1, print_r($sp['data'], 1));
-
+		$this->config['json_response'] = 1;
 		$data = $sp['data'];
+		$user_id = $data['id'];
 
+		$real = array_merge($data['up']['real'], $data['up']['personal']);
+		unset(
+			$data['up']['real'],
+			$data['up']['personal'],
+			$data['up']['activity']
+		);
 
+		if (!$upExtended = $this->modx->getObject('upExtended', array('user_id' => $user_id))) {
+			$upExtended = $this->modx->newObject('upExtended', array('user_id' => $user_id));
+		}
+		$upExtended->fromArray(
+			$real
+		);
+		if (!$upExtended->save()) {
+			echo $this->error('up_save_up_extended_err');
+			exit;
+		}
+		// extended
+		$user = $sp['user'];
+		$profile = $user->getOne('Profile');
+		$profileArr = $profile->toArray();
+		$extended = $profileArr['extended'];
+		foreach($data as $dd) {
+			if(is_array($dd)) {
+				$extended = array_merge($extended, $dd);
+			}
+		}
+		$profile->set('extended', $extended);
+		$profile->save();
 	}
 
+	/**
+	 * @param string $message
+	 * @param array $data
+	 * @param array $placeholders
+	 * @return array|string
+	 */
+	public function error($message = '', $data = array(), $placeholders = array())
+	{
+		$response = array(
+			'success' => false,
+			'message' => $this->modx->lexicon($message, $placeholders),
+			'data' => $data,
+		);
+		return $this->config['json_response']
+			? $this->modx->toJSON($response)
+			: $response;
+	}
+
+	/**
+	 * @param string $message
+	 * @param array $data
+	 * @param array $placeholders
+	 * @return array|string
+	 */
+	public function success($message = '', $data = array(), $placeholders = array())
+	{
+		$response = array(
+			'success' => true,
+			'message' => $this->modx->lexicon($message, $placeholders),
+			'data' => $data,
+		);
+		return $this->config['json_response']
+			? $this->modx->toJSON($response)
+			: $response;
+	}
 
 }

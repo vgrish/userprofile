@@ -4,6 +4,7 @@ Ext.ComponentMgr.onAvailable('modx-user-tabs', function () {
         var config = userprofile.config,
             fields = userprofile.config.extSetting.tabfields,
             tabs = userprofile.config.tabs,
+            tabsList = tabs.split(','),
             data = userprofile.config.upExtended;
 
         var avatarSrc = (config.profile.photo != '')
@@ -16,38 +17,56 @@ Ext.ComponentMgr.onAvailable('modx-user-tabs', function () {
                 + '<div id="up-avatar"></div>'
         };
 
+        var normalData =  function(data, fields) {
+            if (typeof fields !== 'object') {
+                fields = Ext.decode(fields);
+            }
+            Ext.each(tabsList, function(tab) {
+                for (v in fields[tab]) {
+                    if (!!!data[tab]) data[tab] = fields[tab];
+                }
+            }, this);
+        };
+
         var getCurrentContractsFields =  function(type, fields) {
             if (typeof fields !== 'object') {
                 fields = Ext.decode(fields);
             }
-            var tabsList = tabs.split(',');
             var tabsItemsList = [];
             Ext.each(tabsList, function(tab) {
 
                 var tabItems = [];
                 for (v in fields[tab]) {
 
-                    //console.log(tab);
-                    console.log(v);
-
-                    var tabItem = {xtype: (fields[tab][v] == '') ? 'textfield' : fields[tab][v], fieldLabel: _('up_field_' + v), description: _('up_field_' + v + '_help'), name: 'up['+tab+']['+v+']', allowBlank: true, value: data[v], anchor: '99%', id: 'up-extended-current-' + v + '-' + type};
+                    console.log(tab);
+                    var tabItem = {
+                        xtype: (fields[tab][v] == '') ? 'textfield' : fields[tab][v],
+                        fieldLabel: _('up_field_' + v) || 'up_field_' + v,
+                        description: _('up_field_' + v + '_help'),
+                        name: 'up['+tab+']['+v+']',
+                        allowBlank: true,
+                        value: data[tab][v],
+                        anchor: '99%', id: 'up-extended-current-' + v + '-' + type,
+                        style: 'margin:0px 0px 15px 10px;'
+                    };
                     tabItems.push(tabItem);
                 }
-
                 var tabContent = {
-                    title: _('up_' + tab)
-                    , items: tabItems
-                    , id: tab
+                    title: _('up_' + tab) || tab,
+                    items: tabItems,
+                    id: tab,
                 };
                 tabsItemsList.push(tabContent);
             }, this);
+
+            console.log(tabsItemsList);
 
             return {
                 xtype: 'modx-tabs',
                 autoHeight: true,
                 deferredRender: false,
                 forceLayout: true,
-                id: 'contract-tab-panel-type-', //type,
+                id: 'contract-tab-panel-type-'+type,
                 width: '98%',
                 bodyStyle: 'padding: 10px 10px 10px 10px;',
                 border: true,
@@ -60,39 +79,13 @@ Ext.ComponentMgr.onAvailable('modx-user-tabs', function () {
                     forceLayout: true
                 },
                 items: tabsItemsList,
-
-                //html: '<div id="userprofile-tab-extended-div">frfrfr</div>',
                 style: 'padding: 15px 25px 15px 15px;'
+
             };
 
         };
-
-        //var fields = ['lastname','firstname'];//properties.fields;
-
+        normalData(data, fields);
         var upBottomTabs = getCurrentContractsFields('update', fields);
-
-/*        var tabPanel = Ext.getCmp('contract-tab-panel-type-update');
-        Ext.each(tabPanel.items.items, function(tab) {
-            if (tab.id == 'tab_files') {
-                return false;
-            }
-
-            var items = {};
-            Ext.each(tab.items.items, function(input) {
-                items[input.name] = input.getValue();
-            });
-            fieldList[tab.id] = items;
-        });
-        var properties = Ext.getCmp('referral-currentcontracts-properties-update').getValue();
-        var propObj = Ext.decode(properties);
-        propObj.fields = fieldList;
-        Ext.getCmp('referral-currentcontracts-properties-update').setValue(JSON.stringify(propObj));
-        return true;*/
-
-
-        var listeners = {
-            change: {fn: MODx.fireResourceFormChange}, select: {fn: MODx.fireResourceFormChange}, keydown: {fn: MODx.fireResourceFormChange}, check: {fn: MODx.fireResourceFormChange}, uncheck: {fn: MODx.fireResourceFormChange}
-        };
 
         this.add({
             title: _('userprofile'), hideMode: 'offsets', items: [
@@ -108,7 +101,6 @@ Ext.ComponentMgr.onAvailable('modx-user-tabs', function () {
                     style: 'padding: 15px;',
                     items: [
                         {
-
                             columnWidth: .3,
                             xtype: 'panel',
                             border: false,
@@ -173,26 +165,31 @@ Ext.ComponentMgr.onAvailable('modx-user-tabs', function () {
                                             preventRender: true,
                                             items: [
                                                 {
+                                                    xtype: 'hidden',
+                                                    name: 'up[real][type_id]',
+                                                    value: userprofile.config.extSetting.id
+                                                },
+                                                {
                                                     xtype: 'textarea',
-                                                    name: 'pas[pas_description]',
-                                                    value: '',
+                                                    name: 'up[real][description]',
+                                                    value: data.real.description || '',
                                                     description: _('up_description_help'),
                                                     fieldLabel: _('up_description'),
                                                     anchor: '100%',
                                                     //height: 126,
                                                     enableKeyEvents: true,
-                                                    listeners: listeners
+                                                    //listeners: listeners
                                                 },
                                                 {
                                                     xtype: 'textarea',
-                                                    name: 'pas[pas_description]',
-                                                    value: '',
+                                                    name: 'up[real][introtext]',
+                                                    value: data.real.introtext || '',
                                                     description: _('up_introtext_help'),
                                                     fieldLabel: _('up_introtext'),
                                                     anchor: '100%',
                                                     height: 126,
                                                     enableKeyEvents: true,
-                                                    listeners: listeners
+                                                    //listeners: listeners
                                                 }
                                             ]
 
@@ -203,15 +200,15 @@ Ext.ComponentMgr.onAvailable('modx-user-tabs', function () {
                             ]
                         }
                     ]
-                },
-                upBottomTabs
+                }
+                ,upBottomTabs
             ]
         });
     });
     Ext.apply(this, {
         stateful: true,
-        stateId: "modx-user-tabs-state",
-        stateEvents: ["tabchange"],
+        stateId: 'modx-user-tabs-state',
+        stateEvents: ['tabchange'],
         getState: function () {
             return {activeTab: this.items.indexOf(this.getActiveTab())};
         }

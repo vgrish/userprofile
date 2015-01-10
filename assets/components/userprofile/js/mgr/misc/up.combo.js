@@ -79,3 +79,35 @@ Ext.extend(up.combo.Browser,Ext.form.TriggerField,{
     }
 });
 Ext.reg('up-combo-browser',up.combo.Browser);
+
+
+up.combo.Autocomplete = function(config) {
+    config = config || {};
+
+    Ext.applyIf(config,{
+        name: config.name
+        ,fieldLabel: _('up_tags_' + config.name)
+        ,id: 'up-tags' + config.name
+        ,hiddenName: config.name
+        ,displayField: config.name
+        ,valueField: config.name
+        ,anchor: '99%'
+        ,fields: [config.name]
+        //,pageSize: 20
+        ,forceSelection: false
+        ,url: userprofile.config.connectorUrl
+        ,typeAhead: true
+        ,editable: true
+        ,allowBlank: true
+        ,baseParams: {
+            action: 'mgr/tags/autocomplete'
+            ,name: config.name
+            ,combo:1
+            ,limit: 0
+        }
+        ,hideTrigger: true
+    });
+    up.combo.Autocomplete.superclass.constructor.call(this,config);
+};
+Ext.extend(up.combo.Autocomplete,MODx.combo.ComboBox);
+Ext.reg('up-combo-autocomplete',up.combo.Autocomplete);

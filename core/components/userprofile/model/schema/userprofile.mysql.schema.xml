@@ -48,7 +48,7 @@
         <field key="name" dbtype="varchar" precision="255" phptype="string" null="false" />
         <field key="description" dbtype="text" phptype="string" null="true" />
 
-        <field key="tabfields" dbtype="varchar" precision="255" phptype="string" null="true" default="" />
+        <field key="tabfields" dbtype="text" phptype="string" null="true" default="{}"/>
         <field key="requires" dbtype="varchar" precision="255" phptype="string" null="true" default="" />
 
         <field key="rank" dbtype="tinyint" precision="1" attributes="unsigned" phptype="integer" null="true" default="0" />

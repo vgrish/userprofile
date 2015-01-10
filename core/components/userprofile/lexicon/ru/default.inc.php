@@ -95,3 +95,8 @@ $_lang['up_menu_remove'] = 'Удалить';
 $_lang['up_menu_remove_multiple'] = 'Удалить выбранное';
 $_lang['up_menu_remove_confirm'] = 'Вы уверены, что хотите удалить эту запись?';
 $_lang['up_menu_remove_multiple_confirm'] = 'Вы уверены, что хотите удалить все выбранные записи?';
+
+
+// error
+
+$_lang['up_save_up_extended_err'] = 'Не могу сохранить расширенный профиль пользователя';
