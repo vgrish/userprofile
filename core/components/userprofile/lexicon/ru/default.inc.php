@@ -60,12 +60,17 @@ $_lang['up_class'] = 'Класс-обработчик';
 $_lang['up_description'] = 'Описание';
 $_lang['up_status'] = 'Статус';
 
+$_lang['up_avatar'] = ' ';
+
 $_lang['up_tabfields'] = 'Табы / поле ввода';
 $_lang['up_tabfields_help'] = 'Закодированный в JSON массив для передачи 3x параметров: таб, поле ввода, тип поля.';
 
 $_lang['up_requires'] = 'Обязательные поля';
 $_lang['up_requires_help'] = 'При заполнении профиля пользователя, кастомный класс может требовать заполнение этих полей.';
 
+
+// fieldset
+$_lang['up_fieldset_avatar'] = 'аватарка';
 
 // 
 

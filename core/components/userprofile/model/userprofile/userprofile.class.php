@@ -82,6 +82,7 @@ class userprofile {
 		}
 		$id = $sp['id'];
 		$user = $sp['user'];
+		$up_extended = array();
 		$profile = $user->getOne('Profile')->toArray();
 		$profile = array_merge($profile, array(
 			'gravatar' => 'http://www.gravatar.com/avatar/'. md5(strtolower($profile['email'])) .'?s=300',
@@ -90,27 +91,42 @@ class userprofile {
 		);
 
 /*		elseif (!$this->enableTemplates($res)) {
-			return;
+			return;  extended
 		}*/
 
 
 		$this->modx->log(1, print_r($user->toArray(), 1));
 		$this->modx->log(1, print_r($profile, 1));
 
+		if ($upExtended = $this->modx->getObject('upExtended', array('user_id' => $id))) {
+			$up_extended = $upExtended->toArray();
+		}
+		$up_extended = array_merge($profile['extended'], $up_extended);
 
-		if (!$extSetting = $this->modx->getObject('upExtendedSetting', array('id' => $id))) {
+
+		if (!$extSetting = $this->modx->getObject('upExtendedSetting', array('id' => $up_extended['type_id']))) {
 			$extSetting = $this->modx->getObject('upExtendedSetting', array('active' => 1));
 		}
 		$ext_setting = $extSetting->toArray();
+
+		$this->modx->log(1, print_r($ext_setting, 1));
+
+		//$this->modx->log(1, print_r( implode(',', array_keys($this->modx->fromJSON($ext_setting['tabfields']))) , 1));
+
+		$this->modx->log(1, print_r($up_extended, 1));
+
 
 		$data_js = preg_replace(array('/^\n/', '/\t{6}/'), '', '
 			userprofile = {};
 			userprofile.config = ' . $this->modx->toJSON(array(
 				'connectorUrl' => $this->config['connectorUrl'],
 				'extSetting' => $ext_setting,
+				'upExtended' => $up_extended,
 				'profile' => $profile,
+				'tabs' => implode(',', array_keys($this->modx->fromJSON($ext_setting['tabfields']))),
 			)) . ';
 		');
+
 		$this->modx->regClientStartupScript("<script type=\"text/javascript\">\n" . $data_js . "\n</script>", true);
 
 		$this->modx->regClientCSS($this->getOption('cssUrl') . 'mgr/main.css');

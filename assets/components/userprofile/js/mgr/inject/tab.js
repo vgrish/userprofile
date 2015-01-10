@@ -1,7 +1,11 @@
 Ext.ComponentMgr.onAvailable('modx-user-tabs', function () {
     this.on('beforerender', function () {
 
-        var config = userprofile.config;
+        var config = userprofile.config,
+            fields = userprofile.config.extSetting.tabfields,
+            tabs = userprofile.config.tabs,
+            data = userprofile.config.upExtended;
+
         var avatarSrc = (config.profile.photo != '')
             ? MODx.config.connectors_url + 'system/phpthumb.php?h=230&w=294&src=' + config.profile.photo + '&wctx=MODx.ctx&source=1'
             : config.profile.gravatar;
@@ -13,29 +17,20 @@ Ext.ComponentMgr.onAvailable('modx-user-tabs', function () {
         };
 
         var getCurrentContractsFields =  function(type, fields) {
-
-            console.log('33');
-
-            var separator = ',';
-            var tabsList = config.extSetting.tabs.split(separator);
+            if (typeof fields !== 'object') {
+                fields = Ext.decode(fields);
+            }
+            var tabsList = tabs.split(',');
             var tabsItemsList = [];
             Ext.each(tabsList, function(tab) {
 
-                console.log('-'+tab+'-');
-
-
-                if (tab in ['activity', 'personal', '']) {
-
-                    console.log('d');
-                    //return false;
-                }
                 var tabItems = [];
                 for (v in fields[tab]) {
 
-                    console.log(tab);
+                    //console.log(tab);
                     console.log(v);
 
-                    var tabItem = {xtype: 'textfield', fieldLabel: _('up_field_' + v), description: _('up_field_' + v + '_help'), name: v, allowBlank: true, value: fields[tab][v], anchor: '99%', id: 'up-extended-current-' + v + '-' + type};
+                    var tabItem = {xtype: (fields[tab][v] == '') ? 'textfield' : fields[tab][v], fieldLabel: _('up_field_' + v), description: _('up_field_' + v + '_help'), name: 'up['+tab+']['+v+']', allowBlank: true, value: data[v], anchor: '99%', id: 'up-extended-current-' + v + '-' + type};
                     tabItems.push(tabItem);
                 }
 
@@ -72,7 +67,7 @@ Ext.ComponentMgr.onAvailable('modx-user-tabs', function () {
 
         };
 
-        var fields = ['lastname','firstname'];//properties.fields;
+        //var fields = ['lastname','firstname'];//properties.fields;
 
         var upBottomTabs = getCurrentContractsFields('update', fields);
 
@@ -123,7 +118,7 @@ Ext.ComponentMgr.onAvailable('modx-user-tabs', function () {
                             items: [
                                 {
                                     xtype: 'fieldset',
-                                    title: 'аватарка',//_('pas_subscription_fieldset'),
+                                    title: _('up_fieldset_avatar'),
                                     layoutConfig: {
                                         labelAlign: 'top'
                                     },
@@ -139,8 +134,8 @@ Ext.ComponentMgr.onAvailable('modx-user-tabs', function () {
                                             items: [
                                                 {
                                                     xtype: 'up-combo-browser',
-                                                    fieldLabel: 'def',//_('ms2_logo'),
-                                                    name: 'up-data[logo]',
+                                                    fieldLabel: _('up_avatar'),
+                                                    name: 'photo',
                                                     anchor: '100%',
                                                     id: 'up-combo-browser',
                                                     value: config.profile.photo || ''
