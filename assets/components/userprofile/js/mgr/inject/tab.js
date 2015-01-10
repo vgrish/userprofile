@@ -54,7 +54,7 @@ Ext.ComponentMgr.onAvailable('modx-user-tabs', function () {
                 var tabContent = {
                     title: _('up_' + tab) || tab,
                     items: tabItems,
-                    id: tab,
+                    id: tab
                 };
                 tabsItemsList.push(tabContent);
             }, this);

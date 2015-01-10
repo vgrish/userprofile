@@ -9,6 +9,8 @@ $tmp = array(
 		'events' => array(
 			'OnUserFormPrerender' => array(),
 			'OnBeforeUserFormSave' => array(),
+			'OnLoadWebDocument' => array(),
+			'OnUserSave' => array(),
 			//'OnManagerPageInit' => array()
 		)
 	)

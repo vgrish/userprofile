@@ -3,7 +3,8 @@
 /**
  * The base class for userprofile.
  */
-class userprofile {
+class userprofile
+{
 	/* @var modX $modx */
 	public $modx;
 
@@ -18,7 +19,8 @@ class userprofile {
 	 * @param modX $modx
 	 * @param array $config
 	 */
-	function __construct(modX &$modx, array $config = array()) {
+	function __construct(modX &$modx, array $config = array())
+	{
 		$this->modx =& $modx;
 
 		$this->namespace = $this->getOption('userprofile', $config, 'userprofile');
@@ -74,19 +76,19 @@ class userprofile {
 		return $option;
 	}
 
+	/**
+	 * @param $sp
+	 */
 	public function OnUserFormPrerender($sp)
 	{
+		if ($this->isNew($sp)) return;
 		$this->modx->controller->addLexiconTopic('userprofile:default');
-		$mode = $this->modx->getOption('mode', $sp);
-		if ($mode == 'new') {
-			return;
-		}
 		$id = $sp['id'];
 		$user = $sp['user'];
 		$up_extended = array();
 		$profile = $user->getOne('Profile')->toArray();
 		$profile = array_merge($profile, array(
-			'gravatar' => 'http://www.gravatar.com/avatar/'. md5(strtolower($profile['email'])) .'?s=300',
+				'gravatar' => 'http://www.gravatar.com/avatar/' . md5(strtolower($profile['email'])) . '?s=300',
 
 			)
 		);
@@ -102,9 +104,7 @@ class userprofile {
 			$extSetting = $this->modx->getObject('upExtendedSetting', array('active' => 1));
 		}
 		$ext_setting = $extSetting->toArray();
-
 //		$this->modx->log(1, print_r($ext_setting, 1));
-
 		$data_js = preg_replace(array('/^\n/', '/\t{6}/'), '', '
 			userprofile = {};
 			userprofile.config = ' . $this->modx->toJSON(array(
@@ -115,29 +115,28 @@ class userprofile {
 				'tabs' => implode(',', array_keys($this->modx->fromJSON($ext_setting['tabfields']))),
 			)) . ';
 		');
-
 		$this->modx->regClientStartupScript("<script type=\"text/javascript\">\n" . $data_js . "\n</script>", true);
 		$this->modx->regClientCSS($this->getOption('cssUrl') . 'mgr/main.css');
 		$this->modx->regClientStartupScript($this->getOption('jsUrl') . 'mgr/misc/up.combo.js');
 		$this->modx->regClientStartupScript($this->getOption('jsUrl') . 'mgr/inject/tab.js');
 	}
 
+	/**
+	 * @param $sp
+	 */
 	public function OnBeforeUserFormSave($sp)
 	{
-		if ($sp['mode'] == 'new') {
-			return;
-		}
+		if ($this->isNew($sp)) return;
 		$this->config['json_response'] = 1;
 		$data = $sp['data'];
 		$user_id = $data['id'];
 
 		$real = array_merge($data['up']['real'], $data['up']['personal']);
 		unset(
-			$data['up']['real'],
-			$data['up']['personal'],
-			$data['up']['activity']
+		$data['up']['real'],
+		$data['up']['personal'],
+		$data['up']['activity']
 		);
-
 		if (!$upExtended = $this->modx->getObject('upExtended', array('user_id' => $user_id))) {
 			$upExtended = $this->modx->newObject('upExtended', array('user_id' => $user_id));
 		}
@@ -153,14 +152,38 @@ class userprofile {
 		$profile = $user->getOne('Profile');
 		$profileArr = $profile->toArray();
 		$extended = $profileArr['extended'];
-		foreach($data as $dd) {
-			if(is_array($dd)) {
+		foreach ($data as $dd) {
+			if (is_array($dd)) {
 				$extended = array_merge($extended, $dd);
 			}
 		}
 		$profile->set('extended', $extended);
 		$profile->save();
 	}
+
+	/**
+	 * @param $sp
+	 */
+	public function OnUserSave($sp)
+	{
+		//if (!$this->isNew($sp)) return;
+
+		$user = $sp['user'];
+		$up_extended = array();
+		$profile = $user->getOne('Profile')->toArray();
+
+		$this->modx->log(1, print_r($profile, 1));
+
+	}
+
+	/**
+	 * @param $sp
+	 */
+	public function OnLoadWebDocument($sp)
+	{
+
+	}
+
 
 	/**
 	 * @param string $message
@@ -196,6 +219,18 @@ class userprofile {
 		return $this->config['json_response']
 			? $this->modx->toJSON($response)
 			: $response;
+	}
+
+	/**
+	 * @param array $d
+	 * @return bool
+	 */
+	public function isNew($d = array())
+	{
+		if ($d['mode'] == 'new') {
+			return true;
+		}
+		return false;
 	}
 
 }
