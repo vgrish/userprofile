@@ -158,7 +158,7 @@ Ext.ComponentMgr.onAvailable('modx-user-tabs', function () {
                             items: [
                                 {
                                     xtype: 'fieldset',
-                                    title: 'Информация',//_('pas_subscription_fieldset'),
+                                    title: _('up_fieldset_info'),
                                     layoutConfig: {
                                         labelAlign: 'top'
                                     },
@@ -169,7 +169,6 @@ Ext.ComponentMgr.onAvailable('modx-user-tabs', function () {
                                             xtype: 'panel',
                                             border: false,
                                             layout: 'form',
-                                            //style: 'padding: 10px 10px 0 0',
                                             labelAlign: 'top',
                                             preventRender: true,
                                             items: [
@@ -177,8 +176,8 @@ Ext.ComponentMgr.onAvailable('modx-user-tabs', function () {
                                                     xtype: 'textarea',
                                                     name: 'pas[pas_description]',
                                                     value: '',
-                                                    description: _('pas_pas_description_desc'),
-                                                    fieldLabel: 'название',//_('pas_pas_description'),
+                                                    description: _('up_description_help'),
+                                                    fieldLabel: _('up_description'),
                                                     anchor: '100%',
                                                     //height: 126,
                                                     enableKeyEvents: true,
@@ -188,8 +187,8 @@ Ext.ComponentMgr.onAvailable('modx-user-tabs', function () {
                                                     xtype: 'textarea',
                                                     name: 'pas[pas_description]',
                                                     value: '',
-                                                    description: _('pas_pas_description_desc'),
-                                                    fieldLabel: 'название2',//_('pas_pas_description'),
+                                                    description: _('up_introtext_help'),
+                                                    fieldLabel: _('up_introtext'),
                                                     anchor: '100%',
                                                     height: 126,
                                                     enableKeyEvents: true,
