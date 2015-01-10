@@ -3,10 +3,16 @@
 $snippets = array();
 
 $tmp = array(
+	'upUsers' => array(
+		'file' => 'up_users',
+		'description' => '',
+	),
+
 	'userprofile' => array(
 		'file' => 'userprofile',
 		'description' => '',
 	),
+
 );
 
 foreach ($tmp as $k => $v) {
