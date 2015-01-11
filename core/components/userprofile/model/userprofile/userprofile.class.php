@@ -295,17 +295,12 @@ class userprofile
 		$alias = $this->modx->context->getOption('request_param_alias', 'q');
 		if (!isset($_REQUEST[$alias])) {return false;}
 		$rarr = explode('/', $_REQUEST[$alias]);
-
-		//$this->modx->log(1, print_r($_REQUEST, 1));
-
-		$this->modx->log(1, print_r($rarr, 1));
-
 		// для работы
 		if ($rarr[0] == $this->modx->getOption('userprofile_main_url', null, 'users') && (count($rarr) > 1)) {
-			//$this->modx->log(1, print_r($matches, 1));
-/*			if ($matches[1] > 0) {
-				$this->modx->sendRedirect($this->modx->makeUrl((int)$matches[1]), array('responseCode' => 'HTTP/1.1 301 Moved Permanently'));
-			}*/
+			if ($this->isHide((int)$rarr[1]) ) {return false;}
+
+			$this->modx->log(1, print_r('work', 1));
+
 		}
 	}
 
@@ -355,6 +350,25 @@ class userprofile
 			return true;
 		}
 		return false;
+	}
+
+	/**
+	 * @param array $d
+	 * @return bool
+	 */
+	public function isHide($id = 0)
+	{
+		if (!empty($id)) {
+			$usersArr = array_map('trim', explode(',', trim($this->modx->getOption('userprofile_hide_users'))));
+			$groupsArr = array_map('trim', explode(',', trim($this->modx->getOption('userprofile_hide_groups'))));
+			if(in_array($id, $usersArr)) {return true;}
+			foreach($this->modx->getIterator('modUserGroupMember', array('member' => $id)) as $group) {
+				$groupId = $group->toArray()['user_group'];
+				if(in_array($groupId, $groupsArr)) {return true;}
+			}
+			return false;
+		}
+		return true;
 	}
 
 	/**

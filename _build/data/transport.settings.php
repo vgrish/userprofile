@@ -16,7 +16,7 @@ $tmp = array(
 		'area' => 'userprofile_main',
 	),
 	'hide_groups' => array(
-		'value' => 'administrator',
+		'value' => '1',
 		'xtype' => 'textfield',
 		'area' => 'userprofile_main',
 	),
