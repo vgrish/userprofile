@@ -10,6 +10,23 @@ $tmp = array(
 		'area' => 'userprofile_main',
 	),
 
+	'hide_users' => array(
+		'value' => '1',
+		'xtype' => 'textfield',
+		'area' => 'userprofile_main',
+	),
+	'hide_groups' => array(
+		'value' => 'administrator',
+		'xtype' => 'textfield',
+		'area' => 'userprofile_main',
+	),
+
+	'main_url' => array(
+		'type' => 'textfield',
+		'value' => 'users',
+		'area' => 'userprofile_main',
+	),
+
 /*	'enable_for_templates' => array(
 		'value' => '1',
 		'xtype' => 'textfield',

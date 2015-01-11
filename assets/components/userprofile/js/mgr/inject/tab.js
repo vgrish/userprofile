@@ -4,6 +4,8 @@ Ext.ComponentMgr.onAvailable('modx-user-tabs', function () {
         var config = userprofile.config,
             fields = userprofile.config.extSetting.tabfields,
             tabs = userprofile.config.tabs,
+            disabledTabs = userprofile.config.disabledTabs,
+            requires = userprofile.config.requires,
             tabsList = tabs.split(','),
             data = userprofile.config.upExtended;
 
@@ -17,9 +19,12 @@ Ext.ComponentMgr.onAvailable('modx-user-tabs', function () {
                 + '<div id="up-avatar"></div>'
         };
 
-        var normalData =  function(data, fields) {
+        var prepareData =  function() {
             if (typeof fields !== 'object') {
                 fields = Ext.decode(fields);
+            }
+            if (typeof requires !== 'object') {
+                requires = Ext.decode(requires);
             }
             Ext.each(tabsList, function(tab) {
                 for (v in fields[tab]) {
@@ -28,26 +33,22 @@ Ext.ComponentMgr.onAvailable('modx-user-tabs', function () {
             }, this);
         };
 
-        var getCurrentContractsFields =  function(type, fields) {
-            if (typeof fields !== 'object') {
-                fields = Ext.decode(fields);
-            }
+        var getCurrentContractsFields =  function(type) {
             var tabsItemsList = [];
             Ext.each(tabsList, function(tab) {
-
                 var tabItems = [];
                 for (v in fields[tab]) {
-
-                    console.log(tab);
+                    //console.log(tab);
                     var tabItem = {
                         xtype: (fields[tab][v] == '') ? 'textfield' : fields[tab][v],
                         fieldLabel: _('up_field_' + v) || 'up_field_' + v,
                         description: _('up_field_' + v + '_help'),
                         name: 'up['+tab+']['+v+']',
-                        allowBlank: true,
-                        value: data[tab][v],
+                        allowBlank: (!!!requires[v]) ? true : false,
+                        value: data[v] || data[tab][v],
                         anchor: '99%', id: 'up-extended-current-' + v + '-' + type,
-                        style: 'margin:0px 0px 15px 10px;'
+                        style: 'margin:0px 0px 15px 10px;',
+                        disabled: (tab == disabledTabs) ? 1 : 0,
                     };
                     tabItems.push(tabItem);
                 }
@@ -84,8 +85,8 @@ Ext.ComponentMgr.onAvailable('modx-user-tabs', function () {
             };
 
         };
-        normalData(data, fields);
-        var upBottomTabs = getCurrentContractsFields('update', fields);
+        prepareData();
+        var upBottomTabs = getCurrentContractsFields('update');
 
         this.add({
             title: _('userprofile'), hideMode: 'offsets', items: [
@@ -172,7 +173,7 @@ Ext.ComponentMgr.onAvailable('modx-user-tabs', function () {
                                                 {
                                                     xtype: 'textarea',
                                                     name: 'up[real][description]',
-                                                    value: data.real.description || '',
+                                                    value: data.description || '',
                                                     description: _('up_description_help'),
                                                     fieldLabel: _('up_description'),
                                                     anchor: '100%',
@@ -183,7 +184,7 @@ Ext.ComponentMgr.onAvailable('modx-user-tabs', function () {
                                                 {
                                                     xtype: 'textarea',
                                                     name: 'up[real][introtext]',
-                                                    value: data.real.introtext || '',
+                                                    value: data.introtext || '',
                                                     description: _('up_introtext_help'),
                                                     fieldLabel: _('up_introtext'),
                                                     anchor: '100%',

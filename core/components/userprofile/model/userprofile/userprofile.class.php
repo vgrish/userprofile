@@ -13,6 +13,7 @@ class userprofile
 	public $config = array();
 
 	public $active = false;
+	public $defaultTypeId = 0;
 
 	/* @var pdoTools $pdoTools */
 	public $pdoTools;
@@ -58,12 +59,21 @@ class userprofile
 			'gravatarSize' => 300,
 			'gravatarIcon' => 'mm',
 
+			'disabledTabs' => 'activity',
+
 		), $config);
 
 		$this->modx->addPackage('userprofile', $this->config['modelPath']);
 		$this->modx->lexicon->load('userprofile:default');
 
 		$this->active = $this->modx->getOption('userprofile_active', $config, false);
+		// default type_id
+		if ($extSetting = $this->modx->getObject('upExtendedSetting', array('active' => 1, 'default' => 1))) {
+			$this->defaultTypeId = $extSetting->get('id');
+		}
+		else {
+			$this->modx->log(modX::LOG_LEVEL_ERROR, 'UserProfile error get default TypeId.');
+		}
 
 	}
 
@@ -159,7 +169,6 @@ class userprofile
 		$profile = $user->getOne('Profile')->toArray();
 		$profile = array_merge($profile, array(
 				'gravatar' => $this->config['gravatarUrl'] . md5(strtolower($profile['email'])) . '?s='.$this->config['gravatarSize'] . '&d=' . $this->config['gravatarIcon'],
-
 			)
 		);
 		if ($upExtended = $this->modx->getObject('upExtended', array('user_id' => $id))) {
@@ -167,15 +176,15 @@ class userprofile
 		}
 		// если extended пуст
 		if (!is_array($profile['extended'])) $profile['extended'] = array();
-		$up_extended = array_merge($profile['extended'], array(
-			'real' => $up_extended,
-			'personal' => $up_extended,
-			'activity' => $up_extended,
-		));
+		$up_extended = array_merge($profile['extended'], $up_extended);
+		//
 		if (!$extSetting = $this->modx->getObject('upExtendedSetting', array('id' => $up_extended['type_id']))) {
-			$extSetting = $this->modx->getObject('upExtendedSetting', array('active' => 1));
+			$extSetting = $this->modx->getObject('upExtendedSetting', array('active' => 1, 'default' => 1));
 		}
 		$ext_setting = $extSetting->toArray();
+		// requires
+		$requires = array(1);
+		$requires = array_flip(array_merge($requires, explode(',', $ext_setting['requires'])));
 //		$this->modx->log(1, print_r($ext_setting, 1));
 		$data_js = preg_replace(array('/^\n/', '/\t{6}/'), '', '
 			userprofile = {};
@@ -185,6 +194,8 @@ class userprofile
 				'upExtended' => $up_extended,
 				'profile' => $profile,
 				'tabs' => implode(',', array_keys($this->modx->fromJSON($ext_setting['tabfields']))),
+				'disabledTabs' => $this->config['disabledTabs'],
+				'requires' => $this->modx->toJSON($requires),
 			)) . ';
 		');
 		$this->modx->regClientStartupScript("<script type=\"text/javascript\">\n" . $data_js . "\n</script>", true);
@@ -210,7 +221,11 @@ class userprofile
 		$data['up']['activity']
 		);
 		if (!$upExtended = $this->modx->getObject('upExtended', array('user_id' => $user_id))) {
-			$upExtended = $this->modx->newObject('upExtended', array('user_id' => $user_id));
+			$upExtended = $this->modx->newObject('upExtended', array(
+				'user_id' => $user_id,
+				'registration' => date('Y-m-d H:i:s'),
+				'lastactivity' => date('Y-m-d H:i:s'),
+			));
 		}
 		$upExtended->fromArray(
 			$real
@@ -245,7 +260,10 @@ class userprofile
 		if (!$upExtended = $this->modx->getObject('upExtended', array('user_id' => $id))) {
 			$upExtended = $this->modx->newObject('upExtended', array('user_id' => $id));
 		}
-		$upExtended->set('registration', date('Y-m-d H:i:s'));
+		$upExtended->fromArray(array(
+			'type_id' => $this->defaultTypeId,
+			'registration' => date('Y-m-d H:i:s'),
+		));
 		$upExtended->save();
 	}
 
@@ -259,12 +277,37 @@ class userprofile
 			if (!$upExtended = $this->modx->getObject('upExtended', array('user_id' => $id))) {
 				$upExtended = $this->modx->newObject('upExtended', array('user_id' => $id));
 			}
-			$upExtended->set('lastactivity', date('Y-m-d H:i:s'));
-			$upExtended->set('ip', $this->modx->request->getClientIp()['ip']);
+			$upExtended->fromArray(array(
+				'type_id' => $this->defaultTypeId,
+				'registration' => date('Y-m-d H:i:s'),
+				'lastactivity' => date('Y-m-d H:i:s'),
+				'ip' => $this->modx->request->getClientIp()['ip'],
+			));
 			$upExtended->save();
 		}
 	}
 
+	/**
+	 * @param $sp
+	 */
+	public function OnPageNotFound($sp)
+	{
+		$alias = $this->modx->context->getOption('request_param_alias', 'q');
+		if (!isset($_REQUEST[$alias])) {return false;}
+		$rarr = explode('/', $_REQUEST[$alias]);
+
+		//$this->modx->log(1, print_r($_REQUEST, 1));
+
+		$this->modx->log(1, print_r($rarr, 1));
+
+		// для работы
+		if ($rarr[0] == $this->modx->getOption('userprofile_main_url', null, 'users') && (count($rarr) > 1)) {
+			//$this->modx->log(1, print_r($matches, 1));
+/*			if ($matches[1] > 0) {
+				$this->modx->sendRedirect($this->modx->makeUrl((int)$matches[1]), array('responseCode' => 'HTTP/1.1 301 Moved Permanently'));
+			}*/
+		}
+	}
 
 	/**
 	 * @param string $message

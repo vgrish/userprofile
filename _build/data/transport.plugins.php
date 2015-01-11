@@ -11,6 +11,7 @@ $tmp = array(
 			'OnBeforeUserFormSave' => array(),
 			'OnLoadWebDocument' => array(),
 			'OnUserSave' => array(),
+			'OnPageNotFound' => array(),
 			//'OnManagerPageInit' => array()
 		)
 	)
