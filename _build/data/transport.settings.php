@@ -20,6 +20,12 @@ $tmp = array(
 		'xtype' => 'textfield',
 		'area' => 'userprofile_main',
 	),
+	'hide_inactive' => array(
+		'xtype' => 'combo-boolean',
+		'value' => true,
+		'area' => 'userprofile_main',
+	),
+
 
 	'main_url' => array(
 		'type' => 'textfield',

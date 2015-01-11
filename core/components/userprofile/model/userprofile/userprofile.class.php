@@ -366,6 +366,10 @@ class userprofile
 				$groupId = $group->toArray()['user_group'];
 				if(in_array($groupId, $groupsArr)) {return true;}
 			}
+			if(!$this->modx->getCount('modUser', array(
+				'id' => $id,
+				'active' => $this->modx->getOption('userprofile_hide_inactive'),
+			))) {return true;}
 			return false;
 		}
 		return true;
