@@ -16,11 +16,11 @@
         <td>672</td>
     </tr>
     <tr>
-        <td>Регистрация</td>
+        <td>[[%up_field_registration]]</td>
         <td>[[!+registration_format]]</td>
     </tr>
     <tr>
-        <td>Активность</td>
+        <td>[[%up_field_lastactivity]]</td>
         <td>[[!+lastactivity_format]]</td>
     </tr>
     <tr>

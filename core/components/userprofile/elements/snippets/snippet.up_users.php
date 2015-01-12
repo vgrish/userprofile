@@ -6,7 +6,7 @@ if (!$up = $modx->getService('userprofile', 'userprofile', $modx->getOption('use
 }
 $up->initialize($modx->context->key, $scriptProperties);
 if (empty($tpl)) {$tpl = 'tpl.upUser.Row';}
-
+//
 $class = 'modUser';
 $profile = 'modUserProfile';
 $member = 'modUserGroupMember';
@@ -115,7 +115,7 @@ $default = array(
 	'sortby' => $class.'.id',
 	'sortdir' => 'ASC',
 	'fastMode' => false,
-	'return' => !empty($returnIds) ? 'ids' : 'chunks',
+	'return' => !empty($returnIds) ? 'ids' : 'data',
 	'nestedChunkPrefix' => 'up_',
 	'disableConditions' => true
 );
@@ -128,22 +128,39 @@ if (!empty($users_in) && (empty($scriptProperties['sortby']) || $scriptPropertie
 // Merge all properties and run!
 $up->pdoTools->addTime('Query parameters ready');
 $up->pdoTools->setConfig(array_merge($default, $scriptProperties), false);
-$output = $up->pdoTools->run();
+$rows = $up->pdoTools->run();
 
+// Processing rows
+$output = array();
+if (!empty($rows) && is_array($rows)) {
+	foreach ($rows as $k => $row) {
+		// def
+		$row['main_url'] = $up->config['main_url'];
+		// gravatar
+		$row['gravatar'] = $up->config['gravatarUrl'].md5(strtolower($userFields['email'])).'?s='.$gravatarSize.'&d='.$gravatarIcon;
+		// format date
+		$row['registration_format'] = $up->dateFormat($row['registration'], $dateFormat);
+		$row['lastactivity_format'] = $up->dateFormat($row['lastactivity'], $dateFormat);
+		$row['idx'] = $up->pdoTools->idx++;
+		$tpl = $up->pdoTools->defineChunk($row);
+		$output[] .= empty($tpl)
+			? $up->pdoTools->getChunk('', $row)
+			: $up->pdoTools->getChunk($tpl, $row, $up->pdoTools->config['fastMode']);
+	}
+	$up->pdoTools->addTime('Returning processed chunks');
+}
+$log = '';
 if ($modx->user->hasSessionContext('mgr') && !empty($showLog)) { //? иневерт юз
 	$log .= '<pre class="upLog">' . print_r($up->pdoTools->getTime(), 1) . '</pre>';
-	$output .= $log;
 }
 // Return output
-if (!empty($returnIds)) {
-	$modx->setPlaceholder('upUsers.log', $log);
-	return $output;
-}
-elseif (!empty($toSeparatePlaceholders)) {
-	$output['log'] = $log;
+if (!empty($toSeparatePlaceholders)) {
 	$modx->setPlaceholders($output, $toSeparatePlaceholders);
+	$modx->setPlaceholder($log, $toSeparatePlaceholders.'log');
 }
 else {
+	if (empty($outputSeparator)) {$outputSeparator = "\n";}
+	$output = is_array($output) ? implode($outputSeparator, $output) : $output;
 	$output .= $log;
 	if (!empty($tplWrapper) && (!empty($wrapIfEmpty) || !empty($output))) {
 		$output = $up->pdoTools->getChunk($tplWrapper, array('output' => $output), $up->pdoTools->config['fastMode']);

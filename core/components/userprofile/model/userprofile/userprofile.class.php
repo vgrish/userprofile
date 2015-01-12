@@ -316,7 +316,7 @@ class userprofile
 		$q = trim(@$_REQUEST[$this->modx->context->getOption('request_param_alias','q')]);
 		$rarr = explode('/', rtrim($q, '/'));
 		// work
-		if ($rarr[0] == $this->config['main_url'] && (count($rarr) > 1)) {
+		if ($rarr[0] == $this->config['main_url']/* && (count($rarr) > 1)*/) {
 			$uri = $rarr[0];
 			$section = $rarr[2];
 			$id = (int)$rarr[1];
@@ -500,6 +500,7 @@ class userprofile
 			if(!$this->modx->getCount('modUser', $arr)) {return true;}
 			return false;
 		}
+		elseif($id == 0) {return false;}
 		return true;
 	}
 

@@ -95,6 +95,19 @@ $tmp = array(
 	,'value' => ''
 	),
 
+	'gravatarIcon' => array(
+		'type' => 'textfield',
+		'value' => 'mm',
+	),
+	'gravatarSize' => array(
+		'type' => 'numberfield',
+		'value' => '64',
+	),
+	'dateFormat' => array(
+		'type' => 'textfield',
+		'value' => 'd F Y, H:i',
+	),
+
 );
 
 foreach ($tmp as $k => $v) {
