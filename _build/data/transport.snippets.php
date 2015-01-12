@@ -12,7 +12,7 @@ $tmp = array(
 		'file' => 'up_profile',
 		'description' => '',
 	),
-	'upInfo' => array(
+	'upUserInfo' => array(
 		'file' => 'up_info',
 		'description' => '',
 	),
