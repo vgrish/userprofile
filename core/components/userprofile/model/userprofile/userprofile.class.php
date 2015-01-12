@@ -379,6 +379,12 @@ class userprofile
 		return array_unique($allowed);
 	}
 
+	/**
+	 * @param array $data
+	 * @param array $row
+	 * @param array $scriptProperties
+	 * @return mixed|null|string
+	 */
 	public function getContent($data = array(), $row = array(), $scriptProperties = array())
 	{
 		$content = '';
@@ -408,6 +414,21 @@ class userprofile
 
 		return $content;
 	}
+
+	/**
+	 * @param $id
+	 * @return array
+	 */
+	public function getUserFields($id)
+	{
+		$profile['id'] = $id;
+		if($user = $this->modx->getObject('modUser',$id)) {
+			$profile = $user->getOne('Profile')->toArray();
+		}
+		unset($profile['id']);
+		return $profile;
+	}
+
 
 	/**
 	 * @param string $message

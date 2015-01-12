@@ -7,21 +7,31 @@ if (!$up = $modx->getService('userprofile', 'userprofile', $modx->getOption('use
 $up->initialize($modx->context->key, $scriptProperties);
 $isAuthenticated = $modx->user->isAuthenticated($modx->context->key);
 //
-if(empty($defaultSection)) {$defaultSection = 'info';}
-//
-$scriptProperties['user_id'] = $user_id = $modx->getPlaceholder('user_id');
-$scriptProperties['active_section'] = $active_section = $modx->getPlaceholder('active_section');
-// default pls
-$row['main_url'] = $up->config['main_url'];
-$row['user_id'] = $user_id;
-$row['active_section'] = $active_section;
-//
 if(!$allowGuest && !$isAuthenticated && !empty($ReturnTo)) {
 	$modx->sendRedirect($ReturnTo);
 }
 elseif (!$allowGuest && !$isAuthenticated) {
 	return $modx->lexicon('up_allow_guest_err');
 }
+//
+if(empty($defaultSection)) {$defaultSection = 'info';}
+//
+$scriptProperties['user_id'] = $user_id = $modx->getPlaceholder('user_id');
+$scriptProperties['active_section'] = $active_section = $modx->getPlaceholder('active_section');
+// default properties
+$default = array(
+	'fastMode' => false,
+	'nestedChunkPrefix' => 'up_',
+);
+// Merge all properties
+$up->pdoTools->setConfig(array_merge($default, $scriptProperties), false);
+// default pls
+$row['main_url'] = $up->config['main_url'];
+$row['user_id'] = $user_id;
+$row['active_section'] = $active_section;
+// get user fields
+$userFields = $up->getUserFields($user_id);
+$row = array_merge($userFields, $row);
 // sections
 $allowedSections = $up->getAllowedSections();
 foreach ($allowedSections as $section) {
@@ -48,16 +58,18 @@ foreach($tmp_filters as $v) {
 }
 if(empty($section)) {$section = $defaultSection;}
 // content
-
 $content = $up->getContent($tmp, $row, $scriptProperties);
-
-print_r($content);die;
-//array('content' => $up->getContent($tmp, $row, $scriptProperties))
-
 $outer['content'] = empty($tplSectionContent)
-	? $up->pdoTools->getChunk('', '')
-	: $up->pdoTools->getChunk($tplSectionContent, array('content' => $up->getContent($tmp, $row, $scriptProperties)), $up->pdoTools->config['fastMode']);
-//
+	? $up->pdoTools->getChunk('', array('content' => $content))
+	: $up->pdoTools->getChunk($tplSectionContent, array('content' => $content), $up->pdoTools->config['fastMode']);
+// output
+$outer = array_merge($row, $outer);
+$output = empty($tpl)
+	? $up->pdoTools->getChunk('', $outer)
+	: $up->pdoTools->getChunk($tpl, $outer, $up->pdoTools->config['fastMode']);
+
+//echo '<pre>';
+//print_r($outer);
 
 
 if (!empty($tplWrapper) && (!empty($wrapIfEmpty) || !empty($output))) {
@@ -69,9 +81,5 @@ if (!empty($toPlaceholder)) {
 	return $output;
 }
 
-
-
-echo '<pre>';
-print_r($outer);
 
 //print_r($scriptProperties);
