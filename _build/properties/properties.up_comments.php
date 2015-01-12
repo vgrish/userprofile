@@ -26,7 +26,6 @@ $tmp = array(
 		'value' => 'TicketComment.id'
 	),
 
-
 	'sortdir' => array(
 		'type' => 'list'
 		,'options' => array(
@@ -47,6 +46,43 @@ $tmp = array(
 	'showLog' => array(
 		'type' => 'combo-boolean'
 	,'value' => false
+	),
+
+
+	'includeContent' => array(
+		'type' => 'combo-boolean',
+		'value' => false,
+	),
+	'toPlaceholder' => array(
+		'type' => 'textfield',
+		'value' => '',
+	),
+	'outputSeparator' => array(
+		'type' => 'textfield',
+		'value' => "\n",
+	),
+
+	'showUnpublished' => array(
+		'type' => 'combo-boolean',
+		'value' => false,
+	),
+	'showDeleted' => array(
+		'type' => 'combo-boolean',
+		'value' => false,
+	),
+	'showHidden' => array(
+		'type' => 'combo-boolean',
+		'value' => true,
+	),
+
+
+	'cacheKey' => array(
+		'type' => 'textfield',
+		'value' => '',
+	),
+	'cacheTime' => array(
+		'type' => 'numberfield',
+		'value' => 1800,
 	),
 
 
