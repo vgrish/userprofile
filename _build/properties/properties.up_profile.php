@@ -33,7 +33,7 @@ $tmp = array(
 
 	'filters' => array(
 		'type' => 'textarea',
-		'value' => 'info|upUserInfo'
+		'value' => 'info|upUserInfo:snippet'
 	),
 
 	'allowGuest' => array(
