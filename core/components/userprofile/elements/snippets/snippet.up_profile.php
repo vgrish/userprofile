@@ -48,26 +48,30 @@ foreach($tmp_filters as $v) {
 }
 if(empty($section)) {$section = $defaultSection;}
 // content
-$outer['content'] = $up->getContent($tmp, $row, $scriptProperties);
+
+$content = $up->getContent($tmp, $row, $scriptProperties);
+
+print_r($content);die;
+//array('content' => $up->getContent($tmp, $row, $scriptProperties))
+
+$outer['content'] = empty($tplSectionContent)
+	? $up->pdoTools->getChunk('', '')
+	: $up->pdoTools->getChunk($tplSectionContent, array('content' => $up->getContent($tmp, $row, $scriptProperties)), $up->pdoTools->config['fastMode']);
+//
 
 
-echo '<pre>';
-print_r($tmp);
+if (!empty($tplWrapper) && (!empty($wrapIfEmpty) || !empty($output))) {
+	$output = $up->pdoTools->getChunk($tplWrapper, array('output' => $output), $up->pdoTools->config['fastMode']);
+}
+if (!empty($toPlaceholder)) {
+	$modx->setPlaceholder($toPlaceholder, $output);
+} else {
+	return $output;
+}
 
 
-/*
-[0] => fav
-[1] => chunk
-*/
-
-
-
-
-
-
-print_r($allowedSections);
 
 echo '<pre>';
 print_r($outer);
 
-print_r($scriptProperties);
+//print_r($scriptProperties);
