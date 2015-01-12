@@ -17,6 +17,11 @@ $tmp = array(
 		'description' => '',
 	),
 
+	'upUserComments' => array(
+		'file' => 'up_comments',
+		'description' => '',
+	),
+
 );
 
 foreach ($tmp as $k => $v) {
