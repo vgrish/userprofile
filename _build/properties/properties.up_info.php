@@ -5,19 +5,27 @@ $properties = array();
 $tmp = array(
 	'tpl' => array(
 		'type' => 'textfield',
-		'value' => 'tpl.userprofile.item',
+		'value' => 'tpl.upUserInfo.main',
 	),
-
 	'user_id' => array(
 		'type' => 'numberfield',
 		'value' => '',
 	),
-
-
-
-	'outputSeparator' => array(
+	'dateFormat' => array(
 		'type' => 'textfield',
-		'value' => "\n",
+		'value' => '%d %b %Y %H:%M',
+	),
+	'gravatarIcon' => array(
+		'type' => 'textfield',
+		'value' => 'mm',
+	),
+	'gravatarSize' => array(
+		'type' => 'numberfield',
+		'value' => '64',
+	),
+	'showLog' => array(
+		'type' => 'combo-boolean',
+		'value' => false,
 	),
 	'toPlaceholder' => array(
 		'type' => 'combo-boolean',

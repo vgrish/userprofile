@@ -9,8 +9,6 @@ $isAuthenticated = $modx->user->isAuthenticated($modx->context->key);
 //
 if(empty($user_id) && $isAuthenticated) {$user_id = $modx->user->id;}
 elseif(empty($user_id)) {return $modx->lexicon('up_get_user_err');}
-// get msCustomerProfile
-$upExtended = $modx->getSelectColumns('upExtended', 'upExtended', 'upExtended_');
 // default properties
 $default = array(
 	'class' => 'upExtended',
@@ -25,7 +23,12 @@ $up->pdoTools->addTime('Query parameters are prepared.');
 $up->pdoTools->setConfig(array_merge($default, $scriptProperties));
 $userProfile = $up->pdoTools->run();
 $up->pdoTools->addTime('Fetched userProfile.');
-
+// get user fields
+$userFields = $up->getUserFields($user_id);
+$row = array_merge($userFields, $userProfile[0]);
+// gravatar
+$row['gravatar'] = $up->config['gravatarUrl'].md5(strtolower($userFields['email'])).'?s='.$gravatarSize.'&d='.$gravatarIcon;
+//
 
 $output .= '<pre class="psOrderLog">' . print_r($up->pdoTools->getTime(), 1) . '</pre>';
 
@@ -37,11 +40,7 @@ die;
 
 // default pls
 $row['user_id'] = $user_id;
-// get user fields
-$userFields = $up->getUserFields($user_id);
-$row = array_merge($userFields, $row);
-// gravatar
-$row['gravatar'] = $up->config['gravatarUrl'].md5(strtolower($userFields['email'])).'?s='.$gravatarSize.'&d='.$gravatarIcon;
+
 // sections
 
 
