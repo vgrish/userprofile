@@ -11,7 +11,10 @@ $tmp = array(
 		'file' => 'up_user_info_main',
 		'description' => '',
 	),
-
+	'tpl.upUser.Row' => array(
+		'file' => 'up_user_row',
+		'description' => '',
+	),
 
 );
 

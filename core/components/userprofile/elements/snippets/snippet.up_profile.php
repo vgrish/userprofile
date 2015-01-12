@@ -54,7 +54,7 @@ foreach($tmp_filters as $v) {
 		continue;
 	}
 	elseif(strpos($v, $active_section.$up->config['delimeterSection']) !== false) {@
-	list($section, $action) = explode($up->config['delimeterSection'], $v);
+		list($section, $action) = explode($up->config['delimeterSection'], $v);
 	}
 	$tmp = explode($up->config['delimeterAction'], $action);
 }

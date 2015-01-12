@@ -5,32 +5,96 @@ $properties = array();
 $tmp = array(
 	'tpl' => array(
 		'type' => 'textfield',
-		'value' => 'tpl.userprofile.item',
+		'value' => 'tpl.upUser.Row',
 	),
+	'tplWrapper' => array(
+		'type' => 'textfield'
+		,'value' => ''
+	),
+	'wrapIfEmpty' => array(
+		'type' => 'combo-boolean'
+		,'value' => false
+	),
+
+	'returnIds' => array(
+		'type' => 'combo-boolean'
+		,'value' => false
+	),
+
 	'sortby' => array(
-		'type' => 'textfield',
-		'value' => 'name',
+		'type' => 'textfield'
+		,'value' => 'modUser.id'
 	),
 	'sortdir' => array(
-		'type' => 'list',
-		'options' => array(
-			array('text' => 'ASC', 'value' => 'ASC'),
-			array('text' => 'DESC', 'value' => 'DESC'),
-		),
-		'value' => 'ASC'
+		'type' => 'list'
+		,'options' => array(
+			array('text' => 'ASC','value' => 'ASC')
+			,array('text' => 'DESC','value' => 'DESC')
+		)
+	,'value' => 'ASC',
 	),
 	'limit' => array(
-		'type' => 'numberfield',
-		'value' => 10,
+		'type' => 'numberfield'
+		,'value' => 10
 	),
+	'offset' => array(
+		'type' => 'numberfield'
+		,'value' => 0
+	),
+
 	'outputSeparator' => array(
-		'type' => 'textfield',
-		'value' => "\n",
+		'type' => 'textfield'
+		,'value' => "\n"
 	),
 	'toPlaceholder' => array(
-		'type' => 'combo-boolean',
-		'value' => false,
+		'type' => 'textfield'
+		,'value' => ''
 	),
+
+	'showLog' => array(
+		'type' => 'combo-boolean'
+		,'value' => false
+	),
+
+	'groups' => array(
+		'type' => 'textfield'
+	,'value' => ''
+	),
+	'roles' => array(
+		'type' => 'textfield'
+	,'value' => false
+	),
+	'users' => array(
+		'type' => 'textfield'
+	,'value' => ''
+	),
+	'where' => array(
+		'type' => 'textfield'
+	,'value' => ''
+	),
+	'showInactive' => array(
+		'type' => 'combo-boolean'
+	,'value' => false
+	),
+	'showBlocked' => array(
+		'type' => 'combo-boolean'
+	,'value' => false
+	),
+	'idx' => array(
+		'type' => 'numberfield'
+	,'value' => ''
+	),
+
+	'totalVar' => array(
+		'type' => 'textfield'
+	,'value' => 'total'
+	),
+
+	'select' => array(
+		'type' => 'textarea'
+	,'value' => ''
+	),
+
 );
 
 foreach ($tmp as $k => $v) {
