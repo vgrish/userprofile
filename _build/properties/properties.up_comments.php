@@ -12,38 +12,22 @@ $tmp = array(
 		'type' => 'numberfield',
 		'value' => 10
 	),
-
-
 	'tpl' => array(
 		'type' => 'textfield',
-		'value' => 'tpl.upUser.Row',
-	),
-
-	'tplWrapper' => array(
-		'type' => 'textfield',
-		'value' => ''
-	),
-	/*'wrapIfEmpty' => array(
-		'type' => 'combo-boolean'
-	,'value' => false
-	),
-
-	'returnIds' => array(
-		'type' => 'combo-boolean'
-	,'value' => false
+		'value' => 'tpl.Tickets.comment.list.row',
 	),
 
 	'sortby' => array(
-		'type' => 'textfield'
-	,'value' => 'modUser.id'
+		'type' => 'textfield',
+		'value' => 'TicketComment.createdon'
 	),
 	'sortdir' => array(
 		'type' => 'list'
-	,'options' => array(
+		,'options' => array(
 			array('text' => 'ASC','value' => 'ASC')
 			,array('text' => 'DESC','value' => 'DESC')
 			)
-		,'value' => 'ASC',
+		,'value' => 'DESC',
 	),
 	'limit' => array(
 		'type' => 'numberfield'
@@ -51,16 +35,7 @@ $tmp = array(
 	),
 	'offset' => array(
 		'type' => 'numberfield'
-	,'value' => 0
-	),
-
-	'outputSeparator' => array(
-		'type' => 'textfield'
-	,'value' => "\n"
-	),
-	'toPlaceholder' => array(
-		'type' => 'textfield'
-	,'value' => ''
+		,'value' => 0
 	),
 
 	'showLog' => array(
@@ -68,23 +43,8 @@ $tmp = array(
 	,'value' => false
 	),
 
-	'groups' => array(
-		'type' => 'textfield'
-	,'value' => ''
-	),
-	'roles' => array(
-		'type' => 'textfield'
-	,'value' => false
-	),
-	'users' => array(
-		'type' => 'textfield'
-	,'value' => ''
-	),
-	'where' => array(
-		'type' => 'textfield'
-	,'value' => ''
-	),
-	'showInactive' => array(
+
+/*	'showInactive' => array(
 		'type' => 'combo-boolean'
 	,'value' => false
 	),
@@ -94,18 +54,14 @@ $tmp = array(
 	),
 	'idx' => array(
 		'type' => 'numberfield'
-	,'value' => ''
+		,'value' => ''
 	),
 
 	'totalVar' => array(
 		'type' => 'textfield'
-	,'value' => 'total'
-	),
+		,'value' => 'total'
+	),*/
 
-	'select' => array(
-		'type' => 'textarea'
-	,'value' => ''
-	),
 
 	'gravatarIcon' => array(
 		'type' => 'textfield',
@@ -113,12 +69,8 @@ $tmp = array(
 	),
 	'gravatarSize' => array(
 		'type' => 'numberfield',
-		'value' => '64',
+		'value' => '24',
 	),
-	'dateFormat' => array(
-		'type' => 'textfield',
-		'value' => 'd F Y, H:i',
-	),*/
 
 );
 

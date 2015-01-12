@@ -1,9 +1,4 @@
 <?php
-/* @var array $scriptProperties */
-/* @var Tickets $Tickets */
-/*$Tickets = $modx->getService('tickets','Tickets',$modx->getOption('tickets.core_path',null,$modx->getOption('core_path').'components/tickets/').'model/tickets/',$scriptProperties);
-$Tickets->initialize('web');*/
-
 /** @var array $scriptProperties */
 /** @var userprofile $userprofile */
 if (!$up = $modx->getService('userprofile', 'userprofile', $modx->getOption('userprofile_core_path', null, $modx->getOption('core_path') . 'components/userprofile/') . 'model/userprofile/', $scriptProperties)) {
@@ -11,13 +6,15 @@ if (!$up = $modx->getService('userprofile', 'userprofile', $modx->getOption('use
 }
 $up->initialize($modx->context->key, $scriptProperties);
 $isAuthenticated = $modx->user->isAuthenticated($modx->context->key);
+$active_section = (!empty($scriptProperties['active_section'])) ? $scriptProperties['active_section'] : 'comments';
+$main_url = $up->config['main_url'];
 // where
 $where = array(
 	'TicketComment.deleted' => 0
 	,'Ticket.published' => 1
 	,'Ticket.deleted' => 0
 );
-
+//
 if (!isset($depth)) {$depth = 10;}
 if (!empty($parents)) {
 	$pids = array_map('trim', explode(',', $parents));
@@ -29,12 +26,12 @@ if (!empty($parents)) {
 		$where['Ticket.parent:IN'] = $parents;
 	}
 }
-
-if (!empty($_REQUEST['uid'])) {
-	$where['TicketComment.createdby'] = intval($_REQUEST['uid']);
+//
+if (!empty($user_id)) {
+	$where['TicketComment.createdby'] = intval($user_id);
 }
 elseif ($isAuthenticated) {
-	$modx->sendRedirect('/user/comments/'.$modx->user->username.'/');
+	$modx->sendRedirect('/'.$main_url.'/'.$modx->user->id.'/');
 }
 else {
 	$modx->sendErrorPage();
@@ -53,19 +50,19 @@ $default = array(
 	'class' => 'TicketComment'
 	,'where' => json_encode($where)
 	,'leftJoin' => '[
-			{"class":"TicketThread","alias":"Thread","on":"Thread.id=TicketComment.thread"}
-			,{"class":"Ticket","alias":"Ticket","on":"Ticket.id=Thread.resource"}
-			,{"class":"TicketsSection","alias":"Section","on":"Section.id=Ticket.parent"}
-			,{"class":"modUser","alias":"User","on":"User.id=TicketComment.createdby"}
-			,{"class":"modUserProfile","alias":"Profile","on":"User.id=Profile.internalKey"}
-		]'
+				{"class":"TicketThread","alias":"Thread","on":"Thread.id=TicketComment.thread"}
+				,{"class":"Ticket","alias":"Ticket","on":"Ticket.id=Thread.resource"}
+				,{"class":"TicketsSection","alias":"Section","on":"Section.id=Ticket.parent"}
+				,{"class":"modUser","alias":"User","on":"User.id=TicketComment.createdby"}
+				,{"class":"modUserProfile","alias":"Profile","on":"User.id=Profile.internalKey"}
+			]'
 	,'select' => '{'.implode(',',$select).'}'
 	,'groupby' => 'TicketComment.id'
 	,'sortby' => 'createdon'
 	,'sortdir' => 'desc'
-	,'gravatarIcon' => 'mm'
-	,'gravatarSize' => 24
-	,'gravatarUrl' => 'http://www.gravatar.com/avatar/'
+	,'gravatarIcon' => $gravatarIcon
+	,'gravatarSize' => $gravatarSize
+	,'gravatarUrl' => $up->config['gravatarUrl']
 	,'return' => 'data'
 );
 //
