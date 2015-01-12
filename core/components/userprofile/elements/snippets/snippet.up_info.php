@@ -32,7 +32,7 @@ $row['gravatar'] = $up->config['gravatarUrl'].md5(strtolower($userFields['email'
 $row['registration_format'] = $up->dateFormat($row['registration'], $dateFormat);
 $row['lastactivity_format'] = $up->dateFormat($row['lastactivity'], $dateFormat);
 // output
-$output = empty($tpl)
+$output = empty($tplUserInfo)
 	? $up->pdoTools->getChunk('', $row)
 	: $up->pdoTools->getChunk($tplUserInfo, $row, $up->pdoTools->config['fastMode']);
 if (!empty($tplWrapper) && (!empty($wrapIfEmpty) || !empty($output))) {
