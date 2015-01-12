@@ -20,6 +20,11 @@ class userprofile
 		'chunk' => 'modChunk',
 	);
 
+	public $redirectArr = array(
+		'moved' => array('responseCode' => 'HTTP/1.1 301 Moved Permanently'),
+		'notfound' => array('responseCode' => 'HTTP/1.1 404 Not Found'),
+	);
+
 	/* @var pdoTools $pdoTools */
 	public $pdoTools;
 
@@ -325,14 +330,11 @@ class userprofile
 			//
 			if ($this->isHide($id) ) {return false;}
 			// setting url
-			$extension = $this->modx->getObject('modContentType', array('mime_type' => 'text/html'))->file_extensions;
 			$container_suffix = $this->modx->getOption('container_suffix', null, '/', true);
-			$word_delimiter = $this->modx->getOption('friendly_alias_word_delimiter', null, '-', true);
-			// uri
-			$uri = rtrim($uri, $word_delimiter);
-			if (substr($uri, -1, 1) != $container_suffix) {
-				$uri .= $extension;
-			}
+			$uri .= $container_suffix;
+
+			$this->modx->log(1, print_r($uri, 1));
+
 			if (!$userPage = $this->modx->findResource($uri, $this->modx->context->key)) {
 				$this->modx->log(modX::LOG_LEVEL_ERROR, print_r('UserProfile error get main_url.', 1));
 				return false;
@@ -352,11 +354,14 @@ class userprofile
 					. '/'
 					. $id
 					. '/'
+					,
+					$this->redirectArr['moved']
 				);
 			}
 			elseif(in_array($section, $allowedSections)) {
 				$sectionPl = $section;
 			}
+			elseif(($id == 0) && (!empty($rarr[1])) && (!in_array($rarr[1], $allowedSections))) {return false;}
 			// set placeholders
 			$this->modx->setPlaceholder('user_id', $id);
 			$this->modx->setPlaceholder('active_section', $sectionPl);
