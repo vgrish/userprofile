@@ -13,18 +13,7 @@ $tmp = array(
 		'value' => '',
 	),
 
-	'sortby' => array(
-		'type' => 'textfield',
-		'value' => 'name',
-	),
-	'sortdir' => array(
-		'type' => 'list',
-		'options' => array(
-			array('text' => 'ASC', 'value' => 'ASC'),
-			array('text' => 'DESC', 'value' => 'DESC'),
-		),
-		'value' => 'ASC'
-	),
+
 
 	'outputSeparator' => array(
 		'type' => 'textfield',

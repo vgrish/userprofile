@@ -8,7 +8,9 @@ $up->initialize($modx->context->key, $scriptProperties);
 $isAuthenticated = $modx->user->isAuthenticated($modx->context->key);
 //
 if(empty($user_id) && $isAuthenticated) {$user_id = $modx->user->id;}
-else {return $modx->lexicon('up_get_user_err');}
+elseif(empty($user_id)) {return $modx->lexicon('up_get_user_err');}
+// get msCustomerProfile
+$upExtended = $modx->getSelectColumns('upExtended', 'upExtended', 'upExtended_');
 // default properties
 $default = array(
 	'class' => 'upExtended',
@@ -25,8 +27,12 @@ $userProfile = $up->pdoTools->run();
 $up->pdoTools->addTime('Fetched userProfile.');
 
 
+$output .= '<pre class="psOrderLog">' . print_r($up->pdoTools->getTime(), 1) . '</pre>';
+
+
 echo '<pre>';
 print_r($userProfile);
+print_r($output);
 die;
 
 // default pls
