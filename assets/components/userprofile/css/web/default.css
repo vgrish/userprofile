@@ -1,0 +1,16 @@
+.userprofile-page .userprofile-avatar {
+    max-width: 100%;
+    max-height: 100%;
+}
+.userprofile-page .userprofile-avatar-wrapper {
+    float: left;
+    height: 64px;
+    width: 64px;
+    border-radius: 5px;
+    display: inline-block;
+    overflow: hidden;
+    background: #EFEFEF;
+}
+.userprofile-page #content .table td {
+    border: none;
+}

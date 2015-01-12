@@ -61,6 +61,10 @@ class userprofile
 
 			'disabledTabs' => 'activity',
 
+			'frontend_css' => $this->modx->getOption('userprofile_front_css', null, '[[+assetsUrl]]css/web/default.css'),
+			'frontend_js' => $this->modx->getOption('userprofile_front_js', null, '[[+assetsUrl]]js/web/default.js'),
+
+
 		), $config);
 
 		$this->modx->addPackage('userprofile', $this->config['modelPath']);
@@ -72,7 +76,7 @@ class userprofile
 			$this->defaultTypeId = $extSetting->get('id');
 		}
 		else {
-			$this->modx->log(modX::LOG_LEVEL_ERROR, 'UserProfile error get default TypeId.');
+			$this->modx->log(modX::LOG_LEVEL_ERROR, print_r('UserProfile error get default TypeId.', 1));
 		}
 
 	}
@@ -125,15 +129,13 @@ class userprofile
 						}
 					}
 					$config_js = preg_replace(array('/^\n/', '/\t{5}/'), '', '
-					payandsee = {};
-					payandseeConfig = {
+					userprofile = {};
+					userprofileConfig = {
 						cssUrl: "'.$this->config['cssUrl'].'web/"
 						,jsUrl: "'.$this->config['jsUrl'].'web/"
 						,actionUrl: "'.$this->config['actionUrl'].'"
 						,ctx: "'.$this->modx->context->get('key').'"
-						,close_all_message: "'.$this->modx->lexicon('pas_message_close_all').'"
-						,price_format: '.$this->modx->getOption('payandsee_price_format', null, '[2, ".", " "]').'
-						,price_format_no_zeros: '.$this->modx->getOption('payandsee_price_format_no_zeros', null, true).'
+						,close_all_message: "'.$this->modx->lexicon('up_message_close_all').'"
 					};
 					');
 					$this->modx->regClientStartupScript("<script type=\"text/javascript\">\n".$config_js."\n</script>", true);
@@ -273,17 +275,23 @@ class userprofile
 	public function OnLoadWebDocument($sp)
 	{
 		if ($this->modx->user->isAuthenticated($this->modx->context->get('key'))) {
-			$id = $this->modx->user->id;
-			if (!$upExtended = $this->modx->getObject('upExtended', array('user_id' => $id))) {
-				$upExtended = $this->modx->newObject('upExtended', array('user_id' => $id));
+			if (!$this->modx->user->active || $this->modx->user->Profile->blocked) {
+				$this->modx->runProcessor('security/logout');
+				$this->modx->sendRedirect($this->modx->makeUrl($this->modx->getOption('site_start'),'','','full'));
 			}
-			$upExtended->fromArray(array(
-				'type_id' => $this->defaultTypeId,
-				'registration' => date('Y-m-d H:i:s'),
-				'lastactivity' => date('Y-m-d H:i:s'),
-				'ip' => $this->modx->request->getClientIp()['ip'],
-			));
-			$upExtended->save();
+			else {
+				$id = $this->modx->user->id;
+				if (!$upExtended = $this->modx->getObject('upExtended', array('user_id' => $id))) {
+					$upExtended = $this->modx->newObject('upExtended', array('user_id' => $id));
+				}
+				$upExtended->fromArray(array(
+					'type_id' => $this->defaultTypeId,
+					'registration' => date('Y-m-d H:i:s'),
+					'lastactivity' => date('Y-m-d H:i:s'),
+					'ip' => $this->modx->request->getClientIp()['ip'],
+				));
+				$upExtended->save();
+			}
 		}
 	}
 
@@ -292,15 +300,35 @@ class userprofile
 	 */
 	public function OnPageNotFound($sp)
 	{
-		$alias = $this->modx->context->getOption('request_param_alias', 'q');
-		if (!isset($_REQUEST[$alias])) {return false;}
-		$rarr = explode('/', $_REQUEST[$alias]);
-		// для работы
+		if(!$this->modx->getOption('friendly_urls')) {return false;}
+		// q
+		$q = trim(@$_REQUEST[$this->modx->context->getOption('request_param_alias','q')]);
+		$rarr = explode('/', rtrim($q, '/'));
+		// work
 		if ($rarr[0] == $this->modx->getOption('userprofile_main_url', null, 'users') && (count($rarr) > 1)) {
-			if ($this->isHide((int)$rarr[1]) ) {return false;}
+			$uri = $rarr[0];
+			$id = (int)$rarr[1];
+			//
+			if ($this->isHide($id) ) {return false;}
+			// setting url
+			$extension = $this->modx->getObject('modContentType', array('mime_type' => 'text/html'))->file_extensions;
+			$container_suffix = $this->modx->getOption('container_suffix', null, '/', true);
+			$word_delimiter = $this->modx->getOption('friendly_alias_word_delimiter', null, '-', true);
+			// uri
+			$uri = rtrim($uri, $word_delimiter);
+			if (substr($uri, -1, 1) != $container_suffix) {
+				$uri .= $extension;
+			}
+			if (!$userPage = $this->modx->findResource($uri, $this->modx->context->key)) {
+				$this->modx->log(modX::LOG_LEVEL_ERROR, print_r('UserProfile error get main_url.', 1));
+				return false;
+			}
 
+			$this->modx->log(1, print_r($userPage, 1));
 			$this->modx->log(1, print_r('work', 1));
-
+			// set placeholders
+			$this->modx->setPlaceholder('user_id', $id);
+			$this->modx->sendForward($userPage);
 		}
 	}
 
@@ -366,10 +394,12 @@ class userprofile
 				$groupId = $group->toArray()['user_group'];
 				if(in_array($groupId, $groupsArr)) {return true;}
 			}
-			if(!$this->modx->getCount('modUser', array(
-				'id' => $id,
-				'active' => $this->modx->getOption('userprofile_hide_inactive'),
-			))) {return true;}
+
+			$arr['id'] = $id;
+			if($this->modx->getOption('userprofile_hide_inactive')) {
+				$arr['active'] = 1;
+			}
+			if(!$this->modx->getCount('modUser', $arr)) {return true;}
 			return false;
 		}
 		return true;

@@ -8,8 +8,8 @@ $tmp = array(
 		'description' => '',
 	),
 
-	'userprofile' => array(
-		'file' => 'userprofile',
+	'upProfile' => array(
+		'file' => 'up_profile',
 		'description' => '',
 	),
 

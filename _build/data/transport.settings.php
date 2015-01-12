@@ -33,6 +33,17 @@ $tmp = array(
 		'area' => 'userprofile_main',
 	),
 
+	'front_css' => array(
+		'type' => 'textfield',
+		'value' => '[[+assetsUrl]]css/web/default.css',
+		'area' => 'userprofile_script',
+	),
+	'front_js' => array(
+		'type' => 'textfield',
+		'value' => '[[+assetsUrl]]js/web/default.js',
+		'area' => 'userprofile_script',
+	),
+
 /*	'enable_for_templates' => array(
 		'value' => '1',
 		'xtype' => 'textfield',
