@@ -104,8 +104,8 @@ $_lang['up_allow_guest_err'] = 'Просмотр профиля пользова
 
 
 // section
-$_lang['section_info_title'] = 'Инфо';
-$_lang['section_info_title'] = 'Заметки';
-$_lang['section_info_title'] = 'Комментарии';
-$_lang['section_info_title'] = 'Избранное';
+$_lang['up_section_title_info'] = 'Инфо';
+$_lang['up_section_title_tickets'] = 'Заметки';
+$_lang['up_section_title_comments'] = 'Комментарии';
+$_lang['up_section_title_favorites'] = 'Избранное';
 

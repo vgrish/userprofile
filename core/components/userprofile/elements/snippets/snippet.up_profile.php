@@ -23,7 +23,7 @@ elseif (!$allowGuest && !$isAuthenticated) {
 $allowedSections = $up->getAllowedSections();
 foreach ($allowedSections as $section) {
 	$row['section'] = $section;
-	$row['sectiontitle'] = $modx->lexicon('section_'.$section.'_title');
+	$row['sectiontitle'] = $modx->lexicon('up_section_title_'.$section);
 	$row['active'] = ($section == $row['active_section']) ? 'active' : '';
 	$row['rows'] .= empty($tplSectionRow)
 		? $up->pdoTools->getChunk('', $row)
