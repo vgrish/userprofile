@@ -3,14 +3,12 @@
         <div class="userprofile-avatar-wrapper">
             [[+photo]]
         </div>
-
         <h3>&nbsp;&nbsp;[[+fullname]]</h3>
         <div class="clearfix"></div>
         <br>
-
         [[+section]]
+        <br>
         [[+content]]
-
     </div>
 
     <div id="sidebar" class="col-md-4">

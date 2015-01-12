@@ -7,6 +7,12 @@ $tmp = array(
 		'type' => 'textfield',
 		'value' => 'tpl.userprofile.item',
 	),
+
+	'user_id' => array(
+		'type' => 'numberfield',
+		'value' => '',
+	),
+
 	'sortby' => array(
 		'type' => 'textfield',
 		'value' => 'name',
@@ -19,10 +25,7 @@ $tmp = array(
 		),
 		'value' => 'ASC'
 	),
-	'limit' => array(
-		'type' => 'numberfield',
-		'value' => 10,
-	),
+
 	'outputSeparator' => array(
 		'type' => 'textfield',
 		'value' => "\n",

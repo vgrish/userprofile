@@ -69,11 +69,6 @@ $outer = array_merge($row, $outer);
 $output = empty($tpl)
 	? $up->pdoTools->getChunk('', $outer)
 	: $up->pdoTools->getChunk($tpl, $outer, $up->pdoTools->config['fastMode']);
-
-//echo '<pre>';
-//print_r($outer);
-
-
 if (!empty($tplWrapper) && (!empty($wrapIfEmpty) || !empty($output))) {
 	$output = $up->pdoTools->getChunk($tplWrapper, array('output' => $output), $up->pdoTools->config['fastMode']);
 }
@@ -82,6 +77,3 @@ if (!empty($toPlaceholder)) {
 } else {
 	return $output;
 }
-
-
-//print_r($scriptProperties);
