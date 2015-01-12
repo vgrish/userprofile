@@ -17,12 +17,12 @@ $tmp = array(
 	),
 
 	'upSectionTickets' => array(
-		'file' => 'up_user_row',
-		'description' => 'up_section_tickets',
+		'file' => 'up_section_tickets',
+		'description' => '',
 	),
 	'tpl.upSectionTickets.Row' => array(
-		'file' => 'up_user_row',
-		'description' => 'up_section_tickets_row',
+		'file' => 'up_section_tickets_row',
+		'description' => '',
 	),
 
 
