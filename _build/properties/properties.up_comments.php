@@ -17,22 +17,23 @@ $tmp = array(
 		'value' => 'tpl.Tickets.comment.list.row',
 	),
 
-	'sortby' => array(
-		'type' => 'textfield',
-		'value' => 'createdon'
-	),
+
 /*	'groupby' => array(
 		'type' => 'textfield',
 		'value' => 'TicketComment.id'
 	),*/
 
+	'sortby' => array(
+		'type' => 'textfield',
+		'value' => 'createdon',
+	),
 	'sortdir' => array(
-		'type' => 'list'
-		,'options' => array(
-			array('text' => 'ASC','value' => 'ASC')
-			,array('text' => 'DESC','value' => 'DESC')
-			)
-		,'value' => 'DESC',
+		'type' => 'list',
+		'options' => array(
+			array('text' => 'ASC','value' => 'ASC'),
+			array('text' => 'DESC','value' => 'DESC'),
+		),
+		'value' => 'DESC',
 	),
 	'limit' => array(
 		'type' => 'numberfield'
@@ -52,6 +53,18 @@ $tmp = array(
 	'includeContent' => array(
 		'type' => 'combo-boolean',
 		'value' => false,
+	),
+	'includeTVs' => array(
+		'type' => 'textfield',
+		'value' => '',
+	),
+	'where' => array(
+		'type' => 'textfield',
+		'value' => '',
+	),
+	'tvPrefix' => array(
+		'type' => 'textfield',
+		'value' => '',
 	),
 	'toPlaceholder' => array(
 		'type' => 'textfield',
