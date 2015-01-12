@@ -3,8 +3,8 @@
 $chunks = array();
 
 $tmp = array(
-	'tpl.userprofile.item' => array(
-		'file' => 'item',
+	'tpl.upProfile.main' => array(
+		'file' => 'up_profile_main',
 		'description' => '',
 	),
 );

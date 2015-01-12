@@ -5,27 +5,66 @@ $properties = array();
 $tmp = array(
 	'tpl' => array(
 		'type' => 'textfield',
-		'value' => 'tpl.userprofile.item',
+		'value' => 'tpl.upProfile.main',
 	),
-	'sortby' => array(
+
+	'tplSectionContent' => array(
 		'type' => 'textfield',
-		'value' => 'name',
+		'value' => '@INLINE <div class="tab-content userprofile-page"><div class="tab-pane fade in active">[[+content]]</div></div>',
 	),
-	'sortdir' => array(
-		'type' => 'list',
-		'options' => array(
-			array('text' => 'ASC', 'value' => 'ASC'),
-			array('text' => 'DESC', 'value' => 'DESC'),
-		),
-		'value' => 'ASC'
+
+	'tplSectionOuter' => array(
+		'type' => 'textfield',
+		'value' => '@INLINE <ul class="nav nav-tabs">[[+rows]]</ul>',
 	),
-	'limit' => array(
+	'tplSectionRow' => array(
+		'type' => 'textfield',
+		'value' => '@INLINE <li class="[[+active]]"><a href="[[+main_url]]/[[+user_id]]/[[+section]]">[[+sectiontitle]] <sup></sup></a></li>',
+	),
+
+	'allowedSections' => array(
+		'type' => 'textfield',
+		'value' => 'info,tickets,comments,favorites',
+	),
+
+	'filters' => array(
+		'type' => 'textarea',
+		'value' => 'info|upUserInfo'
+	),
+
+	'allowGuest' => array(
+		'type' => 'combo-boolean',
+		'value' => true,
+	),
+
+	'gravatarIcon' => array(
+		'type' => 'textfield',
+		'value' => 'mm',
+	),
+	'gravatarSize' => array(
 		'type' => 'numberfield',
-		'value' => 10,
+		'value' => '24',
 	),
-	'outputSeparator' => array(
+	'gravatarUrl' => array(
 		'type' => 'textfield',
-		'value' => "\n",
+		'value' => 'https://www.gravatar.com/avatar/',
+	),
+
+	'showLog' => array(
+		'type' => 'combo-boolean',
+		'value' => false,
+	),
+	'fastMode' => array(
+		'type' => 'combo-boolean',
+		'value' => false,
+	),
+	'user' => array(
+		'type' => 'textfield',
+		'value' => '',
+	),
+	'tplWrapper' => array(
+		'type' => 'textfield',
+		'value' => '',
 	),
 	'toPlaceholder' => array(
 		'type' => 'combo-boolean',
