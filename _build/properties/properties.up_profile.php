@@ -26,6 +26,10 @@ $tmp = array(
 		'type' => 'textfield',
 		'value' => 'info,tickets,comments,favorites',
 	),
+	'defaultSection' => array(
+		'type' => 'textfield',
+		'value' => 'info',
+	),
 
 	'filters' => array(
 		'type' => 'textarea',
@@ -36,6 +40,11 @@ $tmp = array(
 		'type' => 'combo-boolean',
 		'value' => true,
 	),
+	'ReturnTo' => array(
+		'type' => 'numberfield',
+		'value' => '',
+	),
+
 
 	'gravatarIcon' => array(
 		'type' => 'textfield',

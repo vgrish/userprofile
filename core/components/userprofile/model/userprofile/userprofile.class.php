@@ -64,6 +64,9 @@ class userprofile
 			'frontend_css' => $this->modx->getOption('userprofile_front_css', null, '[[+assetsUrl]]css/web/default.css'),
 			'frontend_js' => $this->modx->getOption('userprofile_front_js', null, '[[+assetsUrl]]js/web/default.js'),
 
+			'main_url' => $this->modx->getOption('userprofile_main_url', null, 'users'),
+
+			'defaultSection' => 'info',
 
 		), $config);
 
@@ -233,7 +236,7 @@ class userprofile
 			$real
 		);
 		if (!$upExtended->save()) {
-			echo $this->error('up_save_up_extended_err');
+			echo $this->error('up_save_extended_err');
 			exit;
 		}
 		// extended
@@ -305,15 +308,14 @@ class userprofile
 		$q = trim(@$_REQUEST[$this->modx->context->getOption('request_param_alias','q')]);
 		$rarr = explode('/', rtrim($q, '/'));
 		// work
-		if ($rarr[0] == $this->modx->getOption('userprofile_main_url', null, 'users') && (count($rarr) > 1)) {
+		if ($rarr[0] == $this->config['main_url'] && (count($rarr) > 1)) {
 			$uri = $rarr[0];
 			$section = $rarr[2];
 			$id = (int)$rarr[1];
+			// default placehoder
+			$sectionPl = $this->config['defaultSection'];
 			//
 			if ($this->isHide($id) ) {return false;}
-			// allowedSections
-			$allowedSections = $this->modx->getOption('userprofile_allowed_sections', null, 'info', true);
-
 			// setting url
 			$extension = $this->modx->getObject('modContentType', array('mime_type' => 'text/html'))->file_extensions;
 			$container_suffix = $this->modx->getOption('container_suffix', null, '/', true);
@@ -330,25 +332,45 @@ class userprofile
 
 			$this->modx->log(1, print_r($userPage, 1));
 			$this->modx->log(1, print_r('work', 1));
+
+			// allowedSections
+			$allowedSections = $this->getAllowedSections(true);
+			unset($allowedSections[array_search('info', $allowedSections)]);
+
+			if(!empty($section) && (!in_array($section, $allowedSections))) {
+				$this->modx->sendRedirect(
+					  $this->modx->makeUrl($this->modx->getOption('site_start'),'','','full')
+					. $this->config['main_url']
+					. '/'
+					. $id
+					. '/'
+				);
+			}
+			elseif(in_array($section, $allowedSections)) {
+				$sectionPl = $section;
+			}
 			// set placeholders
 			$this->modx->setPlaceholder('user_id', $id);
+			$this->modx->setPlaceholder('active_section', $sectionPl);
+
 			$this->modx->sendForward($userPage);
 		}
 	}
 
-	public function getAllowedSections()
+	/**
+	 * @return array
+	 */
+	public function getAllowedSections($setting = false)
 	{
 		$allowedSections = array_map('trim', explode(',', trim($this->modx->getOption('userprofile_allowed_sections', null, 'info', true))));
-		$allowed = array();
-
-		$this->modx->log(1, print_r($allowedSections, 1));
-
-		$this->modx->log(1, print_r($this->config, 1));
-
-/*		foreach() {
-
-		}*/
+		if($setting) {return $allowedSections;}
+		$allowed = array($this->config['defaultSection']);
+		foreach(array_map('trim', explode(',', trim($this->config['allowedSections']))) as $section) {
+			if(in_array($section, $allowedSections)) {$allowed[] = $section;}
+		}
+		return array_unique($allowed);
 	}
+
 	/**
 	 * @param string $message
 	 * @param array $data
