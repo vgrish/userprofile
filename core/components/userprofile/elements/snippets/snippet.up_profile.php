@@ -17,7 +17,7 @@ elseif (!$allowGuest && !$isAuthenticated) {
 if(empty($defaultSection)) {$defaultSection = 'info';}
 //
 $scriptProperties['user_id'] = $user_id = $modx->getPlaceholder('user_id');
-$scriptProperties['active_section'] = $active_section = $modx->getPlaceholder('active_section');
+$scriptProperties['active_section'] = $active_section = (is_null($modx->getPlaceholder('active_section'))) ? $defaultSection : $modx->getPlaceholder('active_section');
 // default properties
 $default = array(
 	'fastMode' => false,
@@ -48,13 +48,14 @@ $outer['section'] = empty($tplSectionOuter)
 	? $up->pdoTools->getChunk('', $row)
 	: $up->pdoTools->getChunk($tplSectionOuter, $row, $up->pdoTools->config['fastMode']);
 // Preparing filters
+$tmp = array();
 $tmp_filters = array_map('trim', explode(',', $filters));
 foreach($tmp_filters as $v) {
 	if (empty($v)) {
 		continue;
 	}
 	elseif(strpos($v, $active_section.$up->config['delimeterSection']) !== false) {@
-		list($section, $action) = explode($up->config['delimeterSection'], $v);
+	list($section, $action) = explode($up->config['delimeterSection'], $v);
 	}
 	$tmp = explode($up->config['delimeterAction'], $action);
 }

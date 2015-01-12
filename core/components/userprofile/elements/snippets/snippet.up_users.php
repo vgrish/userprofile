@@ -18,7 +18,6 @@ if (empty($showBlocked)) {$where[$profile.'.blocked'] = 0;}
 $innerJoin = array(
 	$profile => array('alias' => $profile, 'on' => "$class.id = $profile.internalKey"),
 );
-
 // Filter by users, groups and roles
 $tmp = array(
 	'users' => array(
@@ -82,7 +81,7 @@ if (!empty($groups_in) || !empty($groups_out) || !empty($roles_in) || !empty($ro
 // Fields to select
 $select = array(
 	$class => implode(',', array_keys($modx->getFieldMeta($class)))
-	,$profile => implode(',', array_keys($modx->getFieldMeta($profile)))
+,$profile => implode(',', array_keys($modx->getFieldMeta($profile)))
 );
 // Add Referral param
 $where_ref = array();
@@ -119,17 +118,15 @@ $default = array(
 	'nestedChunkPrefix' => 'up_',
 	'disableConditions' => true
 );
-
+//
 if (!empty($users_in) && (empty($scriptProperties['sortby']) || $scriptProperties['sortby'] == $class.'.id')) {
 	$scriptProperties['sortby'] = "find_in_set(`$class`.`id`,'".implode(',', $users_in)."')";
 	$scriptProperties['sortdir'] = '';
 }
-
 // Merge all properties and run!
 $up->pdoTools->addTime('Query parameters ready');
 $up->pdoTools->setConfig(array_merge($default, $scriptProperties), false);
 $rows = $up->pdoTools->run();
-
 // Processing rows
 $output = array();
 if (!empty($rows) && is_array($rows)) {

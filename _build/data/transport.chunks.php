@@ -20,11 +20,19 @@ $tmp = array(
 		'file' => 'up_section_tickets',
 		'description' => '',
 	),
-	'tpl.upSectionTickets.Row' => array(
+/*	'tpl.upSectionTickets.Row' => array(
 		'file' => 'up_section_tickets_row',
 		'description' => '',
-	),
+	),*/
 
+	'upSectionComments' => array(
+		'file' => 'up_section_comments',
+		'description' => '',
+	),
+/*	'tpl.upSectionComments.Row' => array(
+		'file' => 'up_section_comments_row',
+		'description' => '',
+	),*/
 
 );
 
