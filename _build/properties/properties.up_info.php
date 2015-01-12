@@ -3,7 +3,7 @@
 $properties = array();
 
 $tmp = array(
-	'tpl' => array(
+	'tplUserInfo' => array(
 		'type' => 'textfield',
 		'value' => 'tpl.upUserInfo.main',
 	),

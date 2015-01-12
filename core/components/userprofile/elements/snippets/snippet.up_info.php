@@ -34,7 +34,7 @@ $row['lastactivity_format'] = $up->dateFormat($row['lastactivity'], $dateFormat)
 // output
 $output = empty($tpl)
 	? $up->pdoTools->getChunk('', $row)
-	: $up->pdoTools->getChunk($tpl, $row, $up->pdoTools->config['fastMode']);
+	: $up->pdoTools->getChunk($tplUserInfo, $row, $up->pdoTools->config['fastMode']);
 if (!empty($tplWrapper) && (!empty($wrapIfEmpty) || !empty($output))) {
 	$output = $up->pdoTools->getChunk($tplWrapper, array('output' => $output), $up->pdoTools->config['fastMode']);
 }
