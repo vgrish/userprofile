@@ -415,8 +415,8 @@ class userprofile
 				? $this->pdoTools->getChunk('', $row)
 				: $this->pdoTools->getChunk($emptyTpl, $row, $this->pdoTools->config['fastMode']);
 		}
-		$this->modx->log(1, print_r($data, 1));
-		$this->modx->log(1, print_r($scriptProperties, 1));
+		//$this->modx->log(1, print_r($data, 1));
+		//$this->modx->log(1, print_r($scriptProperties, 1));
 
 		return $content;
 	}

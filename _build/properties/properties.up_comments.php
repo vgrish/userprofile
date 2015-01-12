@@ -14,13 +14,19 @@ $tmp = array(
 	),
 	'tpl' => array(
 		'type' => 'textfield',
-		'value' => 'tpl.Tickets.comment.list.row',
+		'value' => 'tpl.Tickets.comment.latest',
 	),
 
 	'sortby' => array(
 		'type' => 'textfield',
-		'value' => 'TicketComment.createdon'
+		'value' => 'createdon'
 	),
+	'groupby' => array(
+		'type' => 'textfield',
+		'value' => 'TicketComment.id'
+	),
+
+
 	'sortdir' => array(
 		'type' => 'list'
 		,'options' => array(
