@@ -12,6 +12,10 @@ $tmp = array(
 		'file' => 'up_profile',
 		'description' => '',
 	),
+	'upInfo' => array(
+		'file' => 'up_info',
+		'description' => '',
+	),
 
 );
 

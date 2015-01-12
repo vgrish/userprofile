@@ -15,6 +15,11 @@ class userprofile
 	public $active = false;
 	public $defaultTypeId = 0;
 
+	public $actionArr = array(
+		'snippet' => 'modSnippet',
+		'chunk' => 'modChunk',
+	);
+
 	/* @var pdoTools $pdoTools */
 	public $pdoTools;
 
@@ -67,6 +72,9 @@ class userprofile
 			'main_url' => $this->modx->getOption('userprofile_main_url', null, 'users'),
 
 			'defaultSection' => 'info',
+			'defaultAction' => 'snippet',
+			'delimeterSection' => '|',
+			'delimeterAction' => ':',
 
 		), $config);
 
@@ -371,6 +379,36 @@ class userprofile
 		return array_unique($allowed);
 	}
 
+	public function getContent($data = array(), $row = array(), $scriptProperties = array())
+	{
+		$content = '';
+		$emptyTpl = $scriptProperties['tplSectionEmpty'];
+		if(!empty($data[0])) {
+			if(empty($data[1])) {$action = $this->config['defaultAction'];}
+			else {$action = $data[1];}
+			$name = $data[0];
+			if ($object = $this->modx->getObject($this->actionArr[$action], array('name' => $name))) {
+				$properties = $object->getProperties();
+				$scriptProperties = array_merge($properties, $scriptProperties);
+				//
+				$output = $object->process($scriptProperties);
+				$content = $this->processTags($output);
+			}
+			else {
+				$content = $this->modx->lexicon('up_get_object_err');
+			}
+		}
+		else {
+			$content = empty($emptyTpl)
+				? $this->pdoTools->getChunk('', $row)
+				: $this->pdoTools->getChunk($emptyTpl, $row, $this->pdoTools->config['fastMode']);
+		}
+		$this->modx->log(1, print_r($data, 1));
+		$this->modx->log(1, print_r($scriptProperties, 1));
+
+		return $content;
+	}
+
 	/**
 	 * @param string $message
 	 * @param array $data
@@ -595,6 +633,20 @@ class userprofile
 			$this->loadPdoTools();
 		}
 		return $this->pdoTools->getChunk($name, $properties, $fastMode);
+	}
+
+	/**
+	 * Collects and processes any set of tags
+	 *
+	 * @param mixed $html Source code for parse
+	 * @param integer $maxIterations
+	 *
+	 * @return mixed $html Parsed html
+	 */
+	public function processTags($html, $maxIterations = 10) {
+		$this->modx->getParser()->processElementTags('', $html, false, false, '[[', ']]', array(), $maxIterations);
+		$this->modx->getParser()->processElementTags('', $html, true, true, '[[', ']]', array(), $maxIterations);
+		return $html;
 	}
 
 }
