@@ -307,9 +307,13 @@ class userprofile
 		// work
 		if ($rarr[0] == $this->modx->getOption('userprofile_main_url', null, 'users') && (count($rarr) > 1)) {
 			$uri = $rarr[0];
+			$section = $rarr[2];
 			$id = (int)$rarr[1];
 			//
 			if ($this->isHide($id) ) {return false;}
+			// allowedSections
+			$allowedSections = $this->modx->getOption('userprofile_allowed_sections', null, 'info', true);
+
 			// setting url
 			$extension = $this->modx->getObject('modContentType', array('mime_type' => 'text/html'))->file_extensions;
 			$container_suffix = $this->modx->getOption('container_suffix', null, '/', true);
@@ -332,6 +336,19 @@ class userprofile
 		}
 	}
 
+	public function getAllowedSections()
+	{
+		$allowedSections = array_map('trim', explode(',', trim($this->modx->getOption('userprofile_allowed_sections', null, 'info', true))));
+		$allowed = array();
+
+		$this->modx->log(1, print_r($allowedSections, 1));
+
+		$this->modx->log(1, print_r($this->config, 1));
+
+/*		foreach() {
+
+		}*/
+	}
 	/**
 	 * @param string $message
 	 * @param array $data

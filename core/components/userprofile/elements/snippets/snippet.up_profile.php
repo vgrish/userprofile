@@ -5,3 +5,6 @@ if (!$userprofile = $modx->getService('userprofile', 'userprofile', $modx->getOp
 	return 'Could not load userprofile class!';
 }
 $userprofile->initialize($modx->context->key, $scriptProperties);
+
+
+$userprofile->getAllowedSections();

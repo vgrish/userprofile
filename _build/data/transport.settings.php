@@ -32,6 +32,11 @@ $tmp = array(
 		'value' => 'users',
 		'area' => 'userprofile_main',
 	),
+	'allowed_sections' => array(
+		'type' => 'textfield',
+		'value' => 'info,tickets,comments,favorites',
+		'area' => 'userprofile_main',
+	),
 
 	'front_css' => array(
 		'type' => 'textfield',
