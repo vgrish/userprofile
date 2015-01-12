@@ -16,6 +16,16 @@ $tmp = array(
 		'description' => '',
 	),
 
+	'upSectionTickets' => array(
+		'file' => 'up_user_row',
+		'description' => 'up_section_tickets',
+	),
+	'tpl.upSectionTickets.Row' => array(
+		'file' => 'up_user_row',
+		'description' => 'up_section_tickets_row',
+	),
+
+
 );
 
 // Save chunks for setup options
