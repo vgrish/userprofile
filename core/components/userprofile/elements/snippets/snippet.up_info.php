@@ -29,65 +29,17 @@ $row = array_merge($userFields, $userProfile[0]);
 // gravatar
 $row['gravatar'] = $up->config['gravatarUrl'].md5(strtolower($userFields['email'])).'?s='.$gravatarSize.'&d='.$gravatarIcon;
 // format date
-
 $row['registration_format'] = $up->dateFormat($row['registration'], $dateFormat);
 $row['lastactivity_format'] = $up->dateFormat($row['lastactivity'], $dateFormat);
-
-
-
-
-$output .= '<pre class="psOrderLog">' . print_r($up->pdoTools->getTime(), 1) . '</pre>';
-
-
-echo '<pre>';
-print_r($row);
-print_r($output);
-die;
-
-// default pls
-$row['user_id'] = $user_id;
-
-// sections
-
-
-
-
-$allowedSections = $up->getAllowedSections();
-foreach ($allowedSections as $section) {
-	$row['section'] = $section;
-	$row['sectiontitle'] = $modx->lexicon('up_section_title_'.$section);
-	$row['active'] = ($section == $active_section) ? 'active' : '';
-	$row['rows'] .= empty($tplSectionRow)
-		? $up->pdoTools->getChunk('', $row)
-		: $up->pdoTools->getChunk($tplSectionRow, $row, $up->pdoTools->config['fastMode']);
-}
-$outer['section'] = empty($tplSectionOuter)
-	? $up->pdoTools->getChunk('', $row)
-	: $up->pdoTools->getChunk($tplSectionOuter, $row, $up->pdoTools->config['fastMode']);
-// Preparing filters
-$tmp_filters = array_map('trim', explode(',', $filters));
-foreach($tmp_filters as $v) {
-	if (empty($v)) {
-		continue;
-	}
-	elseif(strpos($v, $active_section.$up->config['delimeterSection']) !== false) {@
-	list($section, $action) = explode($up->config['delimeterSection'], $v);
-	}
-	$tmp = explode($up->config['delimeterAction'], $action);
-}
-if(empty($section)) {$section = $defaultSection;}
-// content
-$content = $up->getContent($tmp, $row, $scriptProperties);
-$outer['content'] = empty($tplSectionContent)
-	? $up->pdoTools->getChunk('', array('content' => $content))
-	: $up->pdoTools->getChunk($tplSectionContent, array('content' => $content), $up->pdoTools->config['fastMode']);
 // output
-$outer = array_merge($row, $outer);
 $output = empty($tpl)
-	? $up->pdoTools->getChunk('', $outer)
-	: $up->pdoTools->getChunk($tpl, $outer, $up->pdoTools->config['fastMode']);
+	? $up->pdoTools->getChunk('', $row)
+	: $up->pdoTools->getChunk($tpl, $row, $up->pdoTools->config['fastMode']);
 if (!empty($tplWrapper) && (!empty($wrapIfEmpty) || !empty($output))) {
 	$output = $up->pdoTools->getChunk($tplWrapper, array('output' => $output), $up->pdoTools->config['fastMode']);
+}
+if ($modx->user->hasSessionContext('mgr') && !empty($showLog)) {
+	$output .= '<pre class="upLog">' . print_r($up->pdoTools->getTime(), 1) . '</pre>';
 }
 if (!empty($toPlaceholder)) {
 	$modx->setPlaceholder($toPlaceholder, $output);

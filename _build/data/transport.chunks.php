@@ -7,6 +7,12 @@ $tmp = array(
 		'file' => 'up_profile_main',
 		'description' => '',
 	),
+	'tpl.upUserInfo.main' => array(
+		'file' => 'up_user_info_main',
+		'description' => '',
+	),
+
+
 );
 
 // Save chunks for setup options
