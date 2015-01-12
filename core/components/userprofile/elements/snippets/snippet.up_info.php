@@ -28,13 +28,19 @@ $userFields = $up->getUserFields($user_id);
 $row = array_merge($userFields, $userProfile[0]);
 // gravatar
 $row['gravatar'] = $up->config['gravatarUrl'].md5(strtolower($userFields['email'])).'?s='.$gravatarSize.'&d='.$gravatarIcon;
-//
+// format date
+
+$row['registration_format'] = $up->dateFormat($row['registration'], $dateFormat);
+$row['lastactivity_format'] = $up->dateFormat($row['lastactivity'], $dateFormat);
+
+
+
 
 $output .= '<pre class="psOrderLog">' . print_r($up->pdoTools->getTime(), 1) . '</pre>';
 
 
 echo '<pre>';
-print_r($userProfile);
+print_r($row);
 print_r($output);
 die;
 

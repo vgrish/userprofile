@@ -13,7 +13,7 @@ $tmp = array(
 	),
 	'dateFormat' => array(
 		'type' => 'textfield',
-		'value' => '%d %b %Y %H:%M',
+		'value' => 'd F Y, H:i',
 	),
 	'gravatarIcon' => array(
 		'type' => 'textfield',

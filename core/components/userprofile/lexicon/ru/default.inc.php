@@ -111,3 +111,15 @@ $_lang['up_section_title_tickets'] = 'Заметки';
 $_lang['up_section_title_comments'] = 'Комментарии';
 $_lang['up_section_title_favorites'] = 'Избранное';
 
+// date
+
+$_lang['up_date_now'] = 'Только что';
+$_lang['up_date_today'] = 'Сегодня в';
+$_lang['up_date_yesterday'] = 'Вчера в';
+$_lang['up_date_tomorrow'] = 'Завтра в';
+$_lang['up_date_minutes_back'] = '["[[+minutes]] минута назад","[[+minutes]] минуты назад","[[+minutes]] минут назад"]';
+$_lang['up_date_minutes_back_less'] = 'меньше минуты назад';
+$_lang['up_date_hours_back'] = '["[[+hours]] час назад","[[+hours]] часа назад","[[+hours]] часов назад"]';
+$_lang['up_date_hours_back_less'] = 'меньше часа назад';
+$_lang['up_date_months'] = '["января","февраля","марта","апреля","мая","июня","июля","августа","сентября","октября","ноября","декабря"]';
+
