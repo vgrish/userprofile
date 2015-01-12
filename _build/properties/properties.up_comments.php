@@ -14,7 +14,7 @@ $tmp = array(
 	),
 	'tpl' => array(
 		'type' => 'textfield',
-		'value' => 'tpl.Tickets.comment.latest',
+		'value' => 'tpl.Tickets.comment.list.row',
 	),
 
 	'sortby' => array(
