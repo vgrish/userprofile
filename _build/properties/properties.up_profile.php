@@ -3,7 +3,7 @@
 $properties = array();
 
 $tmp = array(
-	'tpl' => array(
+	'tplUserProfile' => array(
 		'type' => 'textfield',
 		'value' => 'tpl.upProfile.main',
 	),

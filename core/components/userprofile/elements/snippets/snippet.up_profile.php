@@ -66,9 +66,9 @@ $outer['content'] = empty($tplSectionContent)
 	: $up->pdoTools->getChunk($tplSectionContent, array('content' => $content), $up->pdoTools->config['fastMode']);
 // output
 $outer = array_merge($row, $outer);
-$output = empty($tpl)
+$output = empty($tplUserProfile)
 	? $up->pdoTools->getChunk('', $outer)
-	: $up->pdoTools->getChunk($tpl, $outer, $up->pdoTools->config['fastMode']);
+	: $up->pdoTools->getChunk($tplUserProfile, $outer, $up->pdoTools->config['fastMode']);
 if (!empty($tplWrapper) && (!empty($wrapIfEmpty) || !empty($output))) {
 	$output = $up->pdoTools->getChunk($tplWrapper, array('output' => $output), $up->pdoTools->config['fastMode']);
 }

@@ -23,5 +23,9 @@
         <td>Активность</td>
         <td>[[!+lastactivity_format]]</td>
     </tr>
+    <tr>
+        <td>Последний Ip</td>
+        <td>[[!+ip]]</td>
+    </tr>
     </tbody>
 </table>
