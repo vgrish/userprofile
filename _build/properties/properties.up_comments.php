@@ -21,10 +21,10 @@ $tmp = array(
 		'type' => 'textfield',
 		'value' => 'createdon'
 	),
-	'groupby' => array(
+/*	'groupby' => array(
 		'type' => 'textfield',
 		'value' => 'TicketComment.id'
-	),
+	),*/
 
 	'sortdir' => array(
 		'type' => 'list'
@@ -45,7 +45,7 @@ $tmp = array(
 
 	'showLog' => array(
 		'type' => 'combo-boolean'
-	,'value' => false
+		,'value' => false
 	),
 
 
