@@ -32,6 +32,8 @@ $row['active_section'] = $active_section;
 // get user fields
 $userFields = $up->getUserFields($user_id);
 $row = array_merge($userFields, $row);
+// gravatar
+$row['gravatar'] = $up->config['gravatarUrl'].md5(strtolower($userFields['email'])).'?s='.$gravatarSize.'&d='.$gravatarIcon;
 // sections
 $allowedSections = $up->getAllowedSections();
 foreach ($allowedSections as $section) {

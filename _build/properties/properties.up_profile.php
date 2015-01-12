@@ -55,12 +55,12 @@ $tmp = array(
 	),
 	'gravatarSize' => array(
 		'type' => 'numberfield',
-		'value' => '24',
+		'value' => '64',
 	),
-	'gravatarUrl' => array(
+/*	'gravatarUrl' => array(
 		'type' => 'textfield',
 		'value' => 'https://www.gravatar.com/avatar/',
-	),
+	),*/
 
 	'showLog' => array(
 		'type' => 'combo-boolean',

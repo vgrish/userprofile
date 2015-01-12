@@ -1,15 +1,14 @@
 <div class="row userprofile-page">
     <div id="content" class="col-md-8">
         <div class="userprofile-avatar-wrapper">
-            <img src="https://id.modx.pro/assets/images/users/d076dd243e539df8937504a614dbfb1c.jpg" class="userprofile-avatar">
+            [[+photo]]
         </div>
 
-        <h3>Володя</h3>
+        <h3>&nbsp;&nbsp;[[+fullname]]</h3>
         <div class="clearfix"></div>
         <br>
 
         [[+section]]
-
         [[+content]]
 
     </div>
@@ -17,7 +16,7 @@
     <div id="sidebar" class="col-md-4">
         <div class="sidebar-block">
             <h4 class="title">
-                <a href="[[+main_url]]/[[+user_id]]/"> Володя </a>
+                <a href="[[+main_url]]/[[+user_id]]/">[[+fullname]] </a>
             </h4>
 
             <div class="row">
@@ -93,3 +92,6 @@
         </div>
     </div>
 </div>
+
+<!--up_photo <img src="[[+photo]]" class="userprofile-avatar">-->
+<!--up_!photo <img src="[[+gravatar]]" class="userprofile-avatar">-->
