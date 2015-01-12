@@ -11,16 +11,10 @@ $up->initialize($modx->context->key, $scriptProperties);
 $isAuthenticated = $modx->user->isAuthenticated($modx->context->key);
 $active_section = (!empty($scriptProperties['active_section'])) ? $scriptProperties['active_section'] : 'comments';
 $main_url = $up->config['main_url'];
-
 // where
 if (empty($showUnpublished)) {$where['Ticket.published'] = 1;}
 if (empty($showHidden)) {$where['Ticket.hidemenu'] = 0;}
 if (empty($showDeleted)) {$where['Ticket.deleted'] = 0;}
-/*$where = array(
-	'TicketComment.deleted' => 0
-	,'Ticket.published' => 1
-	,'Ticket.deleted' => 0
-);*/
 //
 if (!isset($cacheTime)) {$cacheTime = 1800;}
 if (!isset($depth)) {$depth = 10;}
@@ -39,8 +33,7 @@ if (!empty($parents) && $parents > 0) {
 }
 //
 if (!empty($user_id)) {
-	{$where['User.id:IN'] = $user_id;}
-	//$where['TicketComment.createdby'] = intval($user_id);
+	$where['TicketComment.createdby'] = intval($user_id);
 }
 elseif ($isAuthenticated) {
 	$modx->sendRedirect('/'.$main_url.'/'.$modx->user->id.'/');
@@ -50,7 +43,6 @@ else {
 }
 //
 $class = 'TicketComment';
-
 $innerJoin = array();
 $innerJoin['Thread'] = array('class' => 'TicketThread', 'on' => '`TicketComment`.`thread` = `Thread`.`id` AND `Thread`.`deleted` = 0');
 $innerJoin['Ticket'] = array('class' => 'Ticket', 'on' => '`Ticket`.`id` = `Thread`.`resource`');
@@ -145,7 +137,7 @@ if (!empty($cacheKey)) {
 	$modx->cacheManager->set('up/tickets/latest.'.$cacheKey, $output, $cacheTime);
 }
 if ($modx->user->hasSessionContext('mgr') && !empty($showLog)) {
-	$output .= '<pre class="TicketLatestLog">' . print_r($up->pdoTools->getTime(), 1) . '</pre>';
+	$output .= '<pre class="upLog">' . print_r($up->pdoTools->getTime(), 1) . '</pre>';
 }
 if (!empty($toPlaceholder)) {
 	$modx->setPlaceholder($toPlaceholder, $output);
@@ -153,64 +145,3 @@ if (!empty($toPlaceholder)) {
 else {
 	return $output;
 }
-
-/*$select = array(
-	'"Comment":"'.$modx->getSelectColumns('TicketComment', 'TicketComment', '', array('raw'), true).'"'
-	,'"Thread":"'.$modx->getSelectColumns('TicketThread', 'Thread', '', array('resource')).'"'
-	,'"User":"'.$modx->getSelectColumns('modUser', 'User', '', array('username')).'"'
-	,'"Profile":"'.$modx->getSelectColumns('modUserProfile', 'Profile', '', array('id'), true).'"'
-	,'"Ticket":"Ticket.pagetitle as `ticket.pagetitle`, Ticket.uri as `ticket.uri`, Ticket.id as `resource`, Ticket.privateweb"'
-	,'"Section":"Section.pagetitle as `section.pagetitle`, Section.uri as `section.uri`"'
-);
-
-$default = array(
-	'class' => 'TicketComment'
-	,'where' => json_encode($where)
-	,'leftJoin' => '[
-				{"class":"TicketThread","alias":"Thread","on":"Thread.id=TicketComment.thread"}
-				,{"class":"Ticket","alias":"Ticket","on":"Ticket.id=Thread.resource"}
-				,{"class":"TicketsSection","alias":"Section","on":"Section.id=Ticket.parent"}
-				,{"class":"modUser","alias":"User","on":"User.id=TicketComment.createdby"}
-				,{"class":"modUserProfile","alias":"Profile","on":"User.id=Profile.internalKey"}
-			]'
-	,'select' => '{'.implode(',',$select).'}'
-	,'groupby' => 'TicketComment.id'
-	,'sortby' => 'createdon'
-	,'sortdir' => 'desc'
-	,'gravatarIcon' => $gravatarIcon
-	,'gravatarSize' => $gravatarSize
-	,'gravatarUrl' => $up->config['gravatarUrl']
-	,'return' => 'data'
-);*/
-//
-$scriptProperties = array_merge($default, $scriptProperties);
-$up->pdoTools->setConfig($scriptProperties, false);
-$data = $up->pdoTools->run();
-//
-$Tickets = $modx->getService('tickets','Tickets',$modx->getOption('tickets.core_path',null,$modx->getOption('core_path').'components/tickets/').'model/tickets/',$scriptProperties);
-$privateUser = $modx->hasPermission('ticket_view_private');
-
-$output = null;
-foreach ($data as $v) {
-	if ($v['privateweb']) {
-		$v['pagetitle'] = '<i class="green icon-asterisk"></i> '.$v['pagetitle'];
-		if (!$privateUser) {
-			$v['text'] = '<p><i class="gray">Текст комментария скрыт.</i></p>';
-		}
-	}
-	$v['comments'] = $modx->getCount('TicketComment', array('published' => 1, 'thread' => $v['thread']));
-	$comment = $Tickets->prepareComment($v);
-	$output[] = $up->pdoTools->getChunk($tpl, $comment, $up->pdoTools->config['fastMode']);
-}
-$up->pdoTools->addTime('Chunks were processed');
-$total = $modx->getPlaceholder('total');
-//
-if (!empty($output)) {
-	$output = implode($up->pdoTools->config['outputSeparator'], $output);
-}
-if ($modx->user->hasSessionContext('mgr') && !empty($showLog)) { //? иневерт юз
-	$log = '<pre class="upLog">' . print_r($up->pdoTools->getTime(), 1) . '</pre>';
-	$output .= $log;
-}
-
-return $output;

@@ -1,7 +1,8 @@
-[[!pdoResources?
-&class_key=`Ticket`
-&tpl=`tpl.upSectionTickets.Row`
-&includeContent=`1`
+[[!pdoPage?
+&element=`upUserComments`
 &parents=`0`
-&where=`{"class_key":"Ticket","createdby":"[[!+user_id]]"}`
+&user_id=`[[+user_id]]`
+&showLog=`0`
 ]]
+
+[[!+page.nav]]
