@@ -103,25 +103,12 @@ if (!empty($rows) && is_array($rows)) {
 		// Processing main fields
 		$row['comments'] = $modx->getCount('TicketComment', array('thread' => $row['thread'], 'published' => 1));
 		// Prepare row
-		if ($class == 'Ticket') {
-			$row['date_ago'] = $Tickets->dateFormat($row['createdon']);
-			$properties = is_string($row['properties'])
-				? $modx->fromJSON($row['properties'])
-				: $row['properties'];
-			if (empty($properties['process_tags'])) {
-				foreach ($row as $field => $value) {
-					$row[$field] = str_replace(array('[',']'), array('&#91;','&#93;'), $value);
-				}
-			}
+		if (empty($row['createdby'])) {
+			$row['fullname'] = $row['name'];
+			$row['guest'] = 1;
 		}
-		else {
-			if (empty($row['createdby'])) {
-				$row['fullname'] = $row['name'];
-				$row['guest'] = 1;
-			}
-			$row['resource'] = $row['ticket.id'];
-			$row = $Tickets->prepareComment($row);
-		}
+		$row['resource'] = $row['ticket.id'];
+		$row = $Tickets->prepareComment($row);
 		// Processing chunk
 		$row['idx'] = $up->pdoTools->idx++;
 		$tpl = $up->pdoTools->defineChunk($row);
