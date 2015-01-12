@@ -5,7 +5,7 @@ $properties = array();
 $tmp = array(
 	'tplUserProfile' => array(
 		'type' => 'textfield',
-		'value' => 'tpl.upProfile.main',
+		'value' => 'tpl.upProfile',
 	),
 
 	'tplSectionContent' => array(

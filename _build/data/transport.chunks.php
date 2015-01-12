@@ -3,11 +3,11 @@
 $chunks = array();
 
 $tmp = array(
-	'tpl.upProfile.main' => array(
+	'tpl.upProfile' => array(
 		'file' => 'up_profile_main',
 		'description' => '',
 	),
-	'tpl.upUserInfo.main' => array(
+	'tpl.upUserInfo' => array(
 		'file' => 'up_user_info_main',
 		'description' => '',
 	),
