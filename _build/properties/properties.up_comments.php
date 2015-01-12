@@ -3,15 +3,27 @@
 $properties = array();
 
 $tmp = array(
+
+	'parents' => array(
+		'type' => 'textfield',
+		'value' => ''
+	),
+	'depth' => array(
+		'type' => 'numberfield',
+		'value' => 10
+	),
+
+
 	'tpl' => array(
 		'type' => 'textfield',
 		'value' => 'tpl.upUser.Row',
 	),
+
 	'tplWrapper' => array(
-		'type' => 'textfield'
-	,'value' => ''
+		'type' => 'textfield',
+		'value' => ''
 	),
-	'wrapIfEmpty' => array(
+	/*'wrapIfEmpty' => array(
 		'type' => 'combo-boolean'
 	,'value' => false
 	),
@@ -29,13 +41,13 @@ $tmp = array(
 		'type' => 'list'
 	,'options' => array(
 			array('text' => 'ASC','value' => 'ASC')
-		,array('text' => 'DESC','value' => 'DESC')
-		)
-	,'value' => 'ASC',
+			,array('text' => 'DESC','value' => 'DESC')
+			)
+		,'value' => 'ASC',
 	),
 	'limit' => array(
 		'type' => 'numberfield'
-	,'value' => 10
+		,'value' => 10
 	),
 	'offset' => array(
 		'type' => 'numberfield'
@@ -106,7 +118,7 @@ $tmp = array(
 	'dateFormat' => array(
 		'type' => 'textfield',
 		'value' => 'd F Y, H:i',
-	),
+	),*/
 
 );
 
