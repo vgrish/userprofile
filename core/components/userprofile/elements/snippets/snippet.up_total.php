@@ -6,6 +6,9 @@ if (!$up = $modx->getService('userprofile', 'userprofile', $modx->getOption('use
 }
 //
 if(empty($user_id)) {$scriptProperties['user_id'] = $user_id = $modx->getPlaceholder('user_id');}
+if(empty($pleTickets)) {$pleTickets = 'tickets';}
+if(empty($pleComments)) {$pleComments = 'comments';}
+if(empty($pleFavorites)) {$pleFavorites = 'favorites';}
 //
 $up->initialize($modx->context->key, $scriptProperties);
 // Limit by specified parents
@@ -21,7 +24,7 @@ if (!empty($parents)) {
 $where = array('createdby' => $user_id, 'deleted' => 0, 'published' => 1, 'class_key' => 'Ticket', 'privateweb' => 0);
 if (!empty($parents)) {$where['parent:IN'] = $parents;}
 $q = $modx->newQuery('Ticket', $where);
-$count['tickets'] = $modx->getCount('Ticket', $q);
+$count[$pleTickets] = $modx->getCount('Ticket', $q);
 // Comments
 $where = array('createdby' => $user_id, 'deleted' => 0);
 if (!empty($parents)) {$where['Ticket.parent:IN'] = $parents;}
@@ -31,11 +34,11 @@ $q->leftJoin('Ticket','Ticket','Ticket.id = Thread.resource');
 if (!$modx->hasPermission('ticket_view_private')) {
 	$q->where('privateweb = 0');
 }
-$count['comments'] = $modx->getCount('TicketComment', $q);
+$count[$pleComments] = $modx->getCount('TicketComment', $q);
 // star
 $where = array('createdby' => $user_id, 'class' => 'Ticket');
 $q = $modx->newQuery('TicketStar', $where);
-$count['favorites'] = $modx->getCount('TicketStar', $q);
+$count[$pleFavorites] = $modx->getCount('TicketStar', $q);
 //
 $rows = '';
 foreach($count as $k => $c) {
