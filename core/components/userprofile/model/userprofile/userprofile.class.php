@@ -241,18 +241,8 @@ class userprofile
 	 */
 	public function OnBeforeUserFormSave($sp)
 	{
-
-		$this->modx->log(1, print_r('==============', 1));
-		//$this->modx->log(1, print_r($sp, 1));
-		if ($this->isNew($sp)) {
-			return;
-		}
-		if (!$this->modx->user->hasSessionContext('mgr')) {
-
-			$this->modx->log(1, print_r('не админка', 1));
-
-			return;
-		}
+		if ($this->isNew($sp)) {return;}
+		if (!$this->modx->user->hasSessionContext('mgr')) {return;}
 		//
 		$this->config['json_response'] = 1;
 		$data = $sp['data'];
@@ -919,7 +909,7 @@ class userprofile
 			)
 			, 'full'
 		);
-		$chunk = $this->modx->getChunk($this->config['tplActivate'],
+		$chunk = $this->modx->getChunk($this->config['tplConfirm'],
 			array_merge(
 				$this->modx->user->getOne('Profile')->toArray()
 				, $this->modx->user->toArray()

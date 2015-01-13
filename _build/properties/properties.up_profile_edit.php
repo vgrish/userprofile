@@ -8,6 +8,11 @@ $tmp = array(
 		'value' => 'tpl.upProfile.form',
 	),
 
+	'tplConfirm' => array(
+		'type' => 'textfield',
+		'value' => 'tpl.upProfile.confirm',
+	),
+
 	'requiredFields' => array(
 		'type' => 'textfield',
 		'value' => 'username,email,fullname',

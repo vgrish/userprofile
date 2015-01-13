@@ -43,6 +43,11 @@ $tmp = array(
 		'file' => 'up_profile_form',
 		'description' => '',
 	),
+	'tpl.upProfile.confirm' => array(
+		'file' => 'up_profile_confirm',
+		'description' => '',
+	),
+
 );
 
 // Save chunks for setup options
