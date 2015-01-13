@@ -9,18 +9,18 @@
     </tr>
     <tr>
         <td>Заметки</td>
-        <td>40</td>
+        <td>[[!+up.total.tickets]]</td>
     </tr>
     <tr>
         <td>Комментарии</td>
-        <td>672</td>
+        <td>[[!+up.total.comments]]</td>
     </tr>
     <tr>
-        <td>[[%up_field_registration]]</td>
+        <td>Регистрация</td>
         <td>[[!+registration_format]]</td>
     </tr>
     <tr>
-        <td>[[%up_field_lastactivity]]</td>
+        <td>Активность</td>
         <td>[[!+lastactivity_format]]</td>
     </tr>
     <tr>

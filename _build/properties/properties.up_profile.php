@@ -22,7 +22,7 @@ $tmp = array(
 	),
 	'tplSectionRow' => array(
 		'type' => 'textfield',
-		'value' => '@INLINE <li class="[[+active]]"><a href="[[+main_url]]/[[!+user_id]]/[[+section]]">[[+sectiontitle]] <sup></sup></a></li>',
+		'value' => '@INLINE <li class="[[+active]]"><a href="[[+main_url]]/[[!+user_id]]/[[+section]]">[[+sectiontitle]]<sup>[[!+up.total.[[+section]]]]</sup></a></li>',
 	),
 
 	'allowedSections' => array(
