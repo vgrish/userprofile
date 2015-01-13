@@ -36,7 +36,10 @@ $tmp = array(
 
 	'filters' => array(
 		'type' => 'textarea',
-		'value' => 'info|upUserInfo:snippet'
+		'value' => 'info|upUserInfo:snippet,
+    				tickets|upSectionTickets:chunk,
+					comments|upSectionComments:chunk,
+					favorites|upSectionFavorites:chunk'
 	),
 
 	'allowGuest' => array(
