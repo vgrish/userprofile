@@ -32,6 +32,11 @@ $tmp = array(
 		'description' => '',
 	),
 
+	'upProfileEdit' => array(
+		'file' => 'up_profile_edit',
+		'description' => '',
+	),
+
 );
 
 foreach ($tmp as $k => $v) {
