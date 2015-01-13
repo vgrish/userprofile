@@ -339,19 +339,19 @@ class userprofile
 	{
 
 		//echo '333';
-		return true;
+		//return true;
 
-/*		if (!empty($action)) {
+		if (!empty($action)) {
 			@list($name, $action) = explode('/', strtolower(trim($action)));
 
 			if (method_exists($this, $action) && (in_array($name, $this->actions))) {
-				$this->$name(array_merge($this->config, $scriptProperties));
+				return $this->$name(array_merge($this->config, $scriptProperties));
 			}
 			else {
 				return 'Could not load "'.$name.'"';
 			}
-		}*/
-		//return false;
+		}
+		return false;
 	}
 
 	/**
