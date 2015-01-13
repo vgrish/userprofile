@@ -892,12 +892,19 @@ class userprofile
 	public function changeEmail($email, $id)
 	{
 		$activationHash = md5(uniqid(md5($this->modx->user->get('id')), true));
+		$key = md5($this->modx->user->Profile->get('internalKey'));
 		/** @var modDbRegister $register */
 		$register = $this->modx->getService('registry', 'registry.modRegistry')->getRegister('user', 'registry.modDbRegister');
 		$register->connect();
-		$register->subscribe('/email/change/');
+		$register->subscribe('/email/change/'.$key);
+		//
+		$msgs = $register->read(array('poll_limit' => 1, 'remove_read' => false));
+		if (!empty($msgs)) {
+			return false;
+		}
+		//
 		$register->send('/email/change/',
-			array(md5($this->modx->user->Profile->get('internalKey')) => array(
+			array($key => array(
 				'hash' => $activationHash,
 				'email' => $email,
 				'redirect' => $this->modx->makeUrl($this->getUserPage(), '', '', 'full'). '/' . $this->modx->user->get('id'),
