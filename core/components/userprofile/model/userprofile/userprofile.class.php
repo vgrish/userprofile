@@ -93,7 +93,7 @@ class userprofile
 			'profileFields' => 'username:50,email:50,fullname:50,phone:12,mobilephone:12,dob:10,gender,address,country,city,state,zip,fax,photo,comment,website,specifiedpassword,confirmpassword',
 
 			'avatarPath' => 'images/users/',
-			'avatarParams' => '{"w":200,"h":200,"zc":0,"bg":"ffffff","f":"jpg"}',
+			'avatarParams' => '{"w":294,"h":230,"zc":0,"bg":"ffffff","f":"jpg"}',
 
 
 		), $config);

@@ -25,7 +25,7 @@ $tmp = array(
 
 	'avatarParams' => array(
 		'type' => 'textfield',
-		'value' => '{"w":200,"h":200,"zc":0,"bg":"ffffff","f":"jpg"}',
+		'value' => '{"w":294,"h":230,"zc":0,"bg":"ffffff","f":"jpg"}',
 	),
 	'avatarPath' => array(
 		'type' => 'textfield',
