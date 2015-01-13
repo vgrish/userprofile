@@ -367,6 +367,9 @@ class userprofile
 		if (!empty($action)) {
 			@list($name, $action) = explode('/', strtolower(trim($action)));
 			if (method_exists($this, $action) && (in_array($name, $this->actions))) {
+				
+				$this->modx->log(1, print_r($sp, 1));
+
 				return $this->$action(array_merge($this->config, $sp));
 			} else {
 				return 'Could not load "' . $action . '"';
@@ -963,7 +966,7 @@ class userprofile
 	 *
 	 * @param $data
 	 */
-	public function confirmemail($data)
+	public function confirmemail($data = array())
 	{
 		$top = '/email/change/';
 		$key = md5($this->modx->user->Profile->get('internalKey'));
