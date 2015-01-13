@@ -40,15 +40,6 @@ $tmp = array(
 		'type' => 'textfield',
 		'value' => "\n"
 	),
-	'cacheKey' => array(
-		'type' => 'textfield',
-		'value' => '',
-	),
-	'cacheTime' => array(
-		'type' => 'numberfield',
-		'value' => 1800,
-	),
-
 
 );
 
