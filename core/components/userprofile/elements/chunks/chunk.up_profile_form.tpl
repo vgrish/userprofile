@@ -7,7 +7,7 @@
         <label class="col-sm-2 control-label">[[%up_profile_avatar]]</label>
         <div class="col-sm-10">
             <img src="[[+avatar]]" id="profile-user-photo" data-gravatar="[[+gravatar]]?s=100" width="100" />
-            <a href="#" id="office-user-photo-remove" [[+photo:is=``:then=`style="display:none;"`]]">
+            <a href="#" id="userprofile-user-photo-remove" [[+photo:is=``:then=`style="display:none;"`]]">
             [[%up_profile_avatar_remove]]
             <i class="glyphicon glyphicon-remove"></i>
             </a>

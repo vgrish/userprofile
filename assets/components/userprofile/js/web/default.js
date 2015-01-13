@@ -2,10 +2,10 @@ userprofile = {
     initialize: function() {
 
         if(!jQuery().ajaxForm) {
-            document.write('<script src="'+userprofileConfig.jsUrl+'web/lib/jquery.form.min.js"><\/script>');
+            document.write('<script src="'+userprofileConfig.jsUrl+'lib/jquery.form.min.js"><\/script>');
         }
         if(!jQuery().jGrowl) {
-            document.write('<script src="'+userprofileConfig.jsUrl+'web/lib/jquery.jgrowl.min.js"><\/script>');
+            document.write('<script src="'+userprofileConfig.jsUrl+'lib/jquery.jgrowl.min.js"><\/script>');
         }
 
         $(document).ready(function() {

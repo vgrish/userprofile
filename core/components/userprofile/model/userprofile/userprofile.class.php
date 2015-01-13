@@ -27,7 +27,8 @@ class userprofile
 
 	public $actions = array(
 		//'auth/login',
-		'auth/logout',
+		'auth',
+		'profile',
 	);
 
 	/* @var pdoTools $pdoTools */
@@ -52,6 +53,7 @@ class userprofile
 			'jsUrl' => $assetsUrl . 'js/',
 			'imagesUrl' => $assetsUrl . 'images/',
 			'connectorUrl' => $connectorUrl,
+			'actionUrl' => $assetsUrl. 'action.php',
 
 			'corePath' => $corePath,
 			'modelPath' => $corePath . 'model/',
@@ -322,7 +324,7 @@ class userprofile
 			switch ($_REQUEST['action']) {
 				case 'auth/logout':
 				{
-					$this->logOut();
+					$this->logout();
 					break;
 				}
 				default:
@@ -333,11 +335,30 @@ class userprofile
 		}
 	}
 
+	public function loadAction($action, $scriptProperties = array())
+	{
+
+		//echo '333';
+		return true;
+
+/*		if (!empty($action)) {
+			@list($name, $action) = explode('/', strtolower(trim($action)));
+
+			if (method_exists($this, $action) && (in_array($name, $this->actions))) {
+				$this->$name(array_merge($this->config, $scriptProperties));
+			}
+			else {
+				return 'Could not load "'.$name.'"';
+			}
+		}*/
+		//return false;
+	}
+
 	/**
 	 * @param array $logout_data
 	 * @param int $id
 	 */
-	public function logOut($logout_data = array(), $id = 0)
+	public function logout($logout_data = array(), $id = 0)
 	{
 /*
 		if ($this->modx->user->hasSessionContext('mgr') && !$this->modx->user->hasSessionContext($this->modx->context->key)) {

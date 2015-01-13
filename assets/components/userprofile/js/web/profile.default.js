@@ -12,7 +12,11 @@ userprofile.Profile = {
                 elem.find('.tmp-disabled').attr('disabled', false);
             });
 
-        $(document).on('click', '#office-user-photo-remove', function(e) {
+        $(document).on('click', '#userprofile-user-photo-remove', function(e) {
+
+
+            console.log('userprofile-user-photo-remove');
+
             e.preventDefault();
             userprofile.Profile.clearPhoto(elem);
             elem.submit();
@@ -20,8 +24,11 @@ userprofile.Profile = {
         });
 
         $(document).on('submit', selector, function(e) {
+
+            console.log('submit');
+
             $(this).ajaxSubmit({
-                url: OfficeConfig.actionUrl
+                url: userprofileConfig.actionUrl
                 ,dataType: 'json'
                 ,beforeSubmit: function(data) {
                     userprofile.Message.close();
@@ -29,7 +36,7 @@ userprofile.Profile = {
                     $(selector + ' .message').text('');
                     $(selector + ' .has-error').removeClass('has-error');
                     data.push({name: 'action', value:'Profile/Update'});
-                    data.push({name: 'pageId', value: OfficeConfig.pageId});
+                    //data.push({name: 'pageId', value: userprofileConfig.pageId});
                 }
                 ,success: function(response) {
                     var i;
@@ -44,11 +51,11 @@ userprofile.Profile = {
                                         var $photo = $('#profile-user-photo');
                                         if (response.data[i] != '') {
                                             $photo.prop('src', response.data[i]);
-                                            $('#office-user-photo-remove').show();
+                                            $('#userprofile-user-photo-remove').show();
                                         }
                                         else {
                                             $photo.prop('src', $photo.data('gravatar'));
-                                            $('#office-user-photo-remove').hide();
+                                            $('#userprofile-user-photo-remove').hide();
                                         }
                                     }
                                     else if (i == 'extended') {
@@ -91,4 +98,4 @@ userprofile.Profile = {
 
 };
 
-userprofile.Profile.initialize('#office-profile-form');
+userprofile.Profile.initialize('#userprofile-form');

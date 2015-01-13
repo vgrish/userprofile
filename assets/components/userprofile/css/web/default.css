@@ -1,3 +1,9 @@
+@import url("./lib/jquery.jgrowl.css");
+
+.userprofile-message-success  {background-color: green !important;}
+.userprofile-message-error  {background-color: brown !important;}
+.userprofile-message-info  {background-color: black !important;}
+
 .userprofile-page .userprofile-avatar, .userprofile-list-row .userprofile-avatar{
     max-width: 100%;
     max-height: 100%;
