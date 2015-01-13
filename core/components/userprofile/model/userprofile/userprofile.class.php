@@ -89,6 +89,12 @@ class userprofile
 			'delimeterSection' => '|',
 			'delimeterAction' => ':',
 
+			'requiredFields' => 'username,email,fullname',
+			'profileFields' => 'username:50,email:50,fullname:50,phone:12,mobilephone:12,dob:10,gender,address,country,city,state,zip,fax,photo,comment,website,specifiedpassword,confirmpassword',
+
+			'avatarPath' => 'images/users/',
+			'avatarParams' => '{"w":200,"h":200,"zc":0,"bg":"ffffff","f":"jpg"}',
+
 
 		), $config);
 
@@ -359,7 +365,107 @@ class userprofile
 			return $this->error($this->modx->lexicon('up_auth_err'));
 		}*/
 
-		$this->modx->log(1, print_r($this->config, 1));
+		$requiredFields = !empty($this->config['requiredFields'])
+			? array_map('trim', explode(',', $this->config['requiredFields']))
+			: array();
+
+		$profileFields = array();
+		$fields = array(
+			'requiredFields' => $requiredFields,
+			'avatarPath' => $this->config['avatarPath'],
+			'avatarParams' => $this->config['avatarParams'],
+		);
+		//
+		$tmp = explode(',', $this->config['profileFields']);
+		foreach ($tmp as $field) {
+			if (strpos($field, ':') !== false) {
+				list($key, $length) = explode(':', $field);
+			}
+			else {
+				$key = $field;
+				$length = 0;
+			}
+			$profileFields[$key] = $length;
+		}
+		//
+		foreach ($requiredFields as $field) {
+			if (!isset($profileFields[$field])) {
+				$profileFields[$field] = 0;
+			}
+		}
+		//
+		foreach ($profileFields as $field => $length) {
+			if (isset($data[$field])) {
+				if ($field == 'comment') {
+					$fields[$field] = empty($length)
+						? trim($data[$field])
+						: trim(substr($data[$field], $length));
+				}
+				else {
+					$fields[$field] = $this->Sanitize($data[$field], $length);
+				}
+			}
+			// Extended fields
+			elseif (preg_match('/(.*?)\[(.*?)\]/', $field, $matches)) {
+				if (isset($data[$matches[1]][$matches[2]])) {
+					$fields[$matches[1]][$matches[2]] = $this->Sanitize($data[$matches[1]][$matches[2]], $length);
+				}
+			}
+		}
+		//
+		$changeEmail = false;
+		$new_email = '';
+		if (!empty($fields['email'])) {
+			$current_email = $this->modx->user->Profile->get('email');
+			$new_email = trim($fields['email']);
+			$changeEmail = strtolower($current_email) != strtolower($new_email);
+		}
+		//
+		/* @var modProcessorResponse $response */
+		$response = $this->runProcessor('profile/update', $fields);
+		if ($response->isError()) {
+			$message = $response->hasMessage()
+				? $response->getMessage()
+				: $this->modx->lexicon('office_profile_err_update');
+			$errors = array();
+			if ($response->hasFieldErrors()) {
+				if ($tmp = $response->getFieldErrors()) {
+					foreach ($tmp as $error) {
+						$errors[$error->field] = $error->message;
+					}
+				}
+			}
+			return $this->error($message, $errors);
+		}
+		if ($changeEmail && !empty($new_email)) {
+			$page_id = !empty($data['pageId'])
+				? $data['pageId']
+				: $this->modx->getOption('office_profile_page_id');
+			$change = $this->changeEmail($new_email, $page_id);
+			$message = ($change === true)
+				? $this->modx->lexicon('office_profile_msg_save_email')
+				: $this->modx->lexicon('office_profile_msg_save_noemail', array('errors' => $change));
+		}
+		else {
+			$object = $response->getObject();
+			$message = !empty($object['specifiedpassword'])
+				? $this->modx->lexicon('office_profile_msg_save_password', array('password' => $object['specifiedpassword']))
+				: $this->modx->lexicon('office_profile_msg_save');
+		}
+		$saved = array();
+		$user = $this->modx->getObject('modUser', $this->modx->user->id);
+		$profile = $this->modx->getObject('modUserProfile', array('internalKey' => $this->modx->user->id));
+		$tmp = array_merge($profile->toArray(), $user->toArray());
+		if (!empty($new_email)) {
+			$tmp['email'] = $new_email;
+		}
+		foreach ($fields as $k => $v) {
+			if (isset($tmp[$k]) && isset($data[$k])) {
+				$saved[$k] = $tmp[$k];
+			}
+		}
+		return $this->success($message, $saved);
+
 
 		$this->modx->log(1, print_r($data, 1));
 
@@ -790,6 +896,40 @@ class userprofile
 			$this->loadPdoTools();
 		}
 		return $this->pdoTools->getChunk($name, $properties, $fastMode);
+	}
+
+	/**
+	 * from https://github.com/bezumkin/Office/blob/97d3e6112aa9868e7d848efd4345052ed103850b/core/components/office/controllers/profile.class.php#L254
+	 *
+	 * Sanitizes a string
+	 *
+	 * @param string $string The string to sanitize
+	 * @param integer $length The length of sanitized string
+	 * @return string The sanitized string.
+	 */
+	public function Sanitize($string = '', $length = 0) {
+		$expr = $this->modx->getOption('up_sanitize_pcre', null, '/[^-_a-z\p{L}0-9@\s\.\,\:\/\\\]+/iu', true);
+		$string = html_entity_decode($string, ENT_QUOTES, 'UTF-8');
+		$sanitized = trim(preg_replace($expr, '', $string));
+		return !empty($length)
+			? mb_substr($sanitized, 0, $length, 'UTF-8')
+			: $sanitized;
+	}
+
+	/**
+	 * Shorthand for load and run an processor in this component
+	 *
+	 * @param string $action
+	 * @param array $scriptProperties
+	 *
+	 * @return mixed
+	 */
+	function runProcessor($action = '', $scriptProperties = array()) {
+		$this->modx->error->errors = $this->modx->error->message = null;
+		return $this->modx->runProcessor($action, $scriptProperties, array(
+				'processors_path' => $this->config['processorsPath']
+			)
+		);
 	}
 
 	/**
