@@ -974,6 +974,7 @@ class userprofile
 
 		$this->modx->log(1, print_r('======+++=====4', 1));
 		$this->modx->log(1, print_r($msgs , 1));
+		$this->modx->log(1, print_r($data , 1));
 
 		if (!empty($msgs[0])) {
 			$msgs = reset($msgs);
