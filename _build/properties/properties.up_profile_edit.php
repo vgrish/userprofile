@@ -25,7 +25,7 @@ $tmp = array(
 
 	'js' => array(
 		'type' => 'textfield',
-		'value' => '[[+assetsUrl]]js/web/lib/profile.default.js',
+		'value' => '[[+assetsUrl]]js/web/profile.default.js',
 	),
 
 

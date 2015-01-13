@@ -8,7 +8,7 @@ $up->initialize($modx->context->key, $scriptProperties);
 $isAuthenticated = $modx->user->isAuthenticated($modx->context->key);
 
 
-		$isAuthenticated = true;
+$isAuthenticated = true;
 //
 if ($isAuthenticated) {
 	$user_id = $modx->user->id;
@@ -17,7 +17,7 @@ else {
 	$modx->sendErrorPage();
 }
 //
-		$user_id = 2;
+$user_id = 2;
 
 $row = $up->getUserFields($user_id);
 $row = $up->prepareData($row);
@@ -30,7 +30,10 @@ $output = empty($tplProfile)
 	? $up->pdoTools->getChunk('', $row)
 	: $up->pdoTools->getChunk($tplProfile, $row, $up->pdoTools->config['fastMode']);
 
-$modx->regClientScript(str_replace('[[+assetsUrl]]', $this->config['assetsUrl'], $js));
+$modx->regClientScript(str_replace('[[+assetsUrl]]', $up->config['assetsUrl'], $js));
+
+//echo '<pre>';
+//print_r($up->config['assetsUrl']);die;
 
 
 return $output;
