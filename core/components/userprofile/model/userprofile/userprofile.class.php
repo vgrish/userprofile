@@ -949,8 +949,8 @@ class userprofile
 		if (!empty($msgs[0])) {
 			$msgs = reset($msgs);
 			if (@$data['hash'] === @$msgs['hash'] && !empty($msgs['email'])) {
-				//$this->modx->user->set('username', $msgs['email']);
-				$this->modx->user->getOne('Profile')->set('email', $msgs['email']);
+				$this->modx->user->set('username', $msgs['email']);
+				//$this->modx->user->getOne('Profile')->set('email', $msgs['email']);
 				$this->modx->user->save();
 			}
 		}
