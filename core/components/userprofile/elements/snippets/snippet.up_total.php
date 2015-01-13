@@ -5,7 +5,7 @@ if (!$up = $modx->getService('userprofile', 'userprofile', $modx->getOption('use
 	return 'Could not load userprofile class!';
 }
 //
-if(empty($user_id)) {$scriptProperties['user_id'] = $user_id = $modx->getPlaceholder('user_id');}
+if(empty($userId)) {$scriptProperties['userId'] = $userId = $modx->getPlaceholder('user_id');}
 if(empty($pleTickets)) {$pleTickets = 'tickets';}
 if(empty($pleComments)) {$pleComments = 'comments';}
 if(empty($pleFavorites)) {$pleFavorites = 'favorites';}
@@ -21,12 +21,12 @@ if (!empty($parents)) {
 	}
 }
 // Tickets
-$where = array('createdby' => $user_id, 'deleted' => 0, 'published' => 1, 'class_key' => 'Ticket', 'privateweb' => 0);
+$where = array('createdby' => $userId, 'deleted' => 0, 'published' => 1, 'class_key' => 'Ticket', 'privateweb' => 0);
 if (!empty($parents)) {$where['parent:IN'] = $parents;}
 $q = $modx->newQuery('Ticket', $where);
 $count[$pleTickets] = $modx->getCount('Ticket', $q);
 // Comments
-$where = array('createdby' => $user_id, 'deleted' => 0);
+$where = array('createdby' => $userId, 'deleted' => 0);
 if (!empty($parents)) {$where['Ticket.parent:IN'] = $parents;}
 $q = $modx->newQuery('TicketComment', $where);
 $q->leftJoin('TicketThread','Thread','Thread.id = TicketComment.thread');
@@ -36,7 +36,7 @@ if (!$modx->hasPermission('ticket_view_private')) {
 }
 $count[$pleComments] = $modx->getCount('TicketComment', $q);
 // star
-$where = array('createdby' => $user_id, 'class' => 'Ticket');
+$where = array('createdby' => $userId, 'class' => 'Ticket');
 $q = $modx->newQuery('TicketStar', $where);
 $count[$pleFavorites] = $modx->getCount('TicketStar', $q);
 //

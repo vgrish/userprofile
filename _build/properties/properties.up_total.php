@@ -4,7 +4,7 @@ $properties = array();
 
 $tmp = array(
 
-	'user_id' => array(
+	'userId' => array(
 		'type' => 'numberfield',
 		'value' => '',
 	),
