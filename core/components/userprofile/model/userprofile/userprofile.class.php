@@ -340,8 +340,6 @@ class userprofile
 
 	public function loadAction($action, $sp = array())
 	{
-		$this->modx->log(1, print_r($action, 1));
-
 		if (!empty($action)) {
 			@list($name, $action) = explode('/', strtolower(trim($action)));
 			if (method_exists($this, $action) && (in_array($name, $this->actions))) {
@@ -357,9 +355,14 @@ class userprofile
 	public function update($data = array())
 	{
 		$this->config['json_response'] = 1;
-		if (!$this->modx->user->isAuthenticated($this->modx->context->key)) {
-			return $this->error($this->modx->lexicon('office_err_auth'));
-		}
+/*		if (!$this->modx->user->isAuthenticated($this->modx->context->key)) {
+			return $this->error($this->modx->lexicon('up_auth_err'));
+		}*/
+
+		$this->modx->log(1, print_r($this->config, 1));
+
+		$this->modx->log(1, print_r($data, 1));
+
 	}
 
 	/**

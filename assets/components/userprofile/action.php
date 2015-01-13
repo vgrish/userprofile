@@ -40,7 +40,7 @@ unset($_REQUEST['action']);
 if (!$response = $up->loadAction($action, $_REQUEST)) {
 	$response = $modx->toJSON(array(
 		'success' => false
-		,'message' => $modx->lexicon('up_err_action_nf')
+		,'message' => $modx->lexicon('up_action_err')
 	));
 }
 @session_write_close();
