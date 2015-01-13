@@ -420,7 +420,7 @@ class userprofile
 			$new_email = trim($fields['email']);
 			$changeEmail = strtolower($current_email) != strtolower($new_email);
 		}
-		// 
+		//
 		/* @var modProcessorResponse $response */
 		$response = $this->runProcessor('profile/update', $fields);
 		if ($response->isError()) {
