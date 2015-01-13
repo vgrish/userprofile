@@ -426,7 +426,7 @@ class userprofile
 		if ($response->isError()) {
 			$message = $response->hasMessage()
 				? $response->getMessage()
-				: $this->modx->lexicon('office_profile_err_update');
+				: $this->modx->lexicon('up_profile_err_update');
 			$errors = array();
 			if ($response->hasFieldErrors()) {
 				if ($tmp = $response->getFieldErrors()) {
@@ -438,19 +438,16 @@ class userprofile
 			return $this->error($message, $errors);
 		}
 		if ($changeEmail && !empty($new_email)) {
-			$page_id = !empty($data['pageId'])
-				? $data['pageId']
-				: $this->modx->getOption('office_profile_page_id');
-			$change = $this->changeEmail($new_email, $page_id);
+			$change = false;
 			$message = ($change === true)
-				? $this->modx->lexicon('office_profile_msg_save_email')
-				: $this->modx->lexicon('office_profile_msg_save_noemail', array('errors' => $change));
+				? $this->modx->lexicon('up_profile_msg_save_email')
+				: $this->modx->lexicon('up_profile_msg_save_noemail', array('errors' => $change));
 		}
 		else {
 			$object = $response->getObject();
 			$message = !empty($object['specifiedpassword'])
-				? $this->modx->lexicon('office_profile_msg_save_password', array('password' => $object['specifiedpassword']))
-				: $this->modx->lexicon('office_profile_msg_save');
+				? $this->modx->lexicon('up_profile_msg_save_password', array('password' => $object['specifiedpassword']))
+				: $this->modx->lexicon('up_profile_msg_save');
 		}
 		$saved = array();
 		$user = $this->modx->getObject('modUser', $this->modx->user->id);
