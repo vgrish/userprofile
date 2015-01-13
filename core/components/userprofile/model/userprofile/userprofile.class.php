@@ -243,9 +243,15 @@ class userprofile
 	{
 
 		$this->modx->log(1, print_r('==============', 1));
-		$this->modx->log(1, print_r($sp, 1));
+		//$this->modx->log(1, print_r($sp, 1));
+		if ($this->isNew($sp)) {return;}
+		if (!$this->modx->user->hasSessionContext('mgr')) {
 
-		if ($this->isNew($sp)) return;
+			$this->modx->log(1, print_r('не админка', 1));
+
+			return;
+		}
+		//
 		$this->config['json_response'] = 1;
 		$data = $sp['data'];
 		$user_id = $data['id'];
