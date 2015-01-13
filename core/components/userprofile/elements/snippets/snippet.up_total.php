@@ -21,7 +21,7 @@ if (!empty($parents)) {
 $where = array('createdby' => $user_id, 'deleted' => 0, 'published' => 1, 'class_key' => 'Ticket', 'privateweb' => 0);
 if (!empty($parents)) {$where['parent:IN'] = $parents;}
 $q = $modx->newQuery('Ticket', $where);
-$count['topics'] = $modx->getCount('Ticket', $q);
+$count['tickets'] = $modx->getCount('Ticket', $q);
 // Comments
 $where = array('createdby' => $user_id, 'deleted' => 0);
 if (!empty($parents)) {$where['Ticket.parent:IN'] = $parents;}
@@ -35,7 +35,7 @@ $count['comments'] = $modx->getCount('TicketComment', $q);
 // star
 $where = array('createdby' => $user_id, 'class' => 'Ticket');
 $q = $modx->newQuery('TicketStar', $where);
-$count['stars'] = $modx->getCount('TicketStar', $q);
+$count['favorites'] = $modx->getCount('TicketStar', $q);
 //
 $rows = '';
 foreach($count as $k => $c) {
