@@ -891,13 +891,13 @@ class userprofile
 	 */
 	public function changeEmail($email, $id)
 	{
-		$activationHash = md5(uniqid(md5($this->modx->user->get('email') . '/' . $this->modx->user->get('id')), true));
+		$activationHash = md5(uniqid(md5($this->modx->user->get('id')), true));
 		/** @var modDbRegister $register */
 		$register = $this->modx->getService('registry', 'registry.modRegistry')->getRegister('user', 'registry.modDbRegister');
 		$register->connect();
 		$register->subscribe('/email/change/');
 		$register->send('/email/change/',
-			array(md5($this->modx->user->Profile->get('email')) => array(
+			array(md5($this->modx->user->Profile->get('internalKey')) => array(
 				'hash' => $activationHash,
 				'email' => $email,
 				'redirect' => $this->modx->makeUrl($this->getUserPage(), '', '', 'full'). '/' . $this->modx->user->get('id'),
@@ -944,7 +944,7 @@ class userprofile
 		/** @var modDbRegister $register */
 		$register = $this->modx->getService('registry', 'registry.modRegistry')->getRegister('user', 'registry.modDbRegister');
 		$register->connect();
-		$register->subscribe('/email/change/' . md5($this->modx->user->Profile->get('email')));
+		$register->subscribe('/email/change/' . md5($this->modx->user->Profile->get('internalKey')));
 		$msgs = $register->read(array('poll_limit' => 1));
 		if (!empty($msgs[0])) {
 			$msgs = reset($msgs);
