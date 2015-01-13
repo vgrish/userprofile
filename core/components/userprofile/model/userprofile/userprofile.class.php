@@ -908,7 +908,7 @@ class userprofile
 		$this->modx->log(1, print_r('===========', 1));
 		$this->modx->log(1, print_r($key, 1));
 
-		$msgs = $this->registry->read(array('poll_limit' => 1, 'remove_read' => false));
+		$msgs = $this->registry->read(array('poll_limit' => 1, 'remove_read' => true));
 		if (!empty($msgs)) {
 			return false;
 		}
@@ -925,7 +925,7 @@ class userprofile
 				'email' => $email,
 				'redirect' => $this->modx->makeUrl($this->getUserPage(), '', '', 'full') . $this->modx->user->get('id'),
 				)
-			), array('ttl' => 86400)
+			), array('ttl' => 60)
 		);
 		$link = $this->modx->makeUrl($id, '', array(
 				'action' => 'profile/confirmemail',
