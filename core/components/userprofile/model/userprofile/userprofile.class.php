@@ -243,7 +243,7 @@ class userprofile
 	{
 
 		$this->modx->log(1, print_r('==============', 1));
-		$this->modx->log(1, print_r($sp['ctx'], 1));
+		$this->modx->log(1, print_r($sp, 1));
 
 		if ($this->isNew($sp)) return;
 		$this->config['json_response'] = 1;
