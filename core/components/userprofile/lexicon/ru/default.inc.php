@@ -159,3 +159,4 @@ $_lang['up_profile_msg_save_password'] = 'Изменения были успеш
 $_lang['up_profile_msg_save_email'] = 'Изменения были успешно сохранены. Ваш email не изменится, пока вы его не подтвердите.';
 $_lang['up_profile_msg_save_noemail'] = 'Изменения были успешно сохранены, но мы не смогли отправить ссылку на новый email: [[+errors]].';
 $_lang['up_profile_err_field_fullname'] = 'Вы должны указать ваше полное имя.';
+

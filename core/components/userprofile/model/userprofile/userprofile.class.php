@@ -438,7 +438,7 @@ class userprofile
 			return $this->error($message, $errors);
 		}
 		if ($changeEmail && !empty($new_email)) {
-			$change = false;
+			$change = $this->changeEmail($new_email, $this->config['main_url']);
 			$message = ($change === true)
 				? $this->modx->lexicon('up_profile_msg_save_email')
 				: $this->modx->lexicon('up_profile_msg_save_noemail', array('errors' => $change));
@@ -851,6 +851,78 @@ class userprofile
 			}
 		}
 		return $text;
+	}
+
+	/**
+	 * Method for change email of user
+	 *
+	 * @param $email
+	 * @param $id
+	 *
+	 * @return bool
+	 */
+	public function changeEmail($email, $id) {
+		$activationHash = md5(uniqid(md5($this->modx->user->get('email') . '/' . $this->modx->user->get('id')), true));
+		/** @var modDbRegister $register */
+		$register = $this->modx->getService('registry', 'registry.modRegistry')->getRegister('user', 'registry.modDbRegister');
+		$register->connect();
+		$register->subscribe('/email/change/');
+		$register->send('/email/change/',
+			array(md5($this->modx->user->Profile->get('email')) => array(
+				'hash' => $activationHash,
+				'email' => $email,
+			)
+			), array('ttl' => 86400));
+		$link = $this->modx->makeUrl($id, '', array(
+				'action' => 'profile/confirmEmail',
+				'email' => $email,
+				'hash' => $activationHash,
+			)
+			, 'full'
+		);
+		$chunk = $this->modx->getChunk($this->config['tplActivate'],
+			array_merge(
+				$this->modx->user->getOne('Profile')->toArray()
+				,$this->modx->user->toArray()
+				,array('link' => $link)
+			)
+		);
+		/** @var modPHPMailer $mail */
+		$mail = $this->modx->getService('mail', 'mail.modPHPMailer');
+		$mail->set(modMail::MAIL_BODY, $chunk);
+		$mail->set(modMail::MAIL_FROM, $this->modx->getOption('emailsender'));
+		$mail->set(modMail::MAIL_FROM_NAME, $this->modx->getOption('site_name'));
+		$mail->set(modMail::MAIL_SENDER, $this->modx->getOption('emailsender'));
+		$mail->set(modMail::MAIL_SUBJECT, $this->modx->lexicon('up_profile_email_subject'));
+		$mail->address('to', $email);
+		$mail->address('reply-to', $this->modx->getOption('emailsender'));
+		$mail->setHTML(true);
+		$response = !$mail->send()
+			? $mail->mailer->ErrorInfo
+			: true;
+		$mail->reset();
+		return $response;
+	}
+	/**
+	 * Method for confirmation of user email
+	 *
+	 * @param $data
+	 */
+	public function confirmEmail($data) {
+		/** @var modDbRegister $register */
+		$register = $this->modx->getService('registry', 'registry.modRegistry')->getRegister('user', 'registry.modDbRegister');
+		$register->connect();
+		$register->subscribe('/email/change/' . md5($this->modx->user->Profile->get('email')));
+		$msgs = $register->read(array('poll_limit' => 1));
+		if (!empty($msgs[0])) {
+			$msgs = reset($msgs);
+			if (@$data['hash'] === @$msgs['hash'] && !empty($msgs['email'])) {
+				//$this->modx->user->set('username', $msgs['email']);
+				$this->modx->user->getOne('Profile')->set('email', $msgs['email']);
+				$this->modx->user->save();
+			}
+		}
+		$this->modx->sendRedirect($this->modx->makeUrl($this->modx->resource->id, '', '', 'full'));
 	}
 
 	/**
