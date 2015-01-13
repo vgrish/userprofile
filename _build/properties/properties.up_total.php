@@ -23,15 +23,7 @@ $tmp = array(
 		'type' => 'numberfield',
 		'value' => 10
 	),
-	'totalVar' => array(
-		'type' => 'textfield',
-		'value' => 'total'
-	),
 
-	'showLog' => array(
-		'type' => 'combo-boolean',
-		'value' => false,
-	),
 	'toPlaceholder' => array(
 		'type' => 'combo-boolean',
 		'value' => false,
