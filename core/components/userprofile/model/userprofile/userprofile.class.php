@@ -342,7 +342,7 @@ class userprofile
 
 			$this->modx->log(1, print_r($_REQUEST['action'], 1));
 
-			$this->loadAction($_REQUEST['action'], array());
+			$this->loadAction($_REQUEST['action'], $_REQUEST);
 			/*switch ($_REQUEST['action']) {
 				case 'auth/logout':
 				{
@@ -367,7 +367,7 @@ class userprofile
 		if (!empty($action)) {
 			@list($name, $action) = explode('/', strtolower(trim($action)));
 			if (method_exists($this, $action) && (in_array($name, $this->actions))) {
-				
+
 				$this->modx->log(1, print_r($sp, 1));
 
 				return $this->$action(array_merge($this->config, $sp));
