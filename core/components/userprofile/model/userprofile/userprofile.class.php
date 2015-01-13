@@ -77,9 +77,12 @@ class userprofile
 			'main_url' => $this->modx->getOption('userprofile_main_url', null, 'users'),
 
 			'defaultSection' => 'info',
+			'active_section' => '',
 			'defaultAction' => 'snippet',
 			'delimeterSection' => '|',
 			'delimeterAction' => ':',
+
+
 
 		), $config);
 
@@ -435,6 +438,24 @@ class userprofile
 		return $profile;
 	}
 
+	public function prepareData($data = array()) {
+		$data['gravatar'] = $this->config['gravatarUrl'] . md5(strtolower($data['email'])) .'?s=' . $this->config['gravatarSize'] . '&d=' . $this->config['gravatarIcon'];
+		$data['avatar'] = !empty($data['photo'])
+			? $data['photo']
+			: $data['gravatar'];
+		if (!empty($data['resource'])) {
+			$data['url'] = $this->modx->makeUrl($data['resource'], '', '', 'full');
+		}
+		$data['date_ago'] = $this->dateFormat($data['createdon']);
+		$data['registration_format'] = $this->dateFormat($data['registration']);
+		$data['lastactivity_format'] = $this->dateFormat($data['lastactivity']);
+		//
+		$data['main_url'] = $this->config['main_url'];
+		$data['user_id'] = $this->config['user_id'];
+		$data['active_section'] = $this->config['active_section'];
+
+		return $data;
+	}
 
 	/**
 	 * @param string $message

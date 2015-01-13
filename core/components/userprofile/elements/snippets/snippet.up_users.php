@@ -132,12 +132,7 @@ $output = array();
 if (!empty($rows) && is_array($rows)) {
 	foreach ($rows as $k => $row) {
 		// def
-		$row['main_url'] = $up->config['main_url'];
-		// gravatar
-		$row['gravatar'] = $up->config['gravatarUrl'].md5(strtolower($userFields['email'])).'?s='.$gravatarSize.'&d='.$gravatarIcon;
-		// format date
-		$row['registration_format'] = $up->dateFormat($row['registration'], $dateFormat);
-		$row['lastactivity_format'] = $up->dateFormat($row['lastactivity'], $dateFormat);
+		$row = $up->prepareData($row);
 		$row['idx'] = $up->pdoTools->idx++;
 		$tpl = $up->pdoTools->defineChunk($row);
 		$output[] .= empty($tpl)
@@ -147,7 +142,7 @@ if (!empty($rows) && is_array($rows)) {
 	$up->pdoTools->addTime('Returning processed chunks');
 }
 $log = '';
-if ($modx->user->hasSessionContext('mgr') && !empty($showLog)) { //? иневерт юз
+if ($modx->user->hasSessionContext('mgr') && !empty($showLog)) {
 	$log .= '<pre class="upLog">' . print_r($up->pdoTools->getTime(), 1) . '</pre>';
 }
 // Return output

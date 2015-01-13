@@ -4,6 +4,10 @@
 if (!$up = $modx->getService('userprofile', 'userprofile', $modx->getOption('userprofile_core_path', null, $modx->getOption('core_path') . 'components/userprofile/') . 'model/userprofile/', $scriptProperties)) {
 	return 'Could not load userprofile class!';
 }
+//
+$scriptProperties['user_id'] = $user_id = $modx->getPlaceholder('user_id');
+$scriptProperties['active_section'] = $active_section = (is_null($modx->getPlaceholder('active_section'))) ? $defaultSection : $modx->getPlaceholder('active_section');
+//
 $up->initialize($modx->context->key, $scriptProperties);
 $isAuthenticated = $modx->user->isAuthenticated($modx->context->key);
 //
@@ -15,9 +19,6 @@ elseif (!$allowGuest && !$isAuthenticated) {
 }
 //
 if(empty($defaultSection)) {$defaultSection = 'info';}
-//
-$scriptProperties['user_id'] = $user_id = $modx->getPlaceholder('user_id');
-$scriptProperties['active_section'] = $active_section = (is_null($modx->getPlaceholder('active_section'))) ? $defaultSection : $modx->getPlaceholder('active_section');
 // default properties
 $default = array(
 	'fastMode' => false,
@@ -25,15 +26,9 @@ $default = array(
 );
 // Merge all properties
 $up->pdoTools->setConfig(array_merge($default, $scriptProperties), false);
-// default pls
-$row['main_url'] = $up->config['main_url'];
-$row['user_id'] = $user_id;
-$row['active_section'] = $active_section;
 // get user fields
-$userFields = $up->getUserFields($user_id);
-$row = array_merge($userFields, $row);
-// gravatar
-$row['gravatar'] = $up->config['gravatarUrl'].md5(strtolower($userFields['email'])).'?s='.$gravatarSize.'&d='.$gravatarIcon;
+$row = $up->getUserFields($scriptProperties['user_id']);
+$row = $up->prepareData($row);
 // sections
 $allowedSections = $up->getAllowedSections();
 foreach ($allowedSections as $section) {

@@ -1,7 +1,7 @@
 <div class="row userprofile-page">
     <div id="content" class="col-md-8">
         <div class="userprofile-avatar-wrapper">
-            [[+photo]]
+            <img src="[[+avatar]]" class="userprofile-avatar">
         </div>
         <h3>&nbsp;&nbsp;[[+fullname]]</h3>
         <div class="clearfix"></div>
@@ -14,7 +14,7 @@
     <div id="sidebar" class="col-md-4">
         <div class="sidebar-block">
             <h4 class="title">
-                <a href="[[+main_url]]/[[+user_id]]/">[[+fullname]] </a>
+                <a href="[[+main_url]]/[[!+user_id]]/">[[+fullname]] </a>
             </h4>
 
             <div class="row">
@@ -90,6 +90,3 @@
         </div>
     </div>
 </div>
-
-<!--up_photo <img src="[[+photo]]" class="userprofile-avatar">-->
-<!--up_!photo <img src="[[+gravatar]]" class="userprofile-avatar">-->
