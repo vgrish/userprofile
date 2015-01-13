@@ -904,6 +904,10 @@ class userprofile
 		$this->registry->connect();
 		$this->registry->subscribe($top.$key);
 		//
+
+		$this->modx->log(1, print_r('===========', 1));
+		$this->modx->log(1, print_r($key, 1));
+
 		$msgs = $this->registry->read(array('poll_limit' => 1, 'remove_read' => false));
 		if (!empty($msgs)) {
 			return false;
