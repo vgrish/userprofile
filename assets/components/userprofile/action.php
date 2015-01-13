@@ -29,7 +29,13 @@ if ($context != 'web') {
 //
 define('MODX_ACTION_MODE', true);
 
-$up = $modx->getService('userprofile', 'userprofile', MODX_CORE_PATH . 'components/userprofile/model/userprofile/', array());
+// Get properties
+$properties = array();
+if (!empty($_REQUEST['form_key']) && isset($_SESSION['upform'][$_REQUEST['form_key']])) {
+	$properties = $_SESSION['upform'][$_REQUEST['form_key']];
+}
+//
+$up = $modx->getService('userprofile', 'userprofile', MODX_CORE_PATH . 'components/userprofile/model/userprofile/', $properties);
 if ($modx->error->hasError() || !($up instanceof userprofile)) {
 	@session_write_close();
 	die('Error');
