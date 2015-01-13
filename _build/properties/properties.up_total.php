@@ -8,14 +8,14 @@ $tmp = array(
 		'type' => 'numberfield',
 		'value' => '',
 	),
-	'tpl' => array(
+/*	'tpl' => array(
 		'type' => 'textfield',
 		'value' => '@INLINE [[+rows]]',
 	),
 	'tplRow' => array(
 		'type' => 'textfield',
 		'value' => '@INLINE ([[+count]])',
-	),
+	),*/
 	'parents' => array(
 		'type' => 'textfield',
 		'value' => ''
@@ -28,7 +28,7 @@ $tmp = array(
 		'type' => 'textfield'
 		,'value' => 'up.total.'
 	),
-	'toPlaceholders' => array(
+	/*'toPlaceholders' => array(
 		'type' => 'combo-boolean',
 		'value' => true,
 	),
@@ -43,7 +43,7 @@ $tmp = array(
 	'totalVar' => array(
 		'type' => 'textfield',
 		'value' => 'up.total'
-	),
+	),*/
 
 );
 
