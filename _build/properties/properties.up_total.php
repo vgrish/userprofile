@@ -40,6 +40,10 @@ $tmp = array(
 		'type' => 'textfield',
 		'value' => "\n"
 	),
+	'totalVar' => array(
+		'type' => 'textfield',
+		'value' => 'up.total'
+	),
 
 );
 
