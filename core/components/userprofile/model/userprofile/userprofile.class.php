@@ -912,6 +912,11 @@ class userprofile
 		if (!empty($msgs)) {
 			return false;
 		}
+
+		$this->modx->log(1, print_r('===========4', 1));
+		$this->modx->log(1, print_r($msgs , 1));
+
+
 		//
 		$this->registry->subscribe($top);
 		$this->registry->send($top,
