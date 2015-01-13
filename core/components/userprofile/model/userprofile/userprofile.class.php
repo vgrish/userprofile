@@ -900,6 +900,7 @@ class userprofile
 			array(md5($this->modx->user->Profile->get('email')) => array(
 				'hash' => $activationHash,
 				'email' => $email,
+				'redirect' => $this->modx->makeUrl($this->getUserPage(), '', '', 'full'). '/' . $this->modx->user->get('id'),
 			)
 			), array('ttl' => 86400));
 		$link = $this->modx->makeUrl($id, '', array(
@@ -953,7 +954,7 @@ class userprofile
 				$this->modx->user->save();
 			}
 		}
-		$this->modx->sendRedirect($this->modx->makeUrl($this->modx->resource->id, '', '', 'full'));
+		$this->modx->sendRedirect($msgs['redirect']);
 	}
 
 	/**
