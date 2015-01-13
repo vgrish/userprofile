@@ -16,7 +16,7 @@ if (!empty($parents)) {
 	foreach ($pids as $v) {
 		$parents = array_merge($parents, $modx->getChildIds($v, $depth, array('context_key' => $modx->context->key)));
 	}
-}
+} 
 // Tickets
 $where = array('createdby' => $user_id, 'deleted' => 0, 'published' => 1, 'class_key' => 'Ticket', 'privateweb' => 0);
 if (!empty($parents)) {$where['parent:IN'] = $parents;}
