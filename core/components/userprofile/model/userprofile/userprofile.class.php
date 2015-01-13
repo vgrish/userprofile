@@ -98,7 +98,7 @@ class userprofile
 		if ($extSetting = $this->modx->getObject('upExtendedSetting', array('active' => 1, 'default' => 1))) {
 			$this->defaultTypeId = $extSetting->get('id');
 		} else {
-			$this->modx->log(modX::LOG_LEVEL_ERROR, print_r('UserProfile error get default TypeId.', 1));
+			$this->modx->log(modX::LOG_LEVEL_ERROR, print_r('[UserProfile] error get default TypeId.', 1));
 		}
 
 	}
@@ -340,6 +340,20 @@ class userprofile
 	 */
 	public function logOut($logout_data = array(), $id = 0)
 	{
+/*
+		if ($this->modx->user->hasSessionContext('mgr') && !$this->modx->user->hasSessionContext($this->modx->context->key)) {
+			// логиним юзера в текущем контексте
+			$this->modx->user->addSessionContext($this->modx->context->key);
+		}
+
+		exit();
+		$this->modx->log(1, print_r($this->modx->context->key, 1));*/
+
+		if ($user = $this->modx->getAuthenticatedUser($this->modx->context->key)) {
+			$this->modx->user = $user;
+			$this->modx->getUser($this->modx->context->key);
+		}
+		if(!$user) {return;}
 		$response = $this->modx->runProcessor('security/logout', $logout_data);
 		if ($response->isError()) {
 			$errors = $this->_formatProcessorErrors($response);

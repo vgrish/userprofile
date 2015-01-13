@@ -21,7 +21,7 @@
                 <div class="col-md-4">
                     <div>
                         <i class="glyphicon glyphicon-user"></i>
-                        <a href="[[+main_url]]/[[!+user_id]]/">Профиль</a>
+                        <a href="[[+main_url]]/[[!+user_id]]/">[[%up_profile]]</a>
                     </div>
                     <div style="margin-top:10px;">
                         <i class="glyphicon glyphicon-pencil"></i>
@@ -31,11 +31,11 @@
                 <div class="col-md-4">
                     <div>
                         <i class="black glyphicon glyphicon-cog"></i>
-                        <a href="/">Настройки</a>
+                        <a href="[[+main_url]]/setting/">[[%up_setting]]</a>
                     </div>
                     <div style="margin-top:10px;">
                         <i class="black glyphicon glyphicon-off"></i>
-                        <a href="/?action=remote/logout">Выход</a>
+                        <a href="/?action=auth/logout">[[%up_auth_logout]]</a>
                     </div>
                 </div>
                 <div class="col-md-4">

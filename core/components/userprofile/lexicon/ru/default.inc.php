@@ -123,3 +123,9 @@ $_lang['up_date_hours_back'] = '["[[+hours]] час назад","[[+hours]] ча
 $_lang['up_date_hours_back_less'] = 'меньше часа назад';
 $_lang['up_date_months'] = '["января","февраля","марта","апреля","мая","июня","июля","августа","сентября","октября","ноября","декабря"]';
 
+// action
+
+$_lang['up_auth_login'] = 'Вход';
+$_lang['up_auth_logout'] = 'Выход';
+$_lang['up_profile'] = 'Профиль';
+$_lang['up_setting'] = 'Настройки';
