@@ -23,6 +23,11 @@ $tmp = array(
 		'value' => 'images/users/',
 	),
 
+	'js' => array(
+		'type' => 'textfield',
+		'value' => '[[+assetsUrl]]js/web/lib/profile.default.js',
+	),
+
 
 	'tplSectionContent' => array(
 		'type' => 'textfield',

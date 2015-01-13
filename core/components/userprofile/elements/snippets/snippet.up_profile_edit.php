@@ -30,4 +30,7 @@ $output = empty($tplProfile)
 	? $up->pdoTools->getChunk('', $row)
 	: $up->pdoTools->getChunk($tplProfile, $row, $up->pdoTools->config['fastMode']);
 
+$modx->regClientScript(str_replace('[[+assetsUrl]]', $this->config['assetsUrl'], $js));
+
+
 return $output;
