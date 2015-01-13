@@ -4,17 +4,18 @@ $properties = array();
 
 $tmp = array(
 
-	'placeholderPrefix' => array(
-		'type' => 'textfield'
-		,'value' => 'up.total.'
-	),
-
 	'user_id' => array(
 		'type' => 'numberfield',
 		'value' => '',
 	),
-
-
+	'tpl' => array(
+		'type' => 'textfield',
+		'value' => '@INLINE [[+rows]]',
+	),
+	'tplRow' => array(
+		'type' => 'textfield',
+		'value' => '@INLINE ([[+count]])',
+	),
 	'parents' => array(
 		'type' => 'textfield',
 		'value' => ''
@@ -23,11 +24,20 @@ $tmp = array(
 		'type' => 'numberfield',
 		'value' => 10
 	),
-
-	'toPlaceholder' => array(
-		'type' => 'combo-boolean',
-		'value' => false,
+	'placeholderPrefix' => array(
+		'type' => 'textfield'
+		,'value' => 'up.total.'
 	),
+	'toPlaceholders' => array(
+		'type' => 'combo-boolean',
+		'value' => true,
+	),
+	'toPlaceholder' => array(
+		'type' => 'textfield',
+		'value' => ''
+	),
+
+
 );
 
 foreach ($tmp as $k => $v) {

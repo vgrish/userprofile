@@ -16,12 +16,12 @@ if (!empty($parents)) {
 	foreach ($pids as $v) {
 		$parents = array_merge($parents, $modx->getChildIds($v, $depth, array('context_key' => $modx->context->key)));
 	}
-} 
+}
 // Tickets
 $where = array('createdby' => $user_id, 'deleted' => 0, 'published' => 1, 'class_key' => 'Ticket', 'privateweb' => 0);
 if (!empty($parents)) {$where['parent:IN'] = $parents;}
 $q = $modx->newQuery('Ticket', $where);
-$topics = $modx->getCount('Ticket', $q);
+$count['topics'] = $modx->getCount('Ticket', $q);
 // Comments
 $where = array('createdby' => $user_id, 'deleted' => 0);
 if (!empty($parents)) {$where['Ticket.parent:IN'] = $parents;}
@@ -31,13 +31,30 @@ $q->leftJoin('Ticket','Ticket','Ticket.id = Thread.resource');
 if (!$modx->hasPermission('ticket_view_private')) {
 	$q->where('privateweb = 0');
 }
-$comments = $modx->getCount('TicketComment', $q);
+$count['comments'] = $modx->getCount('TicketComment', $q);
 // star
 $where = array('createdby' => $user_id, 'class' => 'Ticket');
 $q = $modx->newQuery('TicketStar', $where);
-$stars = $modx->getCount('TicketStar', $q);
-
-// Placeholders
-$modx->setPlaceholder('total.topics', "($topics)");
-$modx->setPlaceholder('total.comments', "($comments)");
-$modx->setPlaceholder('total.stars', "($stars)");
+$count['stars'] = $modx->getCount('TicketStar', $q);
+//
+$rows = '';
+foreach($count as $k => $c) {
+	$row = empty($tplRow)
+		? $up->pdoTools->getChunk('', array('count' => $c))
+		: $up->pdoTools->getChunk($tplRow, array('count' => $c), $up->pdoTools->config['fastMode']);
+	if(!empty($toPlaceholders)) {$modx->setPlaceholder($placeholderPrefix.$k, $row);}
+	else {$rows .=$row;}
+}
+if(!empty($toPlaceholders)) {return;}
+$output = empty($tpl)
+	? $up->pdoTools->getChunk('', array('rows' => $rows))
+	: $up->pdoTools->getChunk($tpl, array('rows' => $rows), $up->pdoTools->config['fastMode']);
+if (!empty($tplWrapper) && (!empty($wrapIfEmpty) || !empty($output))) {
+	$output = $up->pdoTools->getChunk($tplWrapper, array('output' => $output), $up->pdoTools->config['fastMode']);
+}
+if (!empty($toPlaceholder)) {
+	$modx->setPlaceholder($toPlaceholder, $output);
+}
+else {
+	return $output;
+}
