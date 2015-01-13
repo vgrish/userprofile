@@ -896,14 +896,14 @@ class userprofile
 		/** @var modDbRegister $register */
 		$register = $this->modx->getService('registry', 'registry.modRegistry')->getRegister('user', 'registry.modDbRegister');
 		$register->connect();
-		$register->subscribe('/email/change/'.$key);
+		$register->subscribe('/emailchange/'.$key);
 		//
 		$msgs = $register->read(array('poll_limit' => 1, 'remove_read' => false));
 		if (!empty($msgs)) {
 			return false;
 		}
 		//
-		$register->send('/email/change/',
+		$register->send('/emailchange/',
 			array($key => array(
 				'hash' => $activationHash,
 				'email' => $email,
