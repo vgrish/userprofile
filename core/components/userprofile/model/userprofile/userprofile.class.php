@@ -356,6 +356,7 @@ class userprofile
 
 	public function update($data = array())
 	{
+		$this->config['json_response'] = 1;
 		if (!$this->modx->user->isAuthenticated($this->modx->context->key)) {
 			return $this->error($this->modx->lexicon('office_err_auth'));
 		}
