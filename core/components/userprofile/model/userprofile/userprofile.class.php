@@ -270,7 +270,9 @@ class userprofile
 		$user = $sp['user'];
 		$profile = $user->getOne('Profile');
 		$profileArr = $profile->toArray();
-		$extended = $profileArr['extended'];
+		//
+		$extended = array();
+		$extended = array_merge($extended, $profileArr['extended']);
 		foreach ($data as $dd) {
 			if (is_array($dd)) {
 				$extended = array_merge($extended, $dd);
