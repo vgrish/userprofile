@@ -242,7 +242,8 @@ class userprofile
 	public function OnBeforeUserFormSave($sp)
 	{
 
-		$this->modx->log(1, print_r($sp['ctx']));
+		$this->modx->log(1, print_r('==============', 1));
+		$this->modx->log(1, print_r($sp['ctx'], 1));
 
 		if ($this->isNew($sp)) return;
 		$this->config['json_response'] = 1;
