@@ -35,7 +35,7 @@ userprofile.Profile = {
                     $(selector + ' .desc').show();
                     $(selector + ' .message').text('');
                     $(selector + ' .has-error').removeClass('has-error');
-                    data.push({name: 'action', value:'Profile/Update'});
+                    data.push({name: 'action', value:'profile/update'});
                     //data.push({name: 'pageId', value: userprofileConfig.pageId});
                 }
                 ,success: function(response) {

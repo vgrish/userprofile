@@ -318,10 +318,13 @@ class userprofile
 
 	public function OnHandleRequest($sp)
 	{
-		$actions = $this->actions;
-		if (!empty($_REQUEST['action']) && in_array(urldecode($_REQUEST['action']), $actions)) {
+		if (!empty($_REQUEST['action'])) {
 
-			switch ($_REQUEST['action']) {
+
+			$this->modx->log(1, print_r($_REQUEST['action'], 1));
+
+			$this->loadAction($_REQUEST['action'], array());
+			/*switch ($_REQUEST['action']) {
 				case 'auth/logout':
 				{
 					$this->logout();
@@ -330,28 +333,32 @@ class userprofile
 				default:
 					break;
 
-			}
+			}*/
 
 		}
 	}
 
-	public function loadAction($action, $scriptProperties = array())
+	public function loadAction($action, $sp = array())
 	{
-
-		//echo '333';
-		//return true;
+		$this->modx->log(1, print_r($action, 1));
 
 		if (!empty($action)) {
 			@list($name, $action) = explode('/', strtolower(trim($action)));
-
 			if (method_exists($this, $action) && (in_array($name, $this->actions))) {
-				return $this->$name(array_merge($this->config, $scriptProperties));
+				return $this->$action(array_merge($this->config, $sp));
 			}
 			else {
-				return 'Could not load "'.$name.'"';
+				return 'Could not load "'.$action.'"';
 			}
 		}
 		return false;
+	}
+
+	public function update($data = array())
+	{
+		if (!$this->modx->user->isAuthenticated($this->modx->context->key)) {
+			return $this->error($this->modx->lexicon('office_err_auth'));
+		}
 	}
 
 	/**
