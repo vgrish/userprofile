@@ -898,8 +898,8 @@ class userprofile
 	public function changeEmail($email, $id)
 	{
 		$activationHash = md5(uniqid(md5($this->modx->user->get('id')), true));
-		$key = md5($this->modx->user->Profile->get('internalKey'));
 		$top = '/email/change/';
+		$key = md5($this->modx->user->Profile->get('internalKey'));
 		// connect
 		$this->registry->connect();
 		$this->registry->subscribe($top.$key);
@@ -908,7 +908,7 @@ class userprofile
 		$this->modx->log(1, print_r('===========', 1));
 		$this->modx->log(1, print_r($key, 1));
 
-		$msgs = $this->registry->read(array('poll_limit' => 1, 'remove_read' => true));
+		$msgs = $this->registry->read(array('poll_limit' => 1, 'remove_read' => false));
 		if (!empty($msgs)) {
 			return false;
 		}
@@ -965,11 +965,16 @@ class userprofile
 	 */
 	public function confirmemail($data)
 	{
-		/** @var modDbRegister $register */
-		$register = $this->modx->getService('registry', 'registry.modRegistry')->getRegister('user', 'registry.modDbRegister');
-		$register->connect();
-		$register->subscribe('/email/change/' . md5($this->modx->user->Profile->get('internalKey')));
-		$msgs = $register->read(array('poll_limit' => 1));
+		$top = '/email/change/';
+		$key = md5($this->modx->user->Profile->get('internalKey'));
+		// connect
+		$this->registry->connect();
+		$this->registry->subscribe($top.$key);
+		$msgs = $this->registry->read(array('poll_limit' => 1));
+
+		$this->modx->log(1, print_r('======+++=====4', 1));
+		$this->modx->log(1, print_r($msgs , 1));
+
 		if (!empty($msgs[0])) {
 			$msgs = reset($msgs);
 			if (@$data['hash'] === @$msgs['hash'] && !empty($msgs['email'])) {
