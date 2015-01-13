@@ -43,12 +43,14 @@ foreach($count as $k => $c) {
 		? $up->pdoTools->getChunk('', array('count' => $c))
 		: $up->pdoTools->getChunk($tplRow, array('count' => $c), $up->pdoTools->config['fastMode']);
 	if(!empty($toPlaceholders)) {$modx->setPlaceholder($placeholderPrefix.$k, $row);}
-	else {$rows .=$row;}
+	else {$output[] .=$row;}
 }
 if(!empty($toPlaceholders)) {return;}
+if (empty($outputSeparator)) {$outputSeparator = "\n";}
+$output = is_array($output) ? implode($outputSeparator, $output) : $output;
 $output = empty($tpl)
-	? $up->pdoTools->getChunk('', array('rows' => $rows))
-	: $up->pdoTools->getChunk($tpl, array('rows' => $rows), $up->pdoTools->config['fastMode']);
+	? $up->pdoTools->getChunk('', array('rows' => $output))
+	: $up->pdoTools->getChunk($tpl, array('rows' => $output), $up->pdoTools->config['fastMode']);
 if (!empty($tplWrapper) && (!empty($wrapIfEmpty) || !empty($output))) {
 	$output = $up->pdoTools->getChunk($tplWrapper, array('output' => $output), $up->pdoTools->config['fastMode']);
 }
