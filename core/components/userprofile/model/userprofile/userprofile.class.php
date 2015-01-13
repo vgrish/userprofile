@@ -903,7 +903,7 @@ class userprofile
 			)
 			), array('ttl' => 86400));
 		$link = $this->modx->makeUrl($id, '', array(
-				'action' => 'profile/confirmEmail',
+				'action' => 'profile/confirmemail',
 				'email' => $email,
 				'hash' => $activationHash,
 			)
@@ -938,7 +938,7 @@ class userprofile
 	 *
 	 * @param $data
 	 */
-	public function confirmEmail($data)
+	public function confirmemail($data)
 	{
 		/** @var modDbRegister $register */
 		$register = $this->modx->getService('registry', 'registry.modRegistry')->getRegister('user', 'registry.modDbRegister');
