@@ -896,18 +896,18 @@ class userprofile
 		/** @var modDbRegister $register */
 		$register = $this->modx->getService('registry', 'registry.modRegistry')->getRegister('user', 'registry.modDbRegister');
 		$register->connect();
-		$register->subscribe('/emailchange/'.$key);
+		$register->subscribe('/email/change/'.$key);
 		//
 		$msgs = $register->read(array('poll_limit' => 1, 'remove_read' => false));
 		if (!empty($msgs)) {
 			return false;
 		}
 		//
-		$register->send('/emailchange/',
+		$register->send('/email/change/',
 			array($key => array(
 				'hash' => $activationHash,
 				'email' => $email,
-				'redirect' => $this->modx->makeUrl($this->getUserPage(), '', '', 'full'). '/' . $this->modx->user->get('id'),
+				'redirect' => $this->modx->makeUrl($this->getUserPage(), '', '', 'full') . $this->modx->user->get('id'),
 			)
 			), array('ttl' => 86400));
 		$link = $this->modx->makeUrl($id, '', array(
