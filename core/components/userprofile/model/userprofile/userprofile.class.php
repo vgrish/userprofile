@@ -302,11 +302,10 @@ class userprofile
 			} else {
 				$id = $this->modx->user->id;
 				if (!$upExtended = $this->modx->getObject('upExtended', array('user_id' => $id))) {
-					$upExtended = $this->modx->newObject('upExtended', array('user_id' => $id));
+					$upExtended = $this->modx->newObject('upExtended', array('user_id' => $id, 'registration' => date('Y-m-d H:i:s')));
 				}
 				$upExtended->fromArray(array(
 					'type_id' => $this->defaultTypeId,
-					'registration' => date('Y-m-d H:i:s'),
 					'lastactivity' => date('Y-m-d H:i:s'),
 					'ip' => $this->modx->request->getClientIp()['ip'],
 				));

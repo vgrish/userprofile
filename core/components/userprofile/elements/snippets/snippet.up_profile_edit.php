@@ -5,15 +5,25 @@ if (!$up = $modx->getService('userprofile', 'userprofile', $modx->getOption('use
 	return 'Could not load userprofile class!';
 }
 $up->initialize($modx->context->key, $scriptProperties);
-//$isAuthenticated = $modx->user->isAuthenticated($modx->context->key);
-$isAuthenticated = $modx->user->isAuthenticated();
+$isAuthenticated = $modx->user->isAuthenticated($modx->context->key);
+$isAuthenticated = true;
 //
 if ($isAuthenticated) {
-	$user = $modx->user->id;
+	$user_id = $modx->user->id;
 }
 else {
 	$modx->sendErrorPage();
 }
 //
-$user = $this->modx->user->toArray();
-$profile = $this->modx->user->Profile->toArray();
+$row = $up->getUserFields($user_id);
+$row = $up->prepareData($row);
+//
+
+//echo '<pre>';
+//print_r($row);
+
+$output = empty($tplProfile)
+	? $up->pdoTools->getChunk('', $row)
+	: $up->pdoTools->getChunk($tplProfile, $row, $up->pdoTools->config['fastMode']);
+
+return $output;
