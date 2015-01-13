@@ -40,6 +40,7 @@ $where = array('createdby' => $user_id, 'class' => 'Ticket');
 $q = $modx->newQuery('TicketStar', $where);
 $count[$pleFavorites] = $modx->getCount('TicketStar', $q);
 //
+$up->pdoTools->setConfig($scriptProperties, false);
 $rows = '';
 foreach($count as $k => $c) {
 	$row = empty($tplRow)
