@@ -338,22 +338,7 @@ class userprofile
 	public function OnHandleRequest($sp)
 	{
 		if (!empty($_REQUEST['action'])) {
-
-
-			$this->modx->log(1, print_r($_REQUEST['action'], 1));
-
 			$this->loadAction($_REQUEST['action'], $_REQUEST);
-			/*switch ($_REQUEST['action']) {
-				case 'auth/logout':
-				{
-					$this->logout();
-					break;
-				}
-				default:
-					break;
-
-			}*/
-
 		}
 	}
 
@@ -367,9 +352,6 @@ class userprofile
 		if (!empty($action)) {
 			@list($name, $action) = explode('/', strtolower(trim($action)));
 			if (method_exists($this, $action) && (in_array($name, $this->actions))) {
-
-				$this->modx->log(1, print_r($sp, 1));
-
 				return $this->$action(array_merge($this->config, $sp));
 			} else {
 				return 'Could not load "' . $action . '"';
@@ -385,10 +367,10 @@ class userprofile
 	public function update($data = array())
 	{
 		$this->config['json_response'] = 1;
-		/*		if (!$this->modx->user->isAuthenticated($this->modx->context->key)) {
-					return $this->error($this->modx->lexicon('up_auth_err'));
-				}*/
-
+		if (!$this->modx->user->isAuthenticated($this->modx->context->key)) {
+			return $this->error($this->modx->lexicon('up_auth_err'));
+		}
+		//
 		$requiredFields = !empty($this->config['requiredFields'])
 			? array_map('trim', explode(',', $this->config['requiredFields']))
 			: array();
@@ -646,9 +628,6 @@ class userprofile
 				? $this->pdoTools->getChunk('', $row)
 				: $this->pdoTools->getChunk($emptyTpl, $row, $this->pdoTools->config['fastMode']);
 		}
-		//$this->modx->log(1, print_r($data, 1));
-		//$this->modx->log(1, print_r($scriptProperties, 1));
-
 		return $content;
 	}
 
@@ -906,21 +885,10 @@ class userprofile
 		// connect
 		$this->registry->connect();
 		$this->registry->subscribe($top.$key);
-		//
-
-		$this->modx->log(1, print_r('===========', 1));
-		$this->modx->log(1, print_r($key, 1));
-
 		$msgs = $this->registry->read(array('poll_limit' => 1, 'remove_read' => false));
 		if (!empty($msgs)) {
 			return false;
 		}
-
-		$this->modx->log(1, print_r('===========4', 1));
-		$this->modx->log(1, print_r($msgs , 1));
-
-
-		//
 		$this->registry->subscribe($top);
 		$this->registry->send($top,
 			array($key => array(
@@ -974,37 +942,14 @@ class userprofile
 		$this->registry->connect();
 		$this->registry->subscribe($top.$key);
 		$msgs = $this->registry->read(array('poll_limit' => 1));
-
-		$this->modx->log(1, print_r('======+++=====4', 1));
-		$this->modx->log(1, print_r($msgs , 1));
-		$this->modx->log(1, print_r($data , 1));
-
 		if (!empty($msgs[0])) {
 			$msgs = reset($msgs);
 			if (@$data['hash'] === @$msgs['hash'] && !empty($msgs['email'])) {
 				//$this->modx->user->set('username', $msgs['email']);
-				//$this->modx->user->getOne('Profile')->set('email', $msgs['email']);
-				$a = $this->modx->user->getOne('Profile');
-
-				$this->modx->log(1, print_r($a->toArray(), 1));
-
-				$a->set('email', $msgs['email']);
-
-
-				$this->modx->log(1, print_r('===========', 1));
-				$this->modx->log(1, print_r($a->toArray(), 1));
-
-				$a->save();
-
-				//$this->modx->user->save();
+				$this->modx->user->getOne('Profile')->set('email', $msgs['email']);
+				$this->modx->user->save();
 			}
 		}
-
-
-		$this->modx->log(1, print_r('===========', 1));
-		$this->modx->log(1, print_r($msgs['email'], 1));
-
-
 		$this->modx->sendRedirect($msgs['redirect']);
 	}
 
