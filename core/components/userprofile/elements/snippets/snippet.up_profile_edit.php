@@ -6,7 +6,9 @@ if (!$up = $modx->getService('userprofile', 'userprofile', $modx->getOption('use
 }
 $up->initialize($modx->context->key, $scriptProperties);
 $isAuthenticated = $modx->user->isAuthenticated($modx->context->key);
-$isAuthenticated = true;
+
+
+		$isAuthenticated = true;
 //
 if ($isAuthenticated) {
 	$user_id = $modx->user->id;
@@ -15,6 +17,8 @@ else {
 	$modx->sendErrorPage();
 }
 //
+		$user_id = 2;
+
 $row = $up->getUserFields($user_id);
 $row = $up->prepareData($row);
 //
