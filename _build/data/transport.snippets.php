@@ -22,6 +22,11 @@ $tmp = array(
 		'description' => '',
 	),
 
+	'upUserTotal' => array(
+		'file' => 'up_total',
+		'description' => '',
+	),
+
 );
 
 foreach ($tmp as $k => $v) {
