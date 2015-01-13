@@ -450,7 +450,19 @@ class userprofile
 			return $this->error($message, $errors);
 		}
 		if ($changeEmail && !empty($new_email)) {
-			$change = $this->changeEmail($new_email, $this->config['main_url']);
+
+
+			$container_suffix = $this->modx->getOption('container_suffix', null, '/', true);
+			$uri = $this->config['main_url'].$container_suffix;
+
+			$this->modx->log(1, print_r($uri, 1));
+
+			if (!$userPage = $this->modx->findResource($uri, $this->modx->context->key)) {
+				$this->modx->log(modX::LOG_LEVEL_ERROR, print_r('UserProfile error get main_url.', 1));
+				return false;
+			}
+
+			$change = $this->changeEmail($new_email, $userPage);
 			$message = ($change === true)
 				? $this->modx->lexicon('up_profile_msg_save_email')
 				: $this->modx->lexicon('up_profile_msg_save_noemail', array('errors' => $change));
