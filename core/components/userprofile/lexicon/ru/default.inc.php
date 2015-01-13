@@ -129,3 +129,32 @@ $_lang['up_auth_login'] = 'Вход';
 $_lang['up_auth_logout'] = 'Выход';
 $_lang['up_profile'] = 'Профиль';
 $_lang['up_setting'] = 'Настройки';
+
+// form
+
+$_lang['up_profile'] = 'Профиль';
+$_lang['up_profile_header'] = 'Вы должны заполнить обязательные поля профиля, отмеченные звёздочкой<sup class="red">*</sup>.';
+$_lang['up_profile_gravatar'] = 'Аватар';
+$_lang['up_profile_gravatar_desc'] = 'Картинка загружается с <a href="http://gravatar.com/" target="_blank">Gravatar</a>';
+$_lang['up_profile_avatar'] = 'Аватар';
+$_lang['up_profile_avatar_desc'] = 'Если вы не загрузите собственную картинку, аватар будет получен автоматически с сервиса <a target="_blank" href="http://gravatar.com/">Gravatar</a>';
+$_lang['up_profile_avatar_remove'] = 'Удалить изображение';
+$_lang['up_profile_username'] = 'Имя пользователя';
+$_lang['up_profile_username_desc'] = 'Имя пользователя, например ivan_petrov';
+$_lang['up_profile_fullname'] = 'Полное имя';
+$_lang['up_profile_fullname_desc'] = 'Ваше полное имя, например Иван Петров.';
+$_lang['up_profile_email'] = 'Email';
+$_lang['up_profile_email_desc'] = 'Новый email нужно будет подтвердить.';
+$_lang['up_profile_password'] = 'Пароль';
+$_lang['up_profile_specifiedpassword_desc'] = 'Вы можете указать новый пароль.';
+$_lang['up_profile_confirmpassword_desc'] = 'Нужно повторить новый пароль еще раз, чтобы исключить опечатку.';
+$_lang['up_profile_save'] = 'Сохранить';
+$_lang['up_profile_reset'] = 'Сброс';
+$_lang['up_profile_logout'] = 'Выйти &rarr;';
+$_lang['up_profile_email_subject'] = 'Проверка email';
+$_lang['up_profile_err_update'] = 'Ошибка при обновлении профиля';
+$_lang['up_profile_msg_save'] = 'Изменения были успешно сохранены';
+$_lang['up_profile_msg_save_password'] = 'Изменения были успешно сохранены, ваш новый пароль: <strong>[[+password]]</strong>';
+$_lang['up_profile_msg_save_email'] = 'Изменения были успешно сохранены. Ваш email не изменится, пока вы его не подтвердите.';
+$_lang['up_profile_msg_save_noemail'] = 'Изменения были успешно сохранены, но мы не смогли отправить ссылку на новый email: [[+errors]].';
+$_lang['up_profile_err_field_fullname'] = 'Вы должны указать ваше полное имя.';
