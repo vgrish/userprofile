@@ -34,6 +34,10 @@ $tmp = array(
 		'description' => '',
 	),*/
 
+	'upSectionFavorites' => array(
+		'file' => 'up_section_favorites',
+		'description' => '',
+	),
 );
 
 // Save chunks for setup options

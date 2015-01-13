@@ -22,6 +22,11 @@ $tmp = array(
 		'description' => '',
 	),
 
+/*	'upUserFavorites' => array(
+		'file' => 'up_favorites',
+		'description' => '',
+	),*/
+
 	'upUserTotal' => array(
 		'file' => 'up_total',
 		'description' => '',
