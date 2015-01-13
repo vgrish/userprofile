@@ -34,6 +34,8 @@ class userprofile
 	/* @var pdoTools $pdoTools */
 	public $pdoTools;
 
+	public $registry;
+
 	/**
 	 * @param modX $modx
 	 * @param array $config
@@ -100,6 +102,10 @@ class userprofile
 
 		$this->modx->addPackage('userprofile', $this->config['modelPath']);
 		$this->modx->lexicon->load('userprofile:default');
+
+		/** @var modRegistry $registry */
+		$registry = $this->modx->getService('registry', 'registry.modRegistry');
+		$this->registry = $registry->getRegister('userprofile', 'registry.modDbRegister');
 
 		$this->active = $this->modx->getOption('userprofile_active', $config, false);
 		// default type_id
@@ -893,23 +899,25 @@ class userprofile
 	{
 		$activationHash = md5(uniqid(md5($this->modx->user->get('id')), true));
 		$key = md5($this->modx->user->Profile->get('internalKey'));
-		/** @var modDbRegister $register */
-		$register = $this->modx->getService('registry', 'registry.modRegistry')->getRegister('user', 'registry.modDbRegister');
-		$register->connect();
-		$register->subscribe('/email/change/'.$key);
+		$top = '/email/change/';
+		// connect
+		$this->registry->connect();
+		$this->registry->subscribe($top.$key);
 		//
-		$msgs = $register->read(array('poll_limit' => 1, 'remove_read' => false));
+		$msgs = $this->registry->read(array('poll_limit' => 1, 'remove_read' => false));
 		if (!empty($msgs)) {
 			return false;
 		}
 		//
-		$register->send('/email/change/',
+		$this->registry->subscribe($top);
+		$this->registry->send($top,
 			array($key => array(
 				'hash' => $activationHash,
 				'email' => $email,
 				'redirect' => $this->modx->makeUrl($this->getUserPage(), '', '', 'full') . $this->modx->user->get('id'),
-			)
-			), array('ttl' => 86400));
+				)
+			), array('ttl' => 86400)
+		);
 		$link = $this->modx->makeUrl($id, '', array(
 				'action' => 'profile/confirmemail',
 				'email' => $email,
