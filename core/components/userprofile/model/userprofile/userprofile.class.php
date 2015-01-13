@@ -53,7 +53,7 @@ class userprofile
 			'jsUrl' => $assetsUrl . 'js/',
 			'imagesUrl' => $assetsUrl . 'images/',
 			'connectorUrl' => $connectorUrl,
-			'actionUrl' => $assetsUrl. 'action.php',
+			'actionUrl' => $assetsUrl . 'action.php',
 
 			'corePath' => $corePath,
 			'modelPath' => $corePath . 'model/',
@@ -244,7 +244,9 @@ class userprofile
 
 		$this->modx->log(1, print_r('==============', 1));
 		//$this->modx->log(1, print_r($sp, 1));
-		if ($this->isNew($sp)) {return;}
+		if ($this->isNew($sp)) {
+			return;
+		}
 		if (!$this->modx->user->hasSessionContext('mgr')) {
 
 			$this->modx->log(1, print_r('не админка', 1));
@@ -334,6 +336,9 @@ class userprofile
 		}
 	}
 
+	/**
+	 * @param $sp
+	 */
 	public function OnHandleRequest($sp)
 	{
 		if (!empty($_REQUEST['action'])) {
@@ -356,26 +361,34 @@ class userprofile
 		}
 	}
 
+	/**
+	 * @param $action
+	 * @param array $sp
+	 * @return bool|string
+	 */
 	public function loadAction($action, $sp = array())
 	{
 		if (!empty($action)) {
 			@list($name, $action) = explode('/', strtolower(trim($action)));
 			if (method_exists($this, $action) && (in_array($name, $this->actions))) {
 				return $this->$action(array_merge($this->config, $sp));
-			}
-			else {
-				return 'Could not load "'.$action.'"';
+			} else {
+				return 'Could not load "' . $action . '"';
 			}
 		}
 		return false;
 	}
 
+	/**
+	 * @param array $data
+	 * @return array|bool|string
+	 */
 	public function update($data = array())
 	{
 		$this->config['json_response'] = 1;
-/*		if (!$this->modx->user->isAuthenticated($this->modx->context->key)) {
-			return $this->error($this->modx->lexicon('up_auth_err'));
-		}*/
+		/*		if (!$this->modx->user->isAuthenticated($this->modx->context->key)) {
+					return $this->error($this->modx->lexicon('up_auth_err'));
+				}*/
 
 		$requiredFields = !empty($this->config['requiredFields'])
 			? array_map('trim', explode(',', $this->config['requiredFields']))
@@ -392,8 +405,7 @@ class userprofile
 		foreach ($tmp as $field) {
 			if (strpos($field, ':') !== false) {
 				list($key, $length) = explode(':', $field);
-			}
-			else {
+			} else {
 				$key = $field;
 				$length = 0;
 			}
@@ -412,12 +424,10 @@ class userprofile
 					$fields[$field] = empty($length)
 						? trim($data[$field])
 						: trim(substr($data[$field], $length));
-				}
-				else {
+				} else {
 					$fields[$field] = $this->Sanitize($data[$field], $length);
 				}
-			}
-			// Extended fields
+			} // Extended fields
 			elseif (preg_match('/(.*?)\[(.*?)\]/', $field, $matches)) {
 				if (isset($data[$matches[1]][$matches[2]])) {
 					$fields[$matches[1]][$matches[2]] = $this->Sanitize($data[$matches[1]][$matches[2]], $length);
@@ -450,24 +460,11 @@ class userprofile
 			return $this->error($message, $errors);
 		}
 		if ($changeEmail && !empty($new_email)) {
-
-
-			$container_suffix = $this->modx->getOption('container_suffix', null, '/', true);
-			$uri = $this->config['main_url'].$container_suffix;
-
-			$this->modx->log(1, print_r($uri, 1));
-
-			if (!$userPage = $this->modx->findResource($uri, $this->modx->context->key)) {
-				$this->modx->log(modX::LOG_LEVEL_ERROR, print_r('UserProfile error get main_url.', 1));
-				return false;
-			}
-
-			$change = $this->changeEmail($new_email, $userPage);
+			$change = $this->changeEmail($new_email, $this->getUserPage());
 			$message = ($change === true)
 				? $this->modx->lexicon('up_profile_msg_save_email')
 				: $this->modx->lexicon('up_profile_msg_save_noemail', array('errors' => $change));
-		}
-		else {
+		} else {
 			$object = $response->getObject();
 			$message = !empty($object['specifiedpassword'])
 				? $this->modx->lexicon('up_profile_msg_save_password', array('password' => $object['specifiedpassword']))
@@ -493,25 +490,41 @@ class userprofile
 	}
 
 	/**
+	 * @return bool|int|mixed
+	 */
+	public function getUserPage($uri = '')
+	{
+		if(empty($uri)) {$uri = $this->config['main_url'];}
+		$uri .= $this->modx->getOption('container_suffix', null, '/', true);
+		if (!$userPage = $this->modx->findResource($uri, $this->modx->context->key)) {
+			$this->modx->log(modX::LOG_LEVEL_ERROR, print_r('UserProfile error get main_url.', 1));
+			return false;
+		}
+		return $userPage;
+	}
+
+	/**
 	 * @param array $logout_data
 	 * @param int $id
 	 */
 	public function logout($logout_data = array(), $id = 0)
 	{
-/*
-		if ($this->modx->user->hasSessionContext('mgr') && !$this->modx->user->hasSessionContext($this->modx->context->key)) {
-			// логиним юзера в текущем контексте
-			$this->modx->user->addSessionContext($this->modx->context->key);
-		}
+		/*
+				if ($this->modx->user->hasSessionContext('mgr') && !$this->modx->user->hasSessionContext($this->modx->context->key)) {
+					// логиним юзера в текущем контексте
+					$this->modx->user->addSessionContext($this->modx->context->key);
+				}
 
-		exit();
-		$this->modx->log(1, print_r($this->modx->context->key, 1));*/
+				exit();
+				$this->modx->log(1, print_r($this->modx->context->key, 1));*/
 
 		if ($user = $this->modx->getAuthenticatedUser($this->modx->context->key)) {
 			$this->modx->user = $user;
 			$this->modx->getUser($this->modx->context->key);
 		}
-		if(!$user) {return;}
+		if (!$user) {
+			return;
+		}
 		$response = $this->modx->runProcessor('security/logout', $logout_data);
 		if ($response->isError()) {
 			$errors = $this->_formatProcessorErrors($response);
@@ -543,7 +556,7 @@ class userprofile
 				return false;
 			}
 			// setting url
-			$container_suffix = $this->modx->getOption('container_suffix', null, '/', true);
+/*			$container_suffix = $this->modx->getOption('container_suffix', null, '/', true);
 			$uri .= $container_suffix;
 
 			$this->modx->log(1, print_r($uri, 1));
@@ -551,8 +564,9 @@ class userprofile
 			if (!$userPage = $this->modx->findResource($uri, $this->modx->context->key)) {
 				$this->modx->log(modX::LOG_LEVEL_ERROR, print_r('UserProfile error get main_url.', 1));
 				return false;
-			}
+			}*/
 
+			$userPage = $this->getUserPage($uri);
 			$this->modx->log(1, print_r($userPage, 1));
 			$this->modx->log(1, print_r('work', 1));
 
@@ -885,7 +899,8 @@ class userprofile
 	 *
 	 * @return bool
 	 */
-	public function changeEmail($email, $id) {
+	public function changeEmail($email, $id)
+	{
 		$activationHash = md5(uniqid(md5($this->modx->user->get('email') . '/' . $this->modx->user->get('id')), true));
 		/** @var modDbRegister $register */
 		$register = $this->modx->getService('registry', 'registry.modRegistry')->getRegister('user', 'registry.modDbRegister');
@@ -907,8 +922,8 @@ class userprofile
 		$chunk = $this->modx->getChunk($this->config['tplActivate'],
 			array_merge(
 				$this->modx->user->getOne('Profile')->toArray()
-				,$this->modx->user->toArray()
-				,array('link' => $link)
+				, $this->modx->user->toArray()
+				, array('link' => $link)
 			)
 		);
 		/** @var modPHPMailer $mail */
@@ -927,12 +942,14 @@ class userprofile
 		$mail->reset();
 		return $response;
 	}
+
 	/**
 	 * Method for confirmation of user email
 	 *
 	 * @param $data
 	 */
-	public function confirmEmail($data) {
+	public function confirmEmail($data)
+	{
 		/** @var modDbRegister $register */
 		$register = $this->modx->getService('registry', 'registry.modRegistry')->getRegister('user', 'registry.modDbRegister');
 		$register->connect();
@@ -1000,7 +1017,8 @@ class userprofile
 	 * @param integer $length The length of sanitized string
 	 * @return string The sanitized string.
 	 */
-	public function Sanitize($string = '', $length = 0) {
+	public function Sanitize($string = '', $length = 0)
+	{
 		$expr = $this->modx->getOption('up_sanitize_pcre', null, '/[^-_a-z\p{L}0-9@\s\.\,\:\/\\\]+/iu', true);
 		$string = html_entity_decode($string, ENT_QUOTES, 'UTF-8');
 		$sanitized = trim(preg_replace($expr, '', $string));
@@ -1017,7 +1035,8 @@ class userprofile
 	 *
 	 * @return mixed
 	 */
-	function runProcessor($action = '', $scriptProperties = array()) {
+	function runProcessor($action = '', $scriptProperties = array())
+	{
 		$this->modx->error->errors = $this->modx->error->message = null;
 		return $this->modx->runProcessor($action, $scriptProperties, array(
 				'processors_path' => $this->config['processorsPath']
