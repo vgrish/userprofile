@@ -489,7 +489,7 @@ class userprofile
 	{
 		$profile['id'] = $id;
 		if ($user = $this->modx->getObject('modUser', $id)) {
-			$profile = $user->getOne('Profile')->toArray();
+			$profile = array_merge($user->toArray(), $user->getOne('Profile')->toArray());
 		}
 		unset($profile['id']);
 		return $profile;

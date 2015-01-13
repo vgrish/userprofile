@@ -14,3 +14,6 @@ if ($isAuthenticated) {
 else {
 	$modx->sendErrorPage();
 }
+//
+$user = $this->modx->user->toArray();
+$profile = $this->modx->user->Profile->toArray();
