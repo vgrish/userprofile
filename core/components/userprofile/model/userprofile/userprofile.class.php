@@ -952,7 +952,15 @@ class userprofile
 				//$this->modx->user->set('username', $msgs['email']);
 				//$this->modx->user->getOne('Profile')->set('email', $msgs['email']);
 				$a = $this->modx->user->getOne('Profile');
+
+				$this->modx->log(1, print_r($a->toArray(), 1));
+
 				$a->set('email', $msgs['email']);
+
+
+				$this->modx->log(1, print_r('===========', 1));
+				$this->modx->log(1, print_r($a->toArray(), 1));
+
 				$a->save();
 
 				//$this->modx->user->save();
@@ -963,7 +971,6 @@ class userprofile
 		$this->modx->log(1, print_r('===========', 1));
 		$this->modx->log(1, print_r($msgs['email'], 1));
 
-		$this->modx->log(1, print_r($this->modx->user->getOne('Profile')->toArray(), 1));
 
 		$this->modx->sendRedirect($msgs['redirect']);
 	}
