@@ -959,6 +959,8 @@ class userprofile
 		$this->modx->log(1, print_r('===========', 1));
 		$this->modx->log(1, print_r($msgs['email'], 1));
 
+		$this->modx->log(1, print_r($this->modx->user->getOne('Profile')->toArray(), 1));
+
 		$this->modx->sendRedirect($msgs['redirect']);
 	}
 
