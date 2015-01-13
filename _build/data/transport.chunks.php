@@ -38,6 +38,11 @@ $tmp = array(
 		'file' => 'up_section_favorites',
 		'description' => '',
 	),
+
+	'tpl.upProfile.form' => array(
+		'file' => 'up_profile_form',
+		'description' => '',
+	),
 );
 
 // Save chunks for setup options

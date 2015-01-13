@@ -3,10 +3,26 @@
 $properties = array();
 
 $tmp = array(
-	'tplUserProfile' => array(
+	'tplProfile' => array(
 		'type' => 'textfield',
-		'value' => 'tpl.upProfile',
+		'value' => 'tpl.upProfile.form',
 	),
+
+	'requiredFields' => array(
+		'type' => 'textfield',
+		'value' => 'username,email,fullname',
+	),
+
+
+	'avatarParams' => array(
+		'type' => 'textfield',
+		'value' => '{"w":200,"h":200,"zc":0,"bg":"ffffff","f":"jpg"}',
+	),
+	'avatarPath' => array(
+		'type' => 'textfield',
+		'value' => 'images/users/',
+	),
+
 
 	'tplSectionContent' => array(
 		'type' => 'textfield',

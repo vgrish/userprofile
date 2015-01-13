@@ -25,6 +25,11 @@ class userprofile
 		'notfound' => array('responseCode' => 'HTTP/1.1 404 Not Found'),
 	);
 
+	public $actions = array(
+		//'auth/login',
+		'auth/logout',
+	);
+
 	/* @var pdoTools $pdoTools */
 	public $pdoTools;
 
@@ -83,7 +88,6 @@ class userprofile
 			'delimeterAction' => ':',
 
 
-
 		), $config);
 
 		$this->modx->addPackage('userprofile', $this->config['modelPath']);
@@ -93,8 +97,7 @@ class userprofile
 		// default type_id
 		if ($extSetting = $this->modx->getObject('upExtendedSetting', array('active' => 1, 'default' => 1))) {
 			$this->defaultTypeId = $extSetting->get('id');
-		}
-		else {
+		} else {
 			$this->modx->log(modX::LOG_LEVEL_ERROR, print_r('UserProfile error get default TypeId.', 1));
 		}
 
@@ -150,20 +153,20 @@ class userprofile
 					$config_js = preg_replace(array('/^\n/', '/\t{5}/'), '', '
 					userprofile = {};
 					userprofileConfig = {
-						cssUrl: "'.$this->config['cssUrl'].'web/"
-						,jsUrl: "'.$this->config['jsUrl'].'web/"
-						,actionUrl: "'.$this->config['actionUrl'].'"
-						,ctx: "'.$this->modx->context->get('key').'"
-						,close_all_message: "'.$this->modx->lexicon('up_message_close_all').'"
+						cssUrl: "' . $this->config['cssUrl'] . 'web/"
+						,jsUrl: "' . $this->config['jsUrl'] . 'web/"
+						,actionUrl: "' . $this->config['actionUrl'] . '"
+						,ctx: "' . $this->modx->context->get('key') . '"
+						,close_all_message: "' . $this->modx->lexicon('up_message_close_all') . '"
 					};
 					');
-					$this->modx->regClientStartupScript("<script type=\"text/javascript\">\n".$config_js."\n</script>", true);
+					$this->modx->regClientStartupScript("<script type=\"text/javascript\">\n" . $config_js . "\n</script>", true);
 					if ($js = trim($this->config['frontend_js'])) {
 						if (!empty($js) && preg_match('/\.js/i', $js)) {
 							$this->modx->regClientScript(preg_replace(array('/^\n/', '/\t{7}/'), '', '
 							<script type="text/javascript">
 								if(typeof jQuery == "undefined") {
-									document.write("<script src=\"'.$this->config['jsUrl'].'web/lib/jquery.min.js\" type=\"text/javascript\"><\/script>");
+									document.write("<script src=\"' . $this->config['jsUrl'] . 'web/lib/jquery.min.js\" type=\"text/javascript\"><\/script>");
 								}
 							</script>
 							'), true);
@@ -189,7 +192,7 @@ class userprofile
 		$up_extended = array();
 		$profile = $user->getOne('Profile')->toArray();
 		$profile = array_merge($profile, array(
-				'gravatar' => $this->config['gravatarUrl'] . md5(strtolower($profile['email'])) . '?s='.$this->config['gravatarSize'] . '&d=' . $this->config['gravatarIcon'],
+				'gravatar' => $this->config['gravatarUrl'] . md5(strtolower($profile['email'])) . '?s=' . $this->config['gravatarSize'] . '&d=' . $this->config['gravatarIcon'],
 			)
 		);
 		if ($upExtended = $this->modx->getObject('upExtended', array('user_id' => $id))) {
@@ -295,10 +298,8 @@ class userprofile
 	{
 		if ($this->modx->user->isAuthenticated($this->modx->context->get('key'))) {
 			if (!$this->modx->user->active || $this->modx->user->Profile->blocked) {
-				$this->modx->runProcessor('security/logout');
-				$this->modx->sendRedirect($this->modx->makeUrl($this->modx->getOption('site_start'),'','','full'));
-			}
-			else {
+				$this->logOut();
+			} else {
 				$id = $this->modx->user->id;
 				if (!$upExtended = $this->modx->getObject('upExtended', array('user_id' => $id))) {
 					$upExtended = $this->modx->newObject('upExtended', array('user_id' => $id));
@@ -314,24 +315,61 @@ class userprofile
 		}
 	}
 
+	public function OnHandleRequest($sp)
+	{
+		$actions = $this->actions;
+		if (!empty($_REQUEST['action']) && in_array(urldecode($_REQUEST['action']), $actions)) {
+
+			switch ($_REQUEST['action']) {
+				case 'auth/logout':
+				{
+					$this->logOut();
+					break;
+				}
+				default:
+					break;
+
+			}
+
+		}
+	}
+
+	/**
+	 * @param array $logout_data
+	 * @param int $id
+	 */
+	public function logOut($logout_data = array(), $id = 0)
+	{
+		$response = $this->modx->runProcessor('security/logout', $logout_data);
+		if ($response->isError()) {
+			$errors = $this->_formatProcessorErrors($response);
+			$this->modx->log(modX::LOG_LEVEL_ERROR, '[UserProfile] logout error. Username: ' . $this->modx->user->get('username') . ', uid: ' . $this->modx->user->get('id') . '. Message: ' . $errors);
+		}
+		$this->modx->sendRedirect($this->modx->makeUrl((!empty($id)) ? $id : $this->modx->getOption('site_start'), '', '', 'full'));
+	}
+
 	/**
 	 * @param $sp
 	 */
 	public function OnPageNotFound($sp)
 	{
-		if(!$this->modx->getOption('friendly_urls')) {return false;}
+		if (!$this->modx->getOption('friendly_urls')) {
+			return false;
+		}
 		// q
-		$q = trim(@$_REQUEST[$this->modx->context->getOption('request_param_alias','q')]);
+		$q = trim(@$_REQUEST[$this->modx->context->getOption('request_param_alias', 'q')]);
 		$rarr = explode('/', rtrim($q, '/'));
 		// work
-		if ($rarr[0] == $this->config['main_url']/* && (count($rarr) > 1)*/) {
+		if ($rarr[0] == $this->config['main_url'] /* && (count($rarr) > 1)*/) {
 			$uri = $rarr[0];
 			$section = $rarr[2];
 			$id = (int)$rarr[1];
 			// default placehoder
 			$sectionPl = $this->config['defaultSection'];
 			//
-			if ($this->isHide($id) ) {return false;}
+			if ($this->isHide($id)) {
+				return false;
+			}
 			// setting url
 			$container_suffix = $this->modx->getOption('container_suffix', null, '/', true);
 			$uri .= $container_suffix;
@@ -350,9 +388,9 @@ class userprofile
 			$allowedSections = $this->getAllowedSections(true);
 			unset($allowedSections[array_search('info', $allowedSections)]);
 
-			if(!empty($section) && (!in_array($section, $allowedSections))) {
+			if (!empty($section) && (!in_array($section, $allowedSections))) {
 				$this->modx->sendRedirect(
-					  $this->modx->makeUrl($this->modx->getOption('site_start'),'','','full')
+					$this->modx->makeUrl($this->modx->getOption('site_start'), '', '', 'full')
 					. $this->config['main_url']
 					. '/'
 					. $id
@@ -360,11 +398,11 @@ class userprofile
 					,
 					$this->redirectArr['moved']
 				);
-			}
-			elseif(in_array($section, $allowedSections)) {
+			} elseif (in_array($section, $allowedSections)) {
 				$sectionPl = $section;
+			} elseif (($id == 0) && (!empty($rarr[1])) && (!in_array($rarr[1], $allowedSections))) {
+				return false;
 			}
-			elseif(($id == 0) && (!empty($rarr[1])) && (!in_array($rarr[1], $allowedSections))) {return false;}
 			// set placeholders
 			$this->modx->setPlaceholder('user_id', $id);
 			$this->modx->setPlaceholder('active_section', $sectionPl);
@@ -380,10 +418,14 @@ class userprofile
 	public function getAllowedSections($setting = false)
 	{
 		$allowedSections = array_map('trim', explode(',', trim($this->modx->getOption('userprofile_allowed_sections', null, 'info', true))));
-		if($setting) {return $allowedSections;}
+		if ($setting) {
+			return $allowedSections;
+		}
 		$allowed = array($this->config['defaultSection']);
-		foreach(array_map('trim', explode(',', trim($this->config['allowedSections']))) as $section) {
-			if(in_array($section, $allowedSections)) {$allowed[] = $section;}
+		foreach (array_map('trim', explode(',', trim($this->config['allowedSections']))) as $section) {
+			if (in_array($section, $allowedSections)) {
+				$allowed[] = $section;
+			}
 		}
 		return array_unique($allowed);
 	}
@@ -398,9 +440,12 @@ class userprofile
 	{
 		$content = '';
 		$emptyTpl = $scriptProperties['tplSectionEmpty'];
-		if(!empty($data[0])) {
-			if(empty($data[1])) {$action = $this->config['defaultAction'];}
-			else {$action = $data[1];}
+		if (!empty($data[0])) {
+			if (empty($data[1])) {
+				$action = $this->config['defaultAction'];
+			} else {
+				$action = $data[1];
+			}
 			$name = $data[0];
 			if ($object = $this->modx->getObject($this->actionArr[$action], array('name' => $name))) {
 				$properties = $object->getProperties();
@@ -408,12 +453,10 @@ class userprofile
 				//
 				$output = $object->process($scriptProperties);
 				$content = $this->processTags($output);
-			}
-			else {
+			} else {
 				$content = $this->modx->lexicon('up_get_object_err');
 			}
-		}
-		else {
+		} else {
 			$content = empty($emptyTpl)
 				? $this->pdoTools->getChunk('', $row)
 				: $this->pdoTools->getChunk($emptyTpl, $row, $this->pdoTools->config['fastMode']);
@@ -431,15 +474,20 @@ class userprofile
 	public function getUserFields($id)
 	{
 		$profile['id'] = $id;
-		if($user = $this->modx->getObject('modUser',$id)) {
+		if ($user = $this->modx->getObject('modUser', $id)) {
 			$profile = $user->getOne('Profile')->toArray();
 		}
 		unset($profile['id']);
 		return $profile;
 	}
 
-	public function prepareData($data = array()) {
-		$data['gravatar'] = $this->config['gravatarUrl'] . md5(strtolower($data['email'])) .'?s=' . $this->config['gravatarSize'] . '&d=' . $this->config['gravatarIcon'];
+	/**
+	 * @param array $data
+	 * @return array
+	 */
+	public function prepareData($data = array())
+	{
+		$data['gravatar'] = $this->config['gravatarUrl'] . md5(strtolower($data['email'])) . '?s=' . $this->config['gravatarSize'] . '&d=' . $this->config['gravatarIcon'];
 		$data['avatar'] = !empty($data['photo'])
 			? $data['photo']
 			: $data['gravatar'];
@@ -514,20 +562,27 @@ class userprofile
 		if (!empty($id)) {
 			$usersArr = array_map('trim', explode(',', trim($this->modx->getOption('userprofile_hide_users'))));
 			$groupsArr = array_map('trim', explode(',', trim($this->modx->getOption('userprofile_hide_groups'))));
-			if(in_array($id, $usersArr)) {return true;}
-			foreach($this->modx->getIterator('modUserGroupMember', array('member' => $id)) as $group) {
+			if (in_array($id, $usersArr)) {
+				return true;
+			}
+			foreach ($this->modx->getIterator('modUserGroupMember', array('member' => $id)) as $group) {
 				$groupId = $group->toArray()['user_group'];
-				if(in_array($groupId, $groupsArr)) {return true;}
+				if (in_array($groupId, $groupsArr)) {
+					return true;
+				}
 			}
 
 			$arr['id'] = $id;
-			if($this->modx->getOption('userprofile_hide_inactive')) {
+			if ($this->modx->getOption('userprofile_hide_inactive')) {
 				$arr['active'] = 1;
 			}
-			if(!$this->modx->getCount('modUser', $arr)) {return true;}
+			if (!$this->modx->getCount('modUser', $arr)) {
+				return true;
+			}
+			return false;
+		} elseif ($id == 0) {
 			return false;
 		}
-		elseif($id == 0) {return false;}
 		return true;
 	}
 
@@ -539,21 +594,23 @@ class userprofile
 	 *
 	 * @return string
 	 */
-	public function dateFormat($date, $dateFormat = null) {
-		$date = preg_match('/^\d+$/',$date) ?  $date : strtotime($date);
+	public function dateFormat($date, $dateFormat = null)
+	{
+		$date = preg_match('/^\d+$/', $date) ? $date : strtotime($date);
 		$dateFormat = !empty($dateFormat) ? $dateFormat : $this->config['dateFormat'];
 		$current = time();
 		$delta = $current - $date;
 		if ($this->config['dateNow']) {
-			if ($delta < $this->config['dateNow']) {return $this->modx->lexicon('up_date_now');}
+			if ($delta < $this->config['dateNow']) {
+				return $this->modx->lexicon('up_date_now');
+			}
 		}
 		if ($this->config['dateMinutes']) {
 			$minutes = round(($delta) / 60);
 			if ($minutes < $this->config['dateMinutes']) {
 				if ($minutes > 0) {
-					return $this->declension($minutes, $this->modx->lexicon('up_date_minutes_back',array('minutes' => $minutes)));
-				}
-				else {
+					return $this->declension($minutes, $this->modx->lexicon('up_date_minutes_back', array('minutes' => $minutes)));
+				} else {
 					return $this->modx->lexicon('up_date_minutes_back_less');
 				}
 			}
@@ -562,36 +619,36 @@ class userprofile
 			$hours = round(($delta) / 3600);
 			if ($hours < $this->config['dateHours']) {
 				if ($hours > 0) {
-					return $this->declension($hours, $this->modx->lexicon('up_date_hours_back',array('hours' => $hours)));
-				}
-				else {
+					return $this->declension($hours, $this->modx->lexicon('up_date_hours_back', array('hours' => $hours)));
+				} else {
 					return $this->modx->lexicon('up_date_hours_back_less');
 				}
 			}
 		}
 		if ($this->config['dateDay']) {
-			switch(date('Y-m-d', $date)) {
+			switch (date('Y-m-d', $date)) {
 				case date('Y-m-d'):
 					$day = $this->modx->lexicon('up_date_today');
 					break;
-				case date('Y-m-d', mktime(0, 0, 0, date('m')  , date('d')-1, date('Y')) ):
+				case date('Y-m-d', mktime(0, 0, 0, date('m'), date('d') - 1, date('Y'))):
 					$day = $this->modx->lexicon('up_date_yesterday');
 					break;
-				case date('Y-m-d', mktime(0, 0, 0, date('m')  , date('d')+1, date('Y')) ):
+				case date('Y-m-d', mktime(0, 0, 0, date('m'), date('d') + 1, date('Y'))):
 					$day = $this->modx->lexicon('up_date_tomorrow');
 					break;
-				default: $day = null;
+				default:
+					$day = null;
 			}
-			if($day) {
-				$format = str_replace("day",preg_replace("#(\w{1})#",'\\\${1}',$day),$this->config['dateDay']);
-				return date($format,$date);
+			if ($day) {
+				$format = str_replace("day", preg_replace("#(\w{1})#", '\\\${1}', $day), $this->config['dateDay']);
+				return date($format, $date);
 			}
 		}
 		$m = date("n", $date);
 		$month_arr = $this->modx->fromJSON($this->modx->lexicon('up_date_months'));
 		$month = $month_arr[$m - 1];
-		$format = preg_replace("~(?<!\\\\)F~U", preg_replace('~(\w{1})~u','\\\${1}', $month), $dateFormat);
-		return date($format ,$date);
+		$format = preg_replace("~(?<!\\\\)F~U", preg_replace('~(\w{1})~u', '\\\${1}', $month), $dateFormat);
+		return date($format, $date);
 	}
 
 	/**
@@ -604,23 +661,30 @@ class userprofile
 	 *
 	 * @return string
 	 */
-	public function declension($count, $forms, $lang = null) {
+	public function declension($count, $forms, $lang = null)
+	{
 		if (empty($lang)) {
-			$lang = $this->modx->getOption('cultureKey',null,'en');
+			$lang = $this->modx->getOption('cultureKey', null, 'en');
 		}
 		$forms = $this->modx->fromJSON($forms);
 		if ($lang == 'ru') {
 			$mod100 = $count % 100;
-			switch ($count%10) {
+			switch ($count % 10) {
 				case 1:
-					if ($mod100 == 11) {$text = $forms[2];}
-					else {$text = $forms[0];}
+					if ($mod100 == 11) {
+						$text = $forms[2];
+					} else {
+						$text = $forms[0];
+					}
 					break;
 				case 2:
 				case 3:
 				case 4:
-					if (($mod100 > 10) && ($mod100 < 20)) {$text = $forms[2];}
-					else {$text = $forms[1];}
+					if (($mod100 > 10) && ($mod100 < 20)) {
+						$text = $forms[2];
+					} else {
+						$text = $forms[1];
+					}
 					break;
 				case 5:
 				case 6:
@@ -628,14 +692,13 @@ class userprofile
 				case 8:
 				case 9:
 				case 0:
-				default: $text = $forms[2];
+				default:
+					$text = $forms[2];
 			}
-		}
-		else {
+		} else {
 			if ($count == 1) {
 				$text = $forms[0];
-			}
-			else {
+			} else {
 				$text = $forms[1];
 			}
 		}
@@ -685,6 +748,32 @@ class userprofile
 	}
 
 	/**
+	 * from https://github.com/bezumkin/Office/blob/master/core/components/office/controllers/auth.class.php#L608
+	 *
+	 * More convenient error messages
+	 *
+	 * @param modProcessorResponse $response
+	 * @param string $glue
+	 *
+	 * @return string
+	 */
+	protected function _formatProcessorErrors(modProcessorResponse $response, $glue = 'br')
+	{
+		$errormsgs = array();
+		if ($response->hasMessage()) {
+			$errormsgs[] = $response->getMessage();
+		}
+		if ($response->hasFieldErrors()) {
+			if ($errors = $response->getFieldErrors()) {
+				foreach ($errors as $error) {
+					$errormsgs[] = $error->message;
+				}
+			}
+		}
+		return implode($glue, $errormsgs);
+	}
+
+	/**
 	 * Collects and processes any set of tags
 	 *
 	 * @param mixed $html Source code for parse
@@ -692,7 +781,8 @@ class userprofile
 	 *
 	 * @return mixed $html Parsed html
 	 */
-	public function processTags($html, $maxIterations = 10) {
+	public function processTags($html, $maxIterations = 10)
+	{
 		$this->modx->getParser()->processElementTags('', $html, false, false, '[[', ']]', array(), $maxIterations);
 		$this->modx->getParser()->processElementTags('', $html, true, true, '[[', ']]', array(), $maxIterations);
 		return $html;

@@ -12,6 +12,7 @@ $tmp = array(
 			'OnLoadWebDocument' => array(),
 			'OnUserSave' => array(),
 			'OnPageNotFound' => array(),
+			'OnHandleRequest' => array(),
 			//'OnManagerPageInit' => array()
 		)
 	)
