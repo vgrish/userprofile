@@ -69,7 +69,7 @@ foreach($count as $k => $c) {
 if (empty($outputSeparator)) {$outputSeparator = "\n";}
 $output = is_array($output) ? implode($outputSeparator, $output) : $output;
 $output = empty($tpl)
-	? $up->pdoTools->getChunk('', array('rows' => $output))
-	: $up->pdoTools->getChunk($tpl, array('rows' => $output), $up->pdoTools->config['fastMode']);
+	? $up->pdoTools->getChunk('', array('counts' => $output))
+	: $up->pdoTools->getChunk($tpl, array('counts' => $output), $up->pdoTools->config['fastMode']);
 
 return $output;

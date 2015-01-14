@@ -10,7 +10,7 @@ $tmp = array(
 	),
 	'tpl' => array(
 		'type' => 'textfield',
-		'value' => '@INLINE [[+rows]]',
+		'value' => '@INLINE [[+counts]]',
 	),
 	'tplRow' => array(
 		'type' => 'textfield',
@@ -34,12 +34,12 @@ $tmp = array(
 	),
 	'fastMode' => array(
 		'type' => 'combo-boolean',
-		'value' => false,
+		'value' => true,
 	),
 
 	'processSection' => array(
 		'type' => 'textfield',
-		'value' => 'tickets,comments,favorites'
+		'value' => 'tickets,comments,'
 	),
 	/*'
 	'toPlaceholder' => array(
