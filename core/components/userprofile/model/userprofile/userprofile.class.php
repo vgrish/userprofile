@@ -368,10 +368,6 @@ class userprofile
 	 */
 	public function update($data = array())
 	{
-
-		$this->modx->log(1, print_r('=======' ,1));
-		$this->modx->log(1, print_r($data ,1));
-
 		$this->config['json_response'] = 1;
 		if (!$this->modx->user->isAuthenticated($this->modx->context->key)) {
 			return $this->error($this->modx->lexicon('up_auth_err'));
@@ -427,6 +423,10 @@ class userprofile
 		//
 		$length = 500; // !!!
 		//
+
+		$this->modx->log(1, print_r('=======|||||========' ,1));
+		$this->modx->log(1, print_r($data['up'] ,1));
+
 		if ($upExtended = $this->modx->getObject('upExtended', array('user_id' => $user_id))) {
 			$TabsFields = $this->getTabsFields($upExtended->get('type_id'));
 			unset(
