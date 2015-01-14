@@ -36,6 +36,7 @@ $tmp = array(
 		'join' => $member.'.role',
 	)
 );
+
 foreach ($tmp as $k => $p) {
 	if (!empty($$k)) {
 		$$k = array_map('trim', explode(',', $$k));
@@ -81,19 +82,19 @@ if (!empty($groups_in) || !empty($groups_out) || !empty($roles_in) || !empty($ro
 // Fields to select
 $select = array(
 	$class => implode(',', array_keys($modx->getFieldMeta($class)))
-,$profile => implode(',', array_keys($modx->getFieldMeta($profile)))
+	,$profile => implode(',', array_keys($modx->getFieldMeta($profile)))
 );
-// Add Referral param
-$where_ref = array();
-$innerJoin_ref = array(
+// Add upExtended param
+$where_up = array();
+$innerJoin_up = array(
 	array('class' => 'upExtended', 'alias' => 'upExtended', 'on' => '`upExtended`.`user_id`=`modUser`.`id`'),
 );
-$select_ref = array(
+$select_up = array(
 	array('userProfile' => $modx->getSelectColumns('upExtended', 'upExtended', '', array('id'), true) ),
 );
-$where = array_merge($where, $where_ref);
-$innerJoin = array_merge($innerJoin, $innerJoin_ref);
-$select = array_merge($select, $select_ref);
+$where = array_merge($where, $where_up);
+$innerJoin = array_merge($innerJoin, $innerJoin_up);
+$select = array_merge($select, $select_up);
 // Add custom parameters
 foreach (array('where','innerJoin','select') as $v) {
 	if (!empty($scriptProperties[$v])) {
@@ -123,6 +124,8 @@ if (!empty($users_in) && (empty($scriptProperties['sortby']) || $scriptPropertie
 	$scriptProperties['sortby'] = "find_in_set(`$class`.`id`,'".implode(',', $users_in)."')";
 	$scriptProperties['sortdir'] = '';
 }
+//
+$scriptProperties['return'] = 'data';
 // Merge all properties and run!
 $up->pdoTools->addTime('Query parameters ready');
 $up->pdoTools->setConfig(array_merge($default, $scriptProperties), false);
