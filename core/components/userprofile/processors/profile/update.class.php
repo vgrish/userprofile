@@ -65,6 +65,7 @@ class userProfileUserUpdateProcessor extends modUserUpdateProcessor {
 
 		$this->modx->log(1, print_r('===----------PPP--------===' ,1));
 		$this->modx->log(1, print_r($this->getProperty('up', '') ,1));
+		$this->modx->log(1, print_r($this->getProperty('realTabs') ,1));
 
 		// Add existing extended fields
 		if ($extended = $this->getProperty('extended')) {
@@ -73,16 +74,14 @@ class userProfileUserUpdateProcessor extends modUserUpdateProcessor {
 			}
 			$this->setProperty('extended', $extended);
 		}
+
 		//// Add userprofile extended fields
-		if (is_array($extended)) {
+		if ($upExtended = $this->getProperty('up')) {
 			$upReal =array();
-			$upExtended = $this->getProperty('up', '');
-			$realTabs = $this->getProperty('realTabs', '');
-			if(is_array($realTabs)) {
-				foreach($realTabs as $tab) {
-					$upReal = array_merge($upReal, $upExtended[$tab]);
-					unset($upExtended[$tab]);
-				}
+			$realTabs = $this->getProperty('realTabs');
+			foreach($realTabs as $tab) {
+				$upReal = array_merge($upReal, $upExtended[$tab]);
+				unset($upExtended[$tab]);
 			}
 			if(is_array($upExtended)) {
 
