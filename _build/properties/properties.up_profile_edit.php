@@ -77,7 +77,7 @@ $tmp = array(
 		'value' => '@INLINE
 	<div class="form-group">
         <label class="col-sm-2 control-label">[[+name]]</label>
-        <div class="col-sm-9">
+        <div class="col-sm-10">
             <input type="text" name="[[+inputname]]" value="[[+value]]" placeholder="" class="form-control" />
             <p class="help-block message">[[+error_email]]</p>
         </div>
