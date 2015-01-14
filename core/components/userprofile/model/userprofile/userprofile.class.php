@@ -424,9 +424,24 @@ class userprofile
 		//
 		$upFields = array();
 		$user_id = $this->modx->user->id;
+		//
+		$length = 500; // !!!
+		//
+		if ($upExtended = $this->modx->getObject('upExtended', array('user_id' => $user_id))) {
+			$TabsFields = $this->getTabsFields($upExtended->get('type_id'));
+			unset(
+				$TabsFields[$this->config['disabledTabs']]
+			);
+			foreach($TabsFields as $nameTab => $fields) {
+				if(!is_array($data['up'])) {break;}
+				$upFields[$nameTab][$fields] = $this->Sanitize($data['up'][$nameTab][$fields], $length);
+			}
+		}
 
-		$this->modx->log(1, print_r('=======' ,1));
-		$this->modx->log(1, print_r($user_id ,1));
+		$this->modx->log(1, print_r('=======|||||========' ,1));
+		$this->modx->log(1, print_r($upFields ,1));
+
+		// getTabsFields
 
 		//
 		$changeEmail = false;

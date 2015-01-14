@@ -62,17 +62,13 @@ if(!empty($enabledTabs)) {
 			foreach($fields as $field => $v) {
 				if(in_array($field, $excludeFields)) {continue;}
 				$row['value'] = '';
-				if(in_array($nameTab, $realTabs)) {
-					$row['value'] = $row[$field];
-				}
+				if(in_array($nameTab, $realTabs)) {$row['value'] = $row[$field];}
 				elseif(is_array($row['extended'])) {
-					if(isset($row['extended'][$nameTab][$field])) {
-						$row['value'] = $row['extended'][$nameTab][$field];
-					}
+					if(isset($row['extended'][$nameTab][$field])) {$row['value'] = $row['extended'][$nameTab][$field];}
 					else {$row['value'] = '';}
 				}
-				$row['inputname'] = $field;
 				$row['name'] = $modx->lexicon('up_field_'.$field);
+				$row['inputname'] = 'up['.$nameTab.']['.$field.']';
 				$row['tabcontent'] .= empty($tplSectionTabContentRow)
 					? $up->pdoTools->getChunk('', $row)
 					: $up->pdoTools->getChunk($tplSectionTabContentRow, $row, $up->pdoTools->config['fastMode']);
