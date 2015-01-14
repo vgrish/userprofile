@@ -454,6 +454,8 @@ class userprofile
 
 		$this->modx->log(1, print_r('===========', 1));
 		$this->modx->log(1, print_r($fields, 1));
+		$this->modx->log(1, print_r($changeEmail, 1));
+		$this->modx->log(1, print_r($new_email, 1));
 
 		/* @var modProcessorResponse $response */
 		$response = $this->runProcessor('profile/update', $fields);
