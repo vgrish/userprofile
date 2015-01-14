@@ -7,10 +7,6 @@ if (!$up = $modx->getService('userprofile', 'userprofile', $modx->getOption('use
 }
 //
 $up->initialize($modx->context->key, $scriptProperties);
-// Merge all properties
-//$up->pdoTools->setConfig(array_merge($default, $scriptProperties), false);
-//print_r($scriptProperties);die;
-
 //
 if(empty($processSection)) {$processSection = 'tickets,comments,favorites';}
 if(empty($user)) {$user = $modx->getPlaceholder('user_id');}
@@ -19,7 +15,7 @@ if(empty($pleComments)) {$pleComments = 'comments';}
 if(empty($pleFavorites)) {$pleFavorites = 'favorites';}
 //
 @list($processTickets, $processComments, $processFavorites) = explode(',', strtolower(trim($processSection)));
-
+//
 if(!empty($processTickets) || !empty($processComments)) {
 	// Limit by specified parents
 	if (!isset($depth)) {$depth = 10;}

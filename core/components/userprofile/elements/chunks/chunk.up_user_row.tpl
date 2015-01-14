@@ -1,4 +1,4 @@
-[[!upUserTotal?
+[[-!upUserTotal?
 &user=`[[+id]]`
 ]]
 <div class="userprofile-list-row">
@@ -19,8 +19,24 @@
                 [[%up_field_lastactivity]]: [[!+lastactivity_format]]
             </div>
         </div>
-        <div class="col-md-2"><a href="[[+main_url]]/[[+id]]/tickets/">[[+up.total.tickets]]</a></div>
-        <div class="col-md-2"><a href="[[+main_url]]/[[+id]]/comments/">[[+up.total.comments]]</a></div>
+        <div class="col-md-2">
+            <a href="[[+main_url]]/[[+id]]/tickets/">
+                [[-!+up.total.tickets]]
+                [[upUserTotal?
+                &user=`[[!+id]]`
+                &toPlaceholders=`0`
+                &processSection=`tickets,,`
+                ]]
+            </a></div>
+        <div class="col-md-2">
+            <a href="[[+main_url]]/[[+id]]/comments/">
+                [[-!+up.total.comments]]
+                [[upUserTotal?
+                &user=`[[!+id]]`
+                &toPlaceholders=`0`
+                &processSection=`,comments,`
+                ]]
+            </a></div>
     </div>
 </div>
 <br>
