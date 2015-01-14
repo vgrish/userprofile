@@ -85,6 +85,10 @@ class userProfileUserUpdateProcessor extends modUserUpdateProcessor {
 				}
 			}
 			if(is_array($upExtended)) {
+
+				$this->modx->log(1, print_r('===--fffff--------===' ,1));
+				$this->modx->log(1, print_r($upExtended ,1));
+
 				$extended = array_merge($extended, $upExtended);
 				$this->setProperty('extended', $extended);
 			}
