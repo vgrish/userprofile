@@ -99,12 +99,12 @@ class userProfileUserUpdateProcessor extends modUserUpdateProcessor {
 				$this->setProperty('extended', $extended);
 			}
 			// set real
-			if($upExtended = $this->modx->getObject('upExtended', array('user_id' => $this->getProperty('id')))) {
-				$upReal = array_merge($upReal, $upExtended->toArray());
-				$upExtended->fromArray($upExtended);
-				$upExtended->save();
+			if($upExt = $this->modx->getObject('upExtended', array('user_id' => $this->getProperty('id')))) {
+				foreach($upReal as $k => $value) {
+					$upExt->set($k, $value);
+				}
+				$upExt->save();
 			}
-
 		}
 
 		$this->modx->log(1, print_r('===----------PPPoiiii--------===' ,1));
