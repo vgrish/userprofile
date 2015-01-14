@@ -422,6 +422,13 @@ class userprofile
 			}
 		}
 		//
+		$upFields = array();
+		$user_id = $this->modx->user->id;
+
+		$this->modx->log(1, print_r('=======' ,1));
+		$this->modx->log(1, print_r($user_id ,1));
+
+		//
 		$changeEmail = false;
 		$new_email = '';
 		if (!empty($fields['email'])) {
