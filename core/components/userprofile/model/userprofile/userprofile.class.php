@@ -435,10 +435,10 @@ class userprofile
 			unset(
 				$TabsFields[$this->config['disabledTabs']]
 			);
-			foreach($TabsFields as $nameTab => $fields) {
+			foreach($TabsFields as $nameTab => $fields_) {
 				if(!is_array($data['up'])) {break;}
-				if(!is_array($fields)) {continue;}
-				foreach($fields as $field => $v ) {
+				if(!is_array($fields_)) {continue;}
+				foreach($fields_ as $field => $v ) {
 					$val = trim($data['up'][$nameTab][$field]);
 					if($val !== '') {$upFields[$nameTab][$field] = $this->Sanitize($val, $length);}
 				}
