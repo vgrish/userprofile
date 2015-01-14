@@ -11,8 +11,8 @@ if(empty($user_id) && $isAuthenticated) {$user_id = $modx->user->id;}
 elseif(empty($user_id)) {
 	if(empty($tplNoUserInfo)) {return $modx->lexicon('up_get_user_err');}
 	$output = empty($tplNoUserInfo)
-		? $up->pdoTools->getChunk('', $row)
-		: $up->pdoTools->getChunk($tplNoUserInfo, $row, $up->pdoTools->config['fastMode']);
+		? $up->pdoTools->getChunk('', $scriptProperties)
+		: $up->pdoTools->getChunk($tplNoUserInfo, $scriptProperties, $up->pdoTools->config['fastMode']);
 	if (!empty($toPlaceholder)) {
 		$modx->setPlaceholder($toPlaceholder, $output);
 	} else {
