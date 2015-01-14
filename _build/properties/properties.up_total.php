@@ -8,11 +8,10 @@ $tmp = array(
 		'type' => 'numberfield',
 		'value' => '',
 	),
-/*	'tpl' => array(
+	'tpl' => array(
 		'type' => 'textfield',
 		'value' => '@INLINE [[+rows]]',
 	),
-	*/
 	'tplRow' => array(
 		'type' => 'textfield',
 		'value' => '@INLINE ([[+count]])',
@@ -38,7 +37,10 @@ $tmp = array(
 		'value' => false,
 	),
 
-
+	'processSection' => array(
+		'type' => 'textfield',
+		'value' => 'tickets,comments,favorites'
+	),
 	/*'
 	'toPlaceholder' => array(
 		'type' => 'textfield',
