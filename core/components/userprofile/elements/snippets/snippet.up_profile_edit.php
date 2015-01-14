@@ -63,6 +63,7 @@ if(!empty($enabledTabs)) {
 				if(in_array($field, $excludeFields)) {continue;}
 				$row['value'] = '';
 				if(in_array($nameTab, $realTabs)) {
+					$row['inputname'] = 'real['.$field.']';
 					$row['value'] = $row[$field];
 				}
 				elseif(is_array($row['extended'])) {
