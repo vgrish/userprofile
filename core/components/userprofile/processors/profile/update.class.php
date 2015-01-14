@@ -29,6 +29,11 @@ class userProfileUserUpdateProcessor extends modUserUpdateProcessor {
 		$fields = $this->getProperty('requiredFields', '');
 		if (!empty($fields) && is_array($fields)) {
 			foreach ($fields as $field) {
+
+
+				$this->modx->log(1, print_r('=============', 1));
+				$this->modx->log(1, print_r($field, 1));
+				
 				// Extended fields
 				if (preg_match('/(.*?)\[(.*?)\]/', $field, $matches)) {
 					$tmp = $this->getProperty($matches[1],null);
