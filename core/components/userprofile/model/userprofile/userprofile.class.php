@@ -451,6 +451,10 @@ class userprofile
 			$new_email = trim($fields['email']);
 			$changeEmail = strtolower($current_email) != strtolower($new_email);
 		}
+
+		$this->modx->log(1, print_r('===========', 1));
+		$this->modx->log(1, print_r($fields, 1));
+
 		/* @var modProcessorResponse $response */
 		$response = $this->runProcessor('profile/update', $fields);
 		if ($response->isError()) {
