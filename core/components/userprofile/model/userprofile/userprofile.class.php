@@ -420,6 +420,10 @@ class userprofile
 				}
 			}
 		}
+
+		$this->modx->log(1, print_r('======FFF=====', 1));
+		$this->modx->log(1, print_r($fields, 1));
+
 		// userprofilefields
 		$upFields = array();
 		$user_id = $this->modx->user->id;
