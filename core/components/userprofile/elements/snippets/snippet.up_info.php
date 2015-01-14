@@ -30,8 +30,11 @@ $row = $up->prepareData($row);
 // get upExtendedSetting
 $tabsFields = $up->getTabsFields($row['type_id']);
 // tabs
+$row_idx = 1;
 foreach($tabsFields as $nameTab => $fields) {
-	$row_idx = 1;
+	// def
+	$row['tabcontent'] = '';
+	// NavRow
 	$row['section'] = $nameTab;
 	$row['tabtitle'] = $modx->lexicon('up_tab_title_'.$nameTab);
 	if(!empty($activeTab)) {
@@ -44,18 +47,21 @@ foreach($tabsFields as $nameTab => $fields) {
 	$rows .= empty($tplSectionNavRow)
 		? $up->pdoTools->getChunk('', $row)
 		: $up->pdoTools->getChunk($tplSectionNavRow, $row, $up->pdoTools->config['fastMode']);
-
+	// fields
 	if(is_array($fields)) {
 		foreach($fields as $field) {
-
-
-			// row
-
+			$row['value'] = $field;
+			$row['name'] = $modx->lexicon('up_field_'.$field);
+			$row['tabcontent'] .= empty($tplSectionTabContentRow)
+				? $up->pdoTools->getChunk('', $row)
+				: $up->pdoTools->getChunk($tplSectionTabContentRow, $row, $up->pdoTools->config['fastMode']);
 		}
 	}
+	// tabs
+	$tabs .= empty($tplSectionTabContentPane)
+		? $up->pdoTools->getChunk('', $row)
+		: $up->pdoTools->getChunk($tplSectionTabContentPane, $row, $up->pdoTools->config['fastMode']);
 
-
-//	 =>
 
 
 }
@@ -66,7 +72,9 @@ $row['navtabs'] = empty($tplSectionNavOuter)
 	: $up->pdoTools->getChunk($tplSectionNavOuter, array('rows' => $rows), $up->pdoTools->config['fastMode']);
 // tabs
 
-$row['tabcontent'] = '';
+$row['contenttabs'] = empty($tplSectionTabContentOuter)
+	? $up->pdoTools->getChunk('', array('content' => $tabs))
+	: $up->pdoTools->getChunk($tplSectionTabContentOuter, array('content' => $tabs), $up->pdoTools->config['fastMode']);
 
 /*
  * <ul class="nav nav-tabs">
