@@ -29,7 +29,7 @@
 
 /* tabs left */
 .tab-content {
-    overflow: auto;
+    overflow: hidden;
 }
 .tab-pane {
     min-height: 150px;

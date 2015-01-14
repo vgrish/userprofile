@@ -66,6 +66,7 @@ if(!empty($enabledTabs)) {
 					$row['value'] = $row[$field];
 				}
 				elseif(is_array($row['extended'])) {
+					$row['inputname'] = 'extended['.$nameTab.']['.$field.']';
 					$row['value'] = $row['extended'][$nameTab][$field];
 				}
 
