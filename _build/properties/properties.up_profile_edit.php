@@ -37,45 +37,47 @@ $tmp = array(
 		'value' => '[[+assetsUrl]]js/web/profile.default.js',
 	),
 
-
-	'tplSectionContent' => array(
-		'type' => 'textfield',
-		'value' => '@INLINE <div class="tab-content userprofile-page"><div class="tab-pane fade in active">[[+content]]</div></div>',
-	),
-	'tplSectionEmpty' => array(
-		'type' => 'textfield',
-		'value' => '',
-	),
-	'tplSectionOuter' => array(
-		'type' => 'textfield',
-		'value' => '@INLINE <ul class="nav nav-tabs">[[+rows]]</ul>',
-	),
-	'tplSectionRow' => array(
-		'type' => 'textfield',
-		'value' => '@INLINE <li class="[[+active]]"><a href="[[+main_url]]/[[!+user_id]]/[[+section]]">[[+sectiontitle]]<sup>[[!+up.total.[[+section]]]]</sup></a></li>',
-	),
-
-	'allowedSections' => array(
-		'type' => 'textfield',
-		'value' => 'info,tickets,comments,favorites',
-	),
-	'defaultSection' => array(
-		'type' => 'textfield',
-		'value' => 'info',
-	),
-
-	'filters' => array(
-		'type' => 'textarea',
-		'value' => 'info|upUserInfo:snippet,
-    				tickets|upSectionTickets:chunk,
-					comments|upSectionComments:chunk,
-					favorites|upSectionFavorites:chunk'
-	),
-
-	'allowGuest' => array(
+	'enabledTabs' => array(
 		'type' => 'combo-boolean',
 		'value' => true,
 	),
+
+	'excludeTabs' => array(
+		'type' => 'textfield',
+		'value' => 'activity',
+	),
+	'excludeFields' => array(
+		'type' => 'textfield',
+		'value' => 'lastactivity',
+	),
+	'activeTab' => array(
+		'type' => 'textfield',
+		'value' => '',
+	),
+
+
+	'tplSectionNavOuter' => array(
+		'type' => 'textfield',
+		'value' => '@INLINE <ul class="nav nav-tabs">[[+rows]]</ul>',
+	),
+	'tplSectionNavRow' => array(
+		'type' => 'textfield',
+		'value' => '@INLINE <li class="[[+active]] [[+row_idx]]"><a href="#[[+section]]" data-toggle="tab">[[+tabtitle]]</a></li>',
+	),
+	'tplSectionTabContentOuter' => array(
+		'type' => 'textfield',
+		'value' => '@INLINE <div class="tab-content">[[+content]]</div>',
+	),
+	'tplSectionTabContentPane' => array(
+		'type' => 'textfield',
+		'value' => '@INLINE <div class="tab-pane [[+active]] [[+row_idx]]" id="[[+section]]">[[+tabcontent]]</div>',
+	),
+	'tplSectionTabContentRow' => array(
+		'type' => 'textfield',
+		'value' => '@INLINE <p><b>[[+name]]</b>: [[+value]]</p>',
+	),
+
+
 	'ReturnTo' => array(
 		'type' => 'numberfield',
 		'value' => '',
@@ -90,10 +92,6 @@ $tmp = array(
 		'type' => 'numberfield',
 		'value' => '64',
 	),
-	/*	'gravatarUrl' => array(
-			'type' => 'textfield',
-			'value' => 'https://www.gravatar.com/avatar/',
-		),*/
 
 	'showLog' => array(
 		'type' => 'combo-boolean',

@@ -32,7 +32,7 @@
     overflow: auto;
 }
 .tab-pane {
-    min-height: 100px;
+    min-height: 150px;
 }
 .tabs-left > .nav-tabs {
     float: left;

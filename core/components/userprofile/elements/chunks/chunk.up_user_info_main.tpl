@@ -8,6 +8,14 @@
         </td>
     </tr>
     <tr>
+        <td>description</td>
+        <td>[[+description]]</td>
+    </tr>
+    <tr>
+        <td>Introtext</td>
+        <td>[[+introtext]]</td>
+    </tr>
+    <tr>
         <td>Заметки</td>
         <td>[[!+up.total.tickets]]</td>
     </tr>
@@ -25,7 +33,14 @@
     </tr>
     <tr>
         <td>Последний Ip</td>
-        <td>[[!+ip]]</td>
+        <td>[[+ip]]</td>
     </tr>
     </tbody>
 </table>
+
+<br>
+
+<div class="tabbable tabs-left" id="userprofile-tabs">
+    [[+navtabs]]
+    [[+contenttabs]]
+</div>
