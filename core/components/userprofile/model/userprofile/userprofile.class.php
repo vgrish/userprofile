@@ -561,6 +561,9 @@ class userprofile
 	 */
 	public function OnPageNotFound($sp)
 	{
+
+		$this->modx->log(1, print_r('OnPageNotFound', 1));
+
 		if (!$this->modx->getOption('friendly_urls')) {
 			return false;
 		}
