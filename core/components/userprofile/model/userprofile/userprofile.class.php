@@ -484,6 +484,19 @@ class userprofile
 		return $userPage;
 	}
 
+	public function getTabfieldsUpSetting($id = 0)
+	{
+		$UpSetting = array();
+		if(!empty($id)) {
+			if ($setting = $this->modx->getObject('upExtendedSetting', array('id' => $id))) {
+				$UpSetting = $setting->get('tabfields')->toArray();
+
+				$this->modx->log(1, print_r($UpSetting, 1));
+			}
+		}
+		return $UpSetting;
+	}
+
 	/**
 	 * @param array $logout_data
 	 * @param int $id

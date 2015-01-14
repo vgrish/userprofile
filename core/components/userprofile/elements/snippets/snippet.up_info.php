@@ -27,6 +27,14 @@ $up->pdoTools->addTime('Fetched userProfile.');
 $userFields = $up->getUserFields($user_id);
 $row = array_merge($userFields, $userProfile[0]);
 $row = $up->prepareData($row);
+// get upExtendedSetting
+$upSetting = $up->getTabfieldsUpSetting($row['type_id']);
+// tabs
+
+// nav tabs
+
+
+
 // output
 $output = empty($tplUserInfo)
 	? $up->pdoTools->getChunk('', $row)
