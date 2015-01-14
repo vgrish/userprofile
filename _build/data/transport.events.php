@@ -3,8 +3,8 @@
 $events = array();
 
 $tmp = array(
-	'OnBeforeUserProfileСreated' => array(), //создан
-	'OnUserProfileСreated' => array(), //создан
+	//'OnBeforeUserProfileСreated' => array(), //создан
+	//'OnUserProfileСreated' => array(), //создан
 );
 
 foreach ($tmp as $k => $v) {

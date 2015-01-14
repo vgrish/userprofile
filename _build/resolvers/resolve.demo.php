@@ -32,13 +32,13 @@ switch ($options[xPDOTransport::PACKAGE_ACTION]) {
 				0 => array(
 					'pagetitle' => !$lang ? 'Мои настройки' : 'My setting',
 					'alias' => 'setting',
-					'uri' => 'setting/',
+					'uri' => 'users/setting/',
 					'uri_override' => 1,
 					'published' => 1,
 					'parent' => $parent_id,
 					'richtext' => 0,
 					'template' => $template->id,
-					'content' => file_get_contents(MODX_CORE_PATH . 'components/referral/elements/demo/setting.html')
+					'content' => file_get_contents(MODX_CORE_PATH . 'components/userprofile/elements/demo/setting.html')
 				),
 			);
 
