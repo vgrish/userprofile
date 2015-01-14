@@ -52,7 +52,12 @@
         </div>
     </div>
     <hr/>
-    [[+tabs]]
+
+    <div class="tabbable tabs-left" id="userprofile-tabs">
+        [[+navtabs]]
+        [[+contenttabs]]
+    </div>
+
     <div class="form-group">
         <div class="col-sm-offset-2 col-sm-10">
             <button type="submit" class="btn btn-primary">[[%up_profile_save]]</button>

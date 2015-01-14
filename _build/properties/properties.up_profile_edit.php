@@ -74,8 +74,19 @@ $tmp = array(
 	),
 	'tplSectionTabContentRow' => array(
 		'type' => 'textfield',
-		'value' => '@INLINE <p><b>[[+name]]</b>: [[+value]]</p>',
+		'value' => '@INLINE
+	<div class="form-group">
+        <label class="col-sm-2 control-label">[[+name]]</label>
+        <div class="col-sm-10">
+            <input type="text" name="[[+inputname]]" value="[[+value]]" placeholder="" class="form-control" />
+            <p class="help-block message">[[+error_email]]</p>
+        </div>
+    </div>
+    ',
 	),
+
+
+
 
 
 	'ReturnTo' => array(

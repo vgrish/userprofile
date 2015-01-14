@@ -13,9 +13,26 @@ if ($isAuthenticated) {
 else {
 	$modx->sendErrorPage();
 }
-//
-$row = $up->getUserFields($user_id);
+// default properties
+$default = array(
+	'class' => 'upExtended',
+	'where' => '{"user_id":'.$user_id.'}',
+	'select' => '{"upExtended":"all"}',
+	'return' => 'data',
+	'fastMode' => false,
+	'nestedChunkPrefix' => 'up_',
+);
+// Merge all properties and run!
+$up->pdoTools->addTime('Query parameters are prepared.');
+$up->pdoTools->setConfig(array_merge($default, $scriptProperties));
+$userProfile = $up->pdoTools->run();
+$up->pdoTools->addTime('Fetched userProfile.');
+// get user fields
+$userFields = $up->getUserFields($user_id);
+$row = array_merge($userFields, $userProfile[0]);
 $row = $up->prepareData($row);
+
+//print_r($row);die;
 //
 if(!empty($enabledTabs)) {
 	// get TabsFields

@@ -30,7 +30,7 @@ $tmp = array(
 	),
 	'excludeTabs' => array(
 		'type' => 'textfield',
-		'value' => 'activity',
+		'value' => '',
 	),
 	'excludeFields' => array(
 		'type' => 'textfield',
