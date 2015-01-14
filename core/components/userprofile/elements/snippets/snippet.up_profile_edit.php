@@ -68,7 +68,11 @@ if(!empty($enabledTabs)) {
 				}
 				elseif(is_array($row['extended'])) {
 					$row['inputname'] = 'extended['.$nameTab.']['.$field.']';
-					$row['value'] = $row['extended'][$nameTab][$field];
+					if(isset($row['extended'][$nameTab][$field])) {
+						$row['value'] = $row['extended'][$nameTab][$field];
+					}
+					else {$row['value'] = '';}
+
 				}
 
 				$row['name'] = $modx->lexicon('up_field_'.$field);

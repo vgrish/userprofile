@@ -62,6 +62,9 @@ class userProfileUserUpdateProcessor extends modUserUpdateProcessor {
 		if (!$this->_new_email = $this->getProperty('email')) {
 			$this->setProperty('email', $this->_current_email);
 		}
+
+		$this->modx->log(1, print_r($extended ,1));
+
 		// Add existing extended fields
 		if ($extended = $this->getProperty('extended')) {
 			if ($existing = $this->object->Profile->get('extended')) {
