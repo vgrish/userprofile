@@ -83,15 +83,19 @@ class userProfileUserUpdateProcessor extends modUserUpdateProcessor {
 
 				$this->modx->log(1, print_r($tab ,1));
 
-				$upReal = array_merge($upReal, $upExtended[$tab]);
-				unset($upExtended[$tab]);
+				if(isset($upExtended[$tab])) {
+					$upReal = array_merge($upReal, $upExtended[$tab]);
+					unset($upExtended[$tab]);
+				}
+
 			}
 			if(is_array($upExtended)) {
 
 				$this->modx->log(1, print_r('===--fffff--------===' ,1));
 				$this->modx->log(1, print_r($upExtended ,1));
 
-				$extended = array_merge($extended, $upExtended);
+				if(is_array($extended)) {$extended = array_merge($extended, $upExtended);}
+				else {$extended = $upExtended;}
 				$this->setProperty('extended', $extended);
 			}
 		}
