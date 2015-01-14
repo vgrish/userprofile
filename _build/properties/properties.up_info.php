@@ -7,7 +7,10 @@ $tmp = array(
 		'type' => 'textfield',
 		'value' => 'tpl.upUserInfo',
 	),
-
+	'tplNoUserInfo' => array(
+		'type' => 'textfield',
+		'value' => '@INLINE <p>No User</p>',
+	),
 	'tplSectionNavOuter' => array(
 		'type' => 'textfield',
 		'value' => '@INLINE <ul class="nav nav-tabs">[[+rows]]</ul>',

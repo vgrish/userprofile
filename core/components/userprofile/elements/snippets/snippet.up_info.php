@@ -8,7 +8,17 @@ $up->initialize($modx->context->key, $scriptProperties);
 $isAuthenticated = $modx->user->isAuthenticated($modx->context->key);
 //
 if(empty($user_id) && $isAuthenticated) {$user_id = $modx->user->id;}
-elseif(empty($user_id)) {return $modx->lexicon('up_get_user_err');}
+elseif(empty($user_id)) {
+	if(empty($tplNoUserInfo)) {return $modx->lexicon('up_get_user_err');}
+	$output = empty($tplNoUserInfo)
+		? $up->pdoTools->getChunk('', $row)
+		: $up->pdoTools->getChunk($tplNoUserInfo, $row, $up->pdoTools->config['fastMode']);
+	if (!empty($toPlaceholder)) {
+		$modx->setPlaceholder($toPlaceholder, $output);
+	} else {
+		return $output;
+	}
+}
 // default properties
 $default = array(
 	'class' => 'upExtended',
