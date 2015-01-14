@@ -31,6 +31,7 @@ $row = $up->prepareData($row);
 $tabsFields = $up->getTabsFields($row['type_id']);
 // tabs
 $realTabs = explode(',', $up->config['realTabs']);
+$excludeFields = explode(',', $excludeFields);
 $row_idx = 1;
 foreach($tabsFields as $nameTab => $fields) {
 	// def
@@ -51,6 +52,7 @@ foreach($tabsFields as $nameTab => $fields) {
 	// fields
 	if(is_array($fields)) {
 		foreach($fields as $field => $v) {
+			if(in_array($field, $excludeFields)) {continue;}
 			$row['value'] = '';
 			if(in_array($nameTab, $realTabs)) {
 				$row['value'] = $row[$field];
