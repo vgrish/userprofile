@@ -79,7 +79,7 @@ class userProfileUserUpdateProcessor extends modUserUpdateProcessor {
 		if ($upExtended = $this->getProperty('up')) {
 			$upReal =array();
 			$realTabs = $this->getProperty('realTabs');
-			foreach($realTabs as $tab) {
+			foreach($realTabs as $f => $tab) {
 				$upReal = array_merge($upReal, $upExtended[$tab]);
 				unset($upExtended[$tab]);
 			}
