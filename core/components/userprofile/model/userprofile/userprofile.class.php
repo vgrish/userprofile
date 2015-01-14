@@ -79,6 +79,7 @@ class userprofile
 			'gravatarIcon' => 'mm',
 
 			'disabledTabs' => 'activity',
+			'excludeTabs' => 'activity,personal',
 
 			'frontend_css' => $this->modx->getOption('userprofile_front_css', null, '[[+assetsUrl]]css/web/default.css'),
 			'frontend_js' => $this->modx->getOption('userprofile_front_js', null, '[[+assetsUrl]]js/web/default.js'),
@@ -484,14 +485,23 @@ class userprofile
 		return $userPage;
 	}
 
-	public function getTabfieldsUpSetting($id = 0)
+	/**
+	 * @param int $id
+	 * @return array|mixed
+	 */
+	public function getTabsFields($id = 0)
 	{
 		$UpSetting = array();
 		if(!empty($id)) {
 			if ($setting = $this->modx->getObject('upExtendedSetting', array('id' => $id))) {
-				$UpSetting = $setting->get('tabfields')->toArray();
-
-				$this->modx->log(1, print_r($UpSetting, 1));
+				$UpSetting = $setting->get('tabfields');
+				$UpSetting = $this->modx->fromJSON($UpSetting);
+				$excludeTabs = explode(',', $this->config['excludeTabs']);
+				if(is_array($excludeTabs)) {
+					foreach($excludeTabs as $tab){
+						unset($UpSetting[$tab]);
+					}
+				}
 			}
 		}
 		return $UpSetting;

@@ -14,7 +14,7 @@ $tmp = array(
 	),
 	'tplSectionNavRow' => array(
 		'type' => 'textfield',
-		'value' => '@INLINE <li class="[[+active]]"><a href="#[[+section]]" data-toggle="tab">[[+sectiontitle]]</a></li>',
+		'value' => '@INLINE <li class="[[+active]]"><a href="#[[+section]]" data-toggle="tab">[[+tabtitle]]</a></li>',
 	),
 	'tplSectionTabContentOuter' => array(
 		'type' => 'textfield',
@@ -35,6 +35,10 @@ $tmp = array(
 	'excludeFields' => array(
 		'type' => 'textfield',
 		'value' => 'lastactivity',
+	),
+	'activeTab' => array(
+		'type' => 'textfield',
+		'value' => '',
 	),
 
 	'user_id' => array(

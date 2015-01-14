@@ -28,11 +28,77 @@ $userFields = $up->getUserFields($user_id);
 $row = array_merge($userFields, $userProfile[0]);
 $row = $up->prepareData($row);
 // get upExtendedSetting
-$upSetting = $up->getTabfieldsUpSetting($row['type_id']);
+$tabsFields = $up->getTabsFields($row['type_id']);
+// tabs
+foreach($tabsFields as $nameTab => $fields) {
+	$row_idx = 1;
+	$row['section'] = $nameTab;
+	$row['tabtitle'] = $modx->lexicon('up_tab_title_'.$nameTab);
+	if(!empty($activeTab)) {
+		$row['active'] = ($activeTab == $nameTab) ? 'active' : '';
+	}
+	else {
+		$row['active'] = ($row_idx == 1) ? 'active' : '';
+	}
+	$row['row_idx'] = $row_idx ++;
+	$rows .= empty($tplSectionNavRow)
+		? $up->pdoTools->getChunk('', $row)
+		: $up->pdoTools->getChunk($tplSectionNavRow, $row, $up->pdoTools->config['fastMode']);
+
+	if(is_array($fields)) {
+		foreach($fields as $field) {
+
+
+			// row
+
+		}
+	}
+
+
+//	 =>
+
+
+}
+// NavOuter
+
+$row['navtabs'] = empty($tplSectionNavOuter)
+	? $up->pdoTools->getChunk('', array('rows' => $rows))
+	: $up->pdoTools->getChunk($tplSectionNavOuter, array('rows' => $rows), $up->pdoTools->config['fastMode']);
 // tabs
 
-// nav tabs
+$row['tabcontent'] = '';
 
+/*
+ * <ul class="nav nav-tabs">
+        <li class="first active">
+            <a href="#tab1" data-toggle="tab">таб 1</a>
+        </li>
+        <li class="last">
+            <a href="#tab2" data-toggle="tab">таб 2</a>
+        </li>
+    </ul>
+
+    <div class="tab-content">
+
+        <div class="tab-pane active" id="tab1">
+            <p>телефон: 987889798789</p>
+            <p>телефон: 987889798789</p>
+            <p>телефон: 987889798789</p>
+
+        </div>
+        <div class="tab-pane" id="tab2">...2</div>
+
+
+    </div>
+ *
+ * [social] => Array
+(
+	[facebook] =>
+	[odnoklassniki] =>
+    [vk] =>
+    [mail] =>
+    [twitter] =>
+  )*/
 
 
 // output

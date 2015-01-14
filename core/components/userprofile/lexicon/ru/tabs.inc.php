@@ -20,3 +20,8 @@ $_lang['up_field_mail'] = 'Мой мир';
 $_lang['up_field_twitter'] = 'Твиттер';
 
 
+// tabs title
+
+$_lang['up_tab_title_activity'] = 'Активность';
+$_lang['up_tab_title_personal'] = 'Личное';
+$_lang['up_tab_title_social'] = 'Сети';
