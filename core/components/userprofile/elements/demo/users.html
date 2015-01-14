@@ -1,0 +1,35 @@
+[[!+user_id:gt=`0`:then=`
+
+<div class="row userprofile-page">
+
+    [[!upUserTotal]]
+    [[!upProfile]]
+
+    <div id="sidebar" class="col-md-4">
+
+        [[!upUserInfo?
+            &user_id=`[[!+modx.user.id]]`
+            &tplUserInfo=`tpl.upUserInfo.small`
+            &enabledTabs=`0`
+            &gravatarSize=`64`
+        ]]
+
+    </div>
+
+    <div class="sidebar-block">
+        <h4 class="title"></h4>
+
+    </div>
+
+</div>
+
+`:else=`
+
+    [[!pdoPage?
+        &element=`upUsers`
+        &limit=`10`
+        &showInactive=`1`
+        &tplWrapper=`@INLINE <div class="row"><div class="col-md-8">[[+output]]</div></div>`
+    ]]
+
+`]]
