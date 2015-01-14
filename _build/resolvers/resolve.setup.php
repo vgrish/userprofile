@@ -19,6 +19,10 @@ if ($object->xpdo) {
 				'pdoTools' => array(
 					'version_major' => 1,
 					'version_minor:>=' => 9,
+				),
+				'Theme.Bootstrap' => array(
+					'version_major' => 2,
+					'version_minor:>=' => 1,
 				)
 			);
 			foreach ($packages as $package => $options) {
