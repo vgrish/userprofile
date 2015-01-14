@@ -39,14 +39,9 @@ class userProfileUserUpdateProcessor extends modUserUpdateProcessor {
 				else {
 					$tmp = $this->getProperty($field,null);
 				}
-				if ($field == 'email' && !preg_match('/^[^@а-яА-Я]+@[^@а-яА-Я]+(?<!\.)\.[^\.а-яА-Я]{2,}$/m', $tmp)) {
+				if ($field == 'email' && !preg_match('/.+@.+\..+/i', $tmp)) {
 					$this->addFieldError('email', $this->modx->lexicon('user_err_not_specified_email'));
 				}
-				/*
-				elseif ($field == 'email' && $this->modx->getCount('modUser', array('username' => $tmp, 'id:!=' => $this->object->id))) {
-					$this->addFieldError('email', $this->modx->lexicon('user_err_already_exists_email'));
-				}
-				*/
 				elseif ($field == 'email' && $this->modx->getCount('modUserProfile', array('email' => $tmp, 'internalKey:!=' => $this->object->id))) {
 					$this->addFieldError('email', $this->modx->lexicon('user_err_already_exists_email'));
 				}
@@ -74,26 +69,13 @@ class userProfileUserUpdateProcessor extends modUserUpdateProcessor {
 		if ($upExtended = $this->getProperty('up')) {
 			$upReal = array();
 			$realTabs = $this->getProperty('realTabs');
-
-			$this->modx->log(1, print_r('===----------PPP--------===' ,1));
-			$this->modx->log(1, print_r($upExtended  ,1));
-			$this->modx->log(1, print_r($realTabs ,1));
-
 			foreach($realTabs as $f => $tab) {
-
-				$this->modx->log(1, print_r($tab ,1));
-
 				if(isset($upExtended[$tab])) {
 					$upReal = array_merge($upReal, $upExtended[$tab]);
 					unset($upExtended[$tab]);
 				}
-
 			}
 			if(is_array($upExtended)) {
-
-				$this->modx->log(1, print_r('===--fffff--------===' ,1));
-				$this->modx->log(1, print_r($upExtended ,1));
-
 				if(is_array($extended)) {$extended = array_merge($extended, $upExtended);}
 				else {$extended = $upExtended;}
 				$this->setProperty('extended', $extended);
@@ -106,10 +88,6 @@ class userProfileUserUpdateProcessor extends modUserUpdateProcessor {
 				$upExt->save();
 			}
 		}
-
-		$this->modx->log(1, print_r('===----------PPPoiiii--------===' ,1));
-		$this->modx->log(1, print_r($upReal ,1));
-
 		// Handle new password
 		if ($this->getProperty('specifiedpassword') || $this->getProperty('confirmpassword')) {
 			$this->setProperty('passwordnotifymethod', 's');
