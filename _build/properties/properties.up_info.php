@@ -28,6 +28,14 @@ $tmp = array(
 		'type' => 'textfield',
 		'value' => '@INLINE <p><b>[[+name]]</b>: [[+value]]</p>',
 	),
+	'excludeTabs' => array(
+		'type' => 'textfield',
+		'value' => 'activity,personal',
+	),
+	'excludeFields' => array(
+		'type' => 'textfield',
+		'value' => 'lastactivity',
+	),
 
 	'user_id' => array(
 		'type' => 'numberfield',
