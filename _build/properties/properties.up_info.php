@@ -14,7 +14,7 @@ $tmp = array(
 	),
 	'tplSectionNavRow' => array(
 		'type' => 'textfield',
-		'value' => '@INLINE <li class="[[+active]]"><a href="#[[+section]]" data-toggle="tab">[[+tabtitle]]</a></li>',
+		'value' => '@INLINE <li class="[[+active]] [[+row_idx]]"><a href="#[[+section]]" data-toggle="tab">[[+tabtitle]]</a></li>',
 	),
 	'tplSectionTabContentOuter' => array(
 		'type' => 'textfield',
@@ -22,7 +22,7 @@ $tmp = array(
 	),
 	'tplSectionTabContentPane' => array(
 		'type' => 'textfield',
-		'value' => '@INLINE <div class="tab-pane [[+active]]" id="[[+section]]">[[+tabcontent]]</div>',
+		'value' => '@INLINE <div class="tab-pane [[+active]] [[+row_idx]]" id="[[+section]]">[[+tabcontent]]</div>',
 	),
 	'tplSectionTabContentRow' => array(
 		'type' => 'textfield',
