@@ -9,9 +9,17 @@ Ext.ComponentMgr.onAvailable('modx-user-tabs', function () {
             tabsList = tabs.split(','),
             data = userprofile.config.upExtended;
 
+        var http =  function(uri) {
+            return /^((https?|http|ftp)\:\/\/)?([a-z0-9]{1})((\.[a-z0-9-])|([a-z0-9-]))*\.([a-z]{2,6})(\/?)$/.test(uri);
+        };
+
         var avatarSrc = (config.profile.photo != '')
-            ? MODx.config.connectors_url + 'system/phpthumb.php?h=230&w=294&src=' + config.profile.photo + '&wctx=MODx.ctx&source=1'
+            ? config.profile.photo
             : config.profile.gravatar;
+
+        if(http(avatarSrc)) {
+            avatarSrc = '/' + avatarSrc;
+        }
 
         var avatar = {
             html: '<div id="up-avatar">'
@@ -60,8 +68,7 @@ Ext.ComponentMgr.onAvailable('modx-user-tabs', function () {
                 tabsItemsList.push(tabContent);
             }, this);
 
-            console.log(tabsItemsList);
-
+            //console.log(tabsItemsList);
             return {
                 xtype: 'modx-tabs',
                 autoHeight: true,
