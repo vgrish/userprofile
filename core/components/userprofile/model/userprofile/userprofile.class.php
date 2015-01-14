@@ -373,9 +373,6 @@ class userprofile
 			return $this->error($this->modx->lexicon('up_auth_err'));
 		}
 		//
-
-		$this->modx->log(1, print_r($data, 1));
-
 		$requiredFields = !empty($this->config['requiredFields'])
 			? array_map('trim', explode(',', $this->config['requiredFields']))
 			: array();
@@ -420,10 +417,6 @@ class userprofile
 				}
 			}
 		}
-
-		$this->modx->log(1, print_r('======FFF=====', 1));
-		$this->modx->log(1, print_r($fields, 1));
-
 		// userprofilefields
 		$upFields = array();
 		$user_id = $this->modx->user->id;
@@ -455,12 +448,6 @@ class userprofile
 			$new_email = trim($fields['email']);
 			$changeEmail = strtolower($current_email) != strtolower($new_email);
 		}
-
-		$this->modx->log(1, print_r('===========', 1));
-		$this->modx->log(1, print_r($fields, 1));
-		$this->modx->log(1, print_r($changeEmail, 1));
-		$this->modx->log(1, print_r($new_email, 1));
-
 		/* @var modProcessorResponse $response */
 		$response = $this->runProcessor('profile/update', $fields);
 		if ($response->isError()) {

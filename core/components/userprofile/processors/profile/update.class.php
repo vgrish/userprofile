@@ -29,11 +29,6 @@ class userProfileUserUpdateProcessor extends modUserUpdateProcessor {
 		$fields = $this->getProperty('requiredFields', '');
 		if (!empty($fields) && is_array($fields)) {
 			foreach ($fields as $field) {
-
-
-				$this->modx->log(1, print_r('=============', 1));
-				$this->modx->log(1, print_r($field, 1));
-
 				// Extended fields
 				if (preg_match('/(.*?)\[(.*?)\]/', $field, $matches)) {
 					$tmp = $this->getProperty($matches[1],null);
@@ -45,10 +40,6 @@ class userProfileUserUpdateProcessor extends modUserUpdateProcessor {
 					$tmp = $this->getProperty($field,null);
 				}
 				if ($field == 'email' && !preg_match('/^[^@а-яА-Я]+@[^@а-яА-Я]+(?<!\.)\.[^\.а-яА-Я]{2,}$/m', $tmp)) {
-
-					$this->modx->log(1, print_r('=============', 1));
-					$this->modx->log(1, print_r($tmp, 1));
-
 					$this->addFieldError('email', $this->modx->lexicon('user_err_not_specified_email'));
 				}
 				elseif ($field == 'email' && $this->modx->getCount('modUserProfile', array('email' => $tmp, 'internalKey:!=' => $this->object->id))) {
