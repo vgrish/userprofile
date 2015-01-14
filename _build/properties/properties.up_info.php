@@ -7,6 +7,28 @@ $tmp = array(
 		'type' => 'textfield',
 		'value' => 'tpl.upUserInfo',
 	),
+
+	'tplSectionNavOuter' => array(
+		'type' => 'textfield',
+		'value' => '@INLINE <ul class="nav nav-tabs">[[+rows]]</ul>',
+	),
+	'tplSectionNavRow' => array(
+		'type' => 'textfield',
+		'value' => '@INLINE <li class="[[+active]]"><a href="#[[+section]]" data-toggle="tab">[[+sectiontitle]]</a></li>',
+	),
+	'tplSectionTabContentOuter' => array(
+		'type' => 'textfield',
+		'value' => '@INLINE <div class="tab-content">[[+content]]</div>',
+	),
+	'tplSectionTabContentPane' => array(
+		'type' => 'textfield',
+		'value' => '@INLINE <div class="tab-pane [[+active]]" id="[[+section]]">[[+tabcontent]]</div>',
+	),
+	'tplSectionTabContentRow' => array(
+		'type' => 'textfield',
+		'value' => '@INLINE <p><b>[[+name]]</b>: [[+value]]</p>',
+	),
+
 	'user_id' => array(
 		'type' => 'numberfield',
 		'value' => '',
