@@ -73,6 +73,26 @@ class userProfileUserUpdateProcessor extends modUserUpdateProcessor {
 			}
 			$this->setProperty('extended', $extended);
 		}
+		//// Add userprofile extended fields
+		if (is_array($extended)) {
+			$upReal =array();
+			$upExtended = $this->getProperty('up', '');
+			$realTabs = $this->getProperty('realTabs', '');
+			if(is_array($realTabs)) {
+				foreach($realTabs as $tab) {
+					$upReal = array_merge($upReal, $upExtended[$tab]);
+					unset($upExtended[$tab]);
+				}
+			}
+			if(is_array($upExtended)) {
+				$extended = array_merge($extended, $upExtended);
+				$this->setProperty('extended', $extended);
+			}
+		}
+
+		$this->modx->log(1, print_r('===----------PPPoiiii--------===' ,1));
+		$this->modx->log(1, print_r($upReal ,1));
+
 		// Handle new password
 		if ($this->getProperty('specifiedpassword') || $this->getProperty('confirmpassword')) {
 			$this->setProperty('passwordnotifymethod', 's');
