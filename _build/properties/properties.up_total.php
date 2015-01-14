@@ -8,11 +8,11 @@ $tmp = array(
 		'type' => 'numberfield',
 		'value' => '',
 	),
-	'tpl' => array(
+	'tplCounts' => array(
 		'type' => 'textfield',
 		'value' => '@INLINE [[+counts]]',
 	),
-	'tplRow' => array(
+	'tplCount' => array(
 		'type' => 'textfield',
 		'value' => '@INLINE ([[+count]])',
 	),

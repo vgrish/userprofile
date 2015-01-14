@@ -9,7 +9,7 @@ if (!$up = $modx->getService('userprofile', 'userprofile', $modx->getOption('use
 $up->initialize($modx->context->key, $scriptProperties);
 // Merge all properties
 //$up->pdoTools->setConfig(array_merge($default, $scriptProperties), false);
-
+//print_r($scriptProperties);die;
 
 //
 if(empty($processSection)) {$processSection = 'tickets,comments,favorites';}
