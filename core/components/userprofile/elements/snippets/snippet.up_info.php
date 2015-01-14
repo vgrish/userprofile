@@ -29,57 +29,59 @@ $row = array_merge($userFields, $userProfile[0]);
 $row = $up->prepareData($row);
 // get TabsFields
 $tabsFields = $up->getTabsFields($row['type_id']);
-// tabs
-$realTabs = explode(',', $up->config['realTabs']);
-$excludeFields = explode(',', $excludeFields);
-$row_idx = 1;
-foreach($tabsFields as $nameTab => $fields) {
-	// def
-	$row['tabcontent'] = '';
-	// NavRow
-	$row['section'] = $nameTab;
-	$row['tabtitle'] = $modx->lexicon('up_tab_title_'.$nameTab);
-	if(!empty($activeTab)) {
-		$row['active'] = ($activeTab == $nameTab) ? 'active' : '';
-	}
-	else {
-		$row['active'] = ($row_idx == 1) ? 'active' : '';
-	}
-	$row['row_idx'] = $row_idx ++;
-	$rows .= empty($tplSectionNavRow)
-		? $up->pdoTools->getChunk('', $row)
-		: $up->pdoTools->getChunk($tplSectionNavRow, $row, $up->pdoTools->config['fastMode']);
-	// fields
-	if(is_array($fields)) {
-		foreach($fields as $field => $v) {
-			if(in_array($field, $excludeFields)) {continue;}
-			$row['value'] = '';
-			if(in_array($nameTab, $realTabs)) {
-				$row['value'] = $row[$field];
-			}
-			elseif(is_array($row['extended'])) {
-				$row['value'] = $row['extended'][$nameTab][$field];
-			}
-
-			$row['name'] = $modx->lexicon('up_field_'.$field);
-			$row['tabcontent'] .= empty($tplSectionTabContentRow)
-				? $up->pdoTools->getChunk('', $row)
-				: $up->pdoTools->getChunk($tplSectionTabContentRow, $row, $up->pdoTools->config['fastMode']);
-		}
-	}
+if(!empty($enabledTabs)) {
 	// tabs
-	$tabs .= empty($tplSectionTabContentPane)
-		? $up->pdoTools->getChunk('', $row)
-		: $up->pdoTools->getChunk($tplSectionTabContentPane, $row, $up->pdoTools->config['fastMode']);
+	$realTabs = explode(',', $up->config['realTabs']);
+	$excludeFields = explode(',', $excludeFields);
+	$row_idx = 1;
+	foreach($tabsFields as $nameTab => $fields) {
+		// def
+		$row['tabcontent'] = '';
+		// NavRow
+		$row['section'] = $nameTab;
+		$row['tabtitle'] = $modx->lexicon('up_tab_title_'.$nameTab);
+		if(!empty($activeTab)) {
+			$row['active'] = ($activeTab == $nameTab) ? 'active' : '';
+		}
+		else {
+			$row['active'] = ($row_idx == 1) ? 'active' : '';
+		}
+		$row['row_idx'] = $row_idx ++;
+		$rows .= empty($tplSectionNavRow)
+			? $up->pdoTools->getChunk('', $row)
+			: $up->pdoTools->getChunk($tplSectionNavRow, $row, $up->pdoTools->config['fastMode']);
+		// fields
+		if(is_array($fields)) {
+			foreach($fields as $field => $v) {
+				if(in_array($field, $excludeFields)) {continue;}
+				$row['value'] = '';
+				if(in_array($nameTab, $realTabs)) {
+					$row['value'] = $row[$field];
+				}
+				elseif(is_array($row['extended'])) {
+					$row['value'] = $row['extended'][$nameTab][$field];
+				}
+
+				$row['name'] = $modx->lexicon('up_field_'.$field);
+				$row['tabcontent'] .= empty($tplSectionTabContentRow)
+					? $up->pdoTools->getChunk('', $row)
+					: $up->pdoTools->getChunk($tplSectionTabContentRow, $row, $up->pdoTools->config['fastMode']);
+			}
+		}
+		// tabs
+		$tabs .= empty($tplSectionTabContentPane)
+			? $up->pdoTools->getChunk('', $row)
+			: $up->pdoTools->getChunk($tplSectionTabContentPane, $row, $up->pdoTools->config['fastMode']);
+	}
+	// navtabs
+	$row['navtabs'] = empty($tplSectionNavOuter)
+		? $up->pdoTools->getChunk('', array('rows' => $rows))
+		: $up->pdoTools->getChunk($tplSectionNavOuter, array('rows' => $rows), $up->pdoTools->config['fastMode']);
+	// contenttabs
+	$row['contenttabs'] = empty($tplSectionTabContentOuter)
+		? $up->pdoTools->getChunk('', array('content' => $tabs))
+		: $up->pdoTools->getChunk($tplSectionTabContentOuter, array('content' => $tabs), $up->pdoTools->config['fastMode']);
 }
-// navtabs
-$row['navtabs'] = empty($tplSectionNavOuter)
-	? $up->pdoTools->getChunk('', array('rows' => $rows))
-	: $up->pdoTools->getChunk($tplSectionNavOuter, array('rows' => $rows), $up->pdoTools->config['fastMode']);
-// contenttabs
-$row['contenttabs'] = empty($tplSectionTabContentOuter)
-	? $up->pdoTools->getChunk('', array('content' => $tabs))
-	: $up->pdoTools->getChunk($tplSectionTabContentOuter, array('content' => $tabs), $up->pdoTools->config['fastMode']);
 // output
 $output = empty($tplUserInfo)
 	? $up->pdoTools->getChunk('', $row)

@@ -41,6 +41,11 @@ $tmp = array(
 		'value' => '',
 	),
 
+	'enabledTabs' => array(
+		'type' => 'combo-boolean',
+		'value' => true,
+	),
+
 	'user_id' => array(
 		'type' => 'numberfield',
 		'value' => '',
