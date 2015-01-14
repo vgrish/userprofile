@@ -561,19 +561,12 @@ class userprofile
 	 */
 	public function OnPageNotFound($sp)
 	{
-
-		$this->modx->log(1, print_r('OnPageNotFound', 1));
-
 		if (!$this->modx->getOption('friendly_urls')) {
 			return false;
 		}
 		// q
 		$q = trim(@$_REQUEST[$this->modx->context->getOption('request_param_alias', 'q')]);
 		$rarr = explode('/', rtrim($q, '/'));
-
-		$this->modx->log(1, print_r($rarr, 1));
-		$this->modx->log(1, print_r($this->config['main_url'], 1));
-
 		// work
 		if ($rarr[0] == $this->config['main_url']) {
 			$uri = $rarr[0];
@@ -585,21 +578,9 @@ class userprofile
 			if ($this->isHide($id)) {
 				return false;
 			}
-			// setting url
-/*			$container_suffix = $this->modx->getOption('container_suffix', null, '/', true);
-			$uri .= $container_suffix;
-
-			$this->modx->log(1, print_r($uri, 1));
-
-			if (!$userPage = $this->modx->findResource($uri, $this->modx->context->key)) {
-				$this->modx->log(modX::LOG_LEVEL_ERROR, print_r('UserProfile error get main_url.', 1));
-				return false;
-			}*/
-
 			$userPage = $this->getUserPage($uri);
-			$this->modx->log(1, print_r($userPage, 1));
-			$this->modx->log(1, print_r('work', 1));
-
+//			$this->modx->log(1, print_r($userPage, 1));
+//			$this->modx->log(1, print_r('work', 1));
 			// allowedSections
 			$allowedSections = $this->getAllowedSections(true);
 			unset($allowedSections[array_search('info', $allowedSections)]);
