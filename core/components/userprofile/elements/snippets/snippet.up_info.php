@@ -27,9 +27,10 @@ $up->pdoTools->addTime('Fetched userProfile.');
 $userFields = $up->getUserFields($user_id);
 $row = array_merge($userFields, $userProfile[0]);
 $row = $up->prepareData($row);
-// get upExtendedSetting
+// get TabsFields
 $tabsFields = $up->getTabsFields($row['type_id']);
 // tabs
+$realTabs = explode(',', $up->config['realTabs']);
 $row_idx = 1;
 foreach($tabsFields as $nameTab => $fields) {
 	// def
@@ -49,8 +50,15 @@ foreach($tabsFields as $nameTab => $fields) {
 		: $up->pdoTools->getChunk($tplSectionNavRow, $row, $up->pdoTools->config['fastMode']);
 	// fields
 	if(is_array($fields)) {
-		foreach($fields as $field) {
-			$row['value'] = $field;
+		foreach($fields as $field => $v) {
+			$row['value'] = '';
+			if(in_array($nameTab, $realTabs)) {
+				$row['value'] = $row[$field];
+			}
+			elseif(is_array($row['extended'])) {
+				$row['value'] = $row['extended'][$nameTab][$field];
+			}
+
 			$row['name'] = $modx->lexicon('up_field_'.$field);
 			$row['tabcontent'] .= empty($tplSectionTabContentRow)
 				? $up->pdoTools->getChunk('', $row)
@@ -61,54 +69,15 @@ foreach($tabsFields as $nameTab => $fields) {
 	$tabs .= empty($tplSectionTabContentPane)
 		? $up->pdoTools->getChunk('', $row)
 		: $up->pdoTools->getChunk($tplSectionTabContentPane, $row, $up->pdoTools->config['fastMode']);
-
-
-
 }
-// NavOuter
-
+// navtabs
 $row['navtabs'] = empty($tplSectionNavOuter)
 	? $up->pdoTools->getChunk('', array('rows' => $rows))
 	: $up->pdoTools->getChunk($tplSectionNavOuter, array('rows' => $rows), $up->pdoTools->config['fastMode']);
-// tabs
-
+// contenttabs
 $row['contenttabs'] = empty($tplSectionTabContentOuter)
 	? $up->pdoTools->getChunk('', array('content' => $tabs))
 	: $up->pdoTools->getChunk($tplSectionTabContentOuter, array('content' => $tabs), $up->pdoTools->config['fastMode']);
-
-/*
- * <ul class="nav nav-tabs">
-        <li class="first active">
-            <a href="#tab1" data-toggle="tab">таб 1</a>
-        </li>
-        <li class="last">
-            <a href="#tab2" data-toggle="tab">таб 2</a>
-        </li>
-    </ul>
-
-    <div class="tab-content">
-
-        <div class="tab-pane active" id="tab1">
-            <p>телефон: 987889798789</p>
-            <p>телефон: 987889798789</p>
-            <p>телефон: 987889798789</p>
-
-        </div>
-        <div class="tab-pane" id="tab2">...2</div>
-
-
-    </div>
- *
- * [social] => Array
-(
-	[facebook] =>
-	[odnoklassniki] =>
-    [vk] =>
-    [mail] =>
-    [twitter] =>
-  )*/
-
-
 // output
 $output = empty($tplUserInfo)
 	? $up->pdoTools->getChunk('', $row)

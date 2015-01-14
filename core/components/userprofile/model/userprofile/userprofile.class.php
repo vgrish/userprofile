@@ -80,6 +80,7 @@ class userprofile
 
 			'disabledTabs' => 'activity',
 			'excludeTabs' => 'activity,personal',
+			'realTabs' => 'activity,personal',
 
 			'frontend_css' => $this->modx->getOption('userprofile_front_css', null, '[[+assetsUrl]]css/web/default.css'),
 			'frontend_js' => $this->modx->getOption('userprofile_front_js', null, '[[+assetsUrl]]js/web/default.js'),
@@ -282,8 +283,8 @@ class userprofile
 		//
 		$extended = array();
 		$extended = array_merge($extended, $profileArr['extended']);
-		foreach ($data as $dd) {
-			if (is_array($dd)) {
+		foreach ($data as $k => $dd) {
+			if (is_array($dd) && ($k =='up')) {
 				$extended = array_merge($extended, $dd);
 			}
 		}
