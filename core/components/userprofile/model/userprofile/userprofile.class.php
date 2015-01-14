@@ -423,10 +423,6 @@ class userprofile
 		//
 		$length = 500; // !!!
 		//
-
-		$this->modx->log(1, print_r('=======|||||========' ,1));
-		$this->modx->log(1, print_r($data['up'] ,1));
-
 		if ($upExtended = $this->modx->getObject('upExtended', array('user_id' => $user_id))) {
 			$TabsFields = $this->getTabsFields($upExtended->get('type_id'));
 			unset(
@@ -441,12 +437,8 @@ class userprofile
 				}
 			}
 		}
-
-		$this->modx->log(1, print_r('=======|||||========' ,1));
-		$this->modx->log(1, print_r($upFields ,1));
-
-		// getTabsFields
-
+		//
+		$fields['up'] = $upFields;
 		//
 		$changeEmail = false;
 		$new_email = '';
@@ -456,7 +448,7 @@ class userprofile
 			$changeEmail = strtolower($current_email) != strtolower($new_email);
 		}
 		//
-		$this->modx->log(1, print_r('=======' ,1));
+		$this->modx->log(1, print_r('===V====' ,1));
 		$this->modx->log(1, print_r($fields ,1));
 
 		/* @var modProcessorResponse $response */
@@ -499,10 +491,6 @@ class userprofile
 			}
 		}
 		return $this->success($message, $saved);
-
-
-		$this->modx->log(1, print_r($data, 1));
-
 	}
 
 	/**
