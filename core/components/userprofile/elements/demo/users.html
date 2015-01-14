@@ -8,10 +8,10 @@
     <div id="sidebar" class="col-md-4">
 
         [[!upUserInfo?
-            &user_id=`[[!+modx.user.id]]`
-            &tplUserInfo=`tpl.upUserInfo.small`
-            &enabledTabs=`0`
-            &gravatarSize=`64`
+        &user_id=`[[!+modx.user.id]]`
+        &tplUserInfo=`tpl.upUserInfo.small`
+        &enabledTabs=`0`
+        &gravatarSize=`64`
         ]]
 
     </div>
@@ -25,11 +25,20 @@
 
 `:else=`
 
-    [[!pdoPage?
+    [[-!pdoPage?
         &element=`upUsers`
-        &limit=`10`
         &showInactive=`1`
         &tplWrapper=`@INLINE <div class="row"><div class="col-md-8">[[+output]]</div></div>`
+    ]]
+    [[!mFilter2?
+        &element=`upUsers`
+        &class=`modUser`
+        &showInactive=`1`
+        &tplWrapper=`@INLINE <div class="row"><div class="col-md-9">[[+output]]</div></div>`
+        &tplOuter=`tpl.mFilter2.UserProfile.outer`
+        &filters=``
+        &tpls=`tpl.upUser.Row,tpl.upUser.Row`
+        &showLog=`0`
     ]]
 
 `]]

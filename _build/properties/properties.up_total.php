@@ -12,10 +12,11 @@ $tmp = array(
 		'type' => 'textfield',
 		'value' => '@INLINE [[+rows]]',
 	),
+	*/
 	'tplRow' => array(
 		'type' => 'textfield',
 		'value' => '@INLINE ([[+count]])',
-	),*/
+	),
 	'parents' => array(
 		'type' => 'textfield',
 		'value' => ''
@@ -28,10 +29,17 @@ $tmp = array(
 		'type' => 'textfield'
 		,'value' => 'up.total.'
 	),
-	/*'toPlaceholders' => array(
+	'toPlaceholders' => array(
 		'type' => 'combo-boolean',
 		'value' => true,
 	),
+	'fastMode' => array(
+		'type' => 'combo-boolean',
+		'value' => false,
+	),
+
+
+	/*'
 	'toPlaceholder' => array(
 		'type' => 'textfield',
 		'value' => ''

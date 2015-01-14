@@ -1,4 +1,16 @@
 <?php
+
+/** @var array $scriptProperties */
+/** @var userprofile $userprofile */
+if (!$up = $modx->getService('userprofile', 'userprofile', $modx->getOption('userprofile_core_path', null, $modx->getOption('core_path') . 'components/userprofile/') . 'model/userprofile/', $scriptProperties)) {
+	return 'Could not load userprofile class!';
+}
+//
+$up->initialize($modx->context->key, $scriptProperties);
+// Merge all properties
+$up->pdoTools->setConfig(array_merge($default, $scriptProperties), false);
+
+
 //
 if(empty($user)) {$user = $modx->getPlaceholder('user_id');}
 if(empty($pleTickets)) {$pleTickets = 'tickets';}
@@ -35,5 +47,13 @@ $count[$pleFavorites] = $modx->getCount('TicketStar', $q);
 //
 $rows = '';
 foreach($count as $k => $c) {
-	$modx->setPlaceholder($placeholderPrefix.$k, $c);
+	if(!empty($toPlaceholders)) {$modx->setPlaceholder($placeholderPrefix.$k, $c);}
+	else {
+		$output[] = empty($tplRow)
+			? $up->pdoTools->getChunk('', array('count' => $c, 'name' => $k))
+			: $up->pdoTools->getChunk($tplRow, array('count' => $c, 'name' => $k), $up->pdoTools->config['fastMode']);
+	}
 }
+if (empty($outputSeparator)) {$outputSeparator = "\n";}
+$output = is_array($output) ? implode($outputSeparator, $output) : $output;
+return $output;

@@ -579,6 +579,8 @@ class userprofile
 				return false;
 			}
 			$userPage = $this->getUserPage($uri);
+
+			$this->modx->setPlaceholder();
 //			$this->modx->log(1, print_r($userPage, 1));
 //			$this->modx->log(1, print_r('work', 1));
 			// allowedSections
