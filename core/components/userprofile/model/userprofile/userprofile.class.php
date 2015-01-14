@@ -436,9 +436,9 @@ class userprofile
 				if(!is_array($data['up'])) {break;}
 				if(!is_array($fields)) {continue;}
 				foreach($fields as $field => $v ) {
-					$this->modx->log(1, print_r($data['up'][$nameTab][$fields] ,1));
+					$this->modx->log(1, print_r($data['up'][$nameTab][$field] ,1));
 
-					$upFields[$nameTab][$fields] = $this->Sanitize($data['up'][$nameTab][$fields], $length);
+					$upFields[$nameTab][$field] = $this->Sanitize($data['up'][$nameTab][$field], $length);
 				}
 			}
 		}
