@@ -368,6 +368,10 @@ class userprofile
 	 */
 	public function update($data = array())
 	{
+
+		$this->modx->log(1, print_r('=======' ,1));
+		$this->modx->log(1, print_r($data ,1));
+
 		$this->config['json_response'] = 1;
 		if (!$this->modx->user->isAuthenticated($this->modx->context->key)) {
 			return $this->error($this->modx->lexicon('up_auth_err'));
@@ -426,6 +430,9 @@ class userprofile
 			$changeEmail = strtolower($current_email) != strtolower($new_email);
 		}
 		//
+		$this->modx->log(1, print_r('=======' ,1));
+		$this->modx->log(1, print_r($fields ,1));
+
 		/* @var modProcessorResponse $response */
 		$response = $this->runProcessor('profile/update', $fields);
 		if ($response->isError()) {

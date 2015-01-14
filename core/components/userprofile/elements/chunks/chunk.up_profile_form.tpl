@@ -6,7 +6,7 @@
     <div class="form-group avatar">
         <label class="col-sm-2 control-label">[[%up_profile_avatar]]</label>
         <div class="col-sm-10">
-            <img src="[[+avatar]]" id="profile-user-photo" data-gravatar="[[+gravatar]]?s=100" width="100" />
+            <img src="[[+avatar]]" id="profile-user-photo" data-gravatar="[[+gravatar]]" width="100" />
             <a href="#" id="userprofile-user-photo-remove" [[+photo:is=``:then=`style="display:none;"`]]">
             [[%up_profile_avatar_remove]]
             <i class="glyphicon glyphicon-remove"></i>
