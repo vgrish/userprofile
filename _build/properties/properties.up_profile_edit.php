@@ -89,10 +89,10 @@ $tmp = array(
 
 
 
-	'ReturnTo' => array(
+/*	'ReturnTo' => array(
 		'type' => 'numberfield',
 		'value' => '',
-	),
+	),*/
 
 
 	'gravatarIcon' => array(

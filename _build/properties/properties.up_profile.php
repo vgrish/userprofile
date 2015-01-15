@@ -77,6 +77,21 @@ $tmp = array(
 		'type' => 'textfield',
 		'value' => '',
 	),*/
+
+	'cache' => array(
+		'type' => 'combo-boolean',
+		'value' => false,
+	),
+	'cacheTime' => array(
+		'type' => 'numberfield',
+		'value' => 3600,
+	),
+	'cacheAnonymous' => array(
+		'type' => 'combo-boolean',
+		'value' => false,
+	),
+
+
 	'tplWrapper' => array(
 		'type' => 'textfield',
 		'value' => '',

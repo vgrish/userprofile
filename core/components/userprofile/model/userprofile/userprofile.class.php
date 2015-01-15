@@ -22,11 +22,9 @@ class userprofile
 
 	public $redirectArr = array(
 		'moved' => array('responseCode' => 'HTTP/1.1 301 Moved Permanently'),
-		'notfound' => array('responseCode' => 'HTTP/1.1 404 Not Found'),
 	);
 
 	public $actions = array(
-		//'auth/login',
 		'auth',
 		'profile',
 	);
@@ -689,7 +687,6 @@ class userprofile
 		if (!empty($data['resource'])) {
 			$data['url'] = $this->modx->makeUrl($data['resource'], '', '', 'full');
 		}
-		$data['date_ago'] = $this->dateFormat($data['createdon']);
 		$data['registration_format'] = $this->dateFormat($data['registration']);
 		$data['lastactivity_format'] = $this->dateFormat($data['lastactivity']);
 		//

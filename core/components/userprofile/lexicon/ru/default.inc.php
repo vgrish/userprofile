@@ -61,7 +61,6 @@ $_lang['up_description'] = 'Описание';
 $_lang['up_introtext'] = 'Аннотация';
 
 $_lang['up_status'] = 'Статус';
-
 $_lang['up_avatar'] = 'изображение';
 
 $_lang['up_tabfields'] = 'Табы / поле ввода';
@@ -165,3 +164,6 @@ $_lang['up_profile_err_field_fullname'] = 'Вы должны указать ва
 $_lang['up_default_no_comments'] = 'еще не оставил ни одного комментария.';
 $_lang['up_default_no_tickets'] = 'еще не оставил ни одной заметки.';
 $_lang['up_default_no_favorites'] = 'список избранного пуст.';
+
+//
+$_lang['up_message_close_all'] = 'закрыть все';
