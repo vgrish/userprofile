@@ -530,15 +530,6 @@ class userprofile
 	 */
 	public function logout($logout_data = array(), $id = 0)
 	{
-		/*
-				if ($this->modx->user->hasSessionContext('mgr') && !$this->modx->user->hasSessionContext($this->modx->context->key)) {
-					// логиним юзера в текущем контексте
-					$this->modx->user->addSessionContext($this->modx->context->key);
-				}
-
-				exit();
-				$this->modx->log(1, print_r($this->modx->context->key, 1));*/
-
 		if ($user = $this->modx->getAuthenticatedUser($this->modx->context->key)) {
 			$this->modx->user = $user;
 			$this->modx->getUser($this->modx->context->key);
@@ -605,7 +596,20 @@ class userprofile
 
 			$this->modx->sendForward($userPage);
 		}
+	}
 
+	/**
+	 * чистим таблицы при удалении пользователя
+	 *
+	 * @param $sp
+	 */
+	public function OnUserRemove($sp)
+	{
+		$user = $sp['user'];
+		$id = $user->get('id');
+		$this->modx->removeCollection('upExtended', array(
+			'user_id:=' => $id,
+		));
 	}
 
 	/**

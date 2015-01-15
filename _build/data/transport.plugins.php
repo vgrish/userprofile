@@ -13,6 +13,7 @@ $tmp = array(
 			'OnUserSave' => array(),
 			'OnPageNotFound' => array(),
 			'OnHandleRequest' => array(),
+			'OnUserRemove' => array(),
 			//'OnManagerPageInit' => array()
 		)
 	)
