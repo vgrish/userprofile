@@ -12,6 +12,7 @@ class userProfileUserUpdateProcessor extends modUserUpdateProcessor {
 	public $afterSaveEvent = 'OnUserFormSave';
 	protected $_new_email;
 	protected $_current_email;
+	protected $_current_photo;
 	/**
 	 * {@inheritDoc}
 	 * @return boolean|string
@@ -26,6 +27,8 @@ class userProfileUserUpdateProcessor extends modUserUpdateProcessor {
 	 */
 	public function beforeSet() {
 		$this->_current_email = $this->object->Profile->get('email');
+		$this->_current_photo = $this->object->Profile->get('photo');
+
 		$fields = $this->getProperty('requiredFields', '');
 		if (!empty($fields) && is_array($fields)) {
 			foreach ($fields as $field) {
@@ -126,10 +129,6 @@ class userProfileUserUpdateProcessor extends modUserUpdateProcessor {
 		$file = strtolower(md5($this->object->id . time()) . '.' . $params['f']);
 		$url = MODX_ASSETS_URL . $path . $file;
 		$dst = MODX_ASSETS_PATH . $path . $file;
-		$tmp = explode('/', $this->object->Profile->get('photo'));
-		$cur = !empty($tmp)
-			? MODX_ASSETS_PATH . $path . end($tmp)
-			: '';
 		// Check image dir
 		$tmp = explode('/', str_replace(MODX_BASE_PATH, '', MODX_ASSETS_PATH . $path));
 		$dir = rtrim(MODX_BASE_PATH, '/');
@@ -145,8 +144,14 @@ class userProfileUserUpdateProcessor extends modUserUpdateProcessor {
 			return false;
 		}
 		// Remove image
-		if ($this->object->Profile->get('photo') && isset($_POST['photo']) && empty($_POST['photo'])) {
-			if (!empty($cur) && file_exists($cur)) {@unlink($cur);}
+		if (!empty($this->_current_photo) && isset($_POST['photo']) && empty($_POST['photo'])) {
+			$tmp = explode('/', $this->_current_photo);
+			if (!empty($tmp[1])) {
+				$cur = MODX_ASSETS_PATH . $path . end($tmp);
+				if (!empty($cur) && file_exists($cur)) {
+					@unlink($cur);
+				}
+			}
 			$this->object->Profile->set('photo', '');
 		}
 		// Upload a new one
