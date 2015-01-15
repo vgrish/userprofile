@@ -53,6 +53,12 @@ $tmp = array(
 		'description' => '',
 	),
 
+	'tpl.mFilter2.UserProfile.outer' => array(
+		'file' => 'up_mfilter_outer',
+		'description' => '',
+	),
+
+
 );
 
 // Save chunks for setup options
