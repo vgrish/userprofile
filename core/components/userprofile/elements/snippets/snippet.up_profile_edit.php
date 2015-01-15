@@ -31,8 +31,6 @@ $up->pdoTools->addTime('Fetched userProfile.');
 $userFields = $up->getUserFields($user_id);
 $row = array_merge($userFields, $userProfile[0]);
 $row = $up->prepareData($row);
-
-//print_r($row);die;
 //
 if(!empty($enabledTabs)) {
 	// get TabsFields
@@ -89,23 +87,14 @@ if(!empty($enabledTabs)) {
 		: $up->pdoTools->getChunk($tplSectionTabContentOuter, array('content' => $tabs), $up->pdoTools->config['fastMode']);
 
 }
-
-//echo '<pre>';
-//print_r($row);
-
+//
 $output = empty($tplProfile)
 	? $up->pdoTools->getChunk('', $row)
 	: $up->pdoTools->getChunk($tplProfile, $row, $up->pdoTools->config['fastMode']);
-
+//
 $modx->regClientScript(str_replace('[[+assetsUrl]]', $up->config['assetsUrl'], $js));
-
-//echo '<pre>';
-//print_r($up->config['assetsUrl']);die;
-
-
 $key = md5($modx->toJSON($up->config));
 $_SESSION['upform'][$key] = $up->config;
 $output = str_ireplace('</form>', "\n<input type=\"hidden\" name=\"form_key\" value=\"{$key}\" class=\"disable-sisyphus\" />\n</form>", $output);
-
 
 return $output;
