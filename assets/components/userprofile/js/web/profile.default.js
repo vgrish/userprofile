@@ -3,7 +3,6 @@ userprofile.Profile = {
     initialize: function(selector) {
         var elem = $(selector);
         if (!elem.length) {return false;}
-
         // Disable elements during ajax request
         $(document).ajaxStart(function() {
             elem.find('button, a, input, select, textarea').attr('disabled', true).addClass('tmp-disabled');
@@ -11,12 +10,7 @@ userprofile.Profile = {
             .ajaxStop(function() {
                 elem.find('.tmp-disabled').attr('disabled', false);
             });
-
         $(document).on('click', '#userprofile-user-photo-remove', function(e) {
-
-
-            console.log('userprofile-user-photo-remove');
-
             e.preventDefault();
             userprofile.Profile.clearPhoto(elem);
             elem.submit();
@@ -24,9 +18,6 @@ userprofile.Profile = {
         });
 
         $(document).on('submit', selector, function(e) {
-
-            console.log('submit');
-
             $(this).ajaxSubmit({
                 url: userprofileConfig.actionUrl
                 ,dataType: 'json'
