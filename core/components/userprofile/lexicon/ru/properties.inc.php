@@ -39,3 +39,9 @@ $_lang['userprofile_prop_profileFields'] = 'Список разрешенных 
 
 $_lang['userprofile_prop_avatarPath'] = 'Директория для сохранения аватаров пользователей внутри MODX_ASSETS_PATH. По умолчанию - "images/users/".';
 $_lang['userprofile_prop_avatarParams'] = 'JSON строка с параметрами конвертации аватара при помощи phpThumb. По умолчанию - "{"w":200,"h":200,"zc":0,"bg":"ffffff","f":"jpg"}".';
+$_lang['userprofile_prop_placeholderPrefix'] = 'Префикс плейсходера.';
+$_lang['userprofile_prop_processSection'] = 'Режим работы сниппета. Будут обработаны только указанные секции';
+$_lang['userprofile_prop_toPlaceholders'] = 'Если не пусто, сниппет сохранит все данные в плейсхолдеры, вместо вывода не экран.';
+$_lang['userprofile_prop_tplCount'] = 'Чанк оформления для каждого результата';
+$_lang['userprofile_prop_tplCounts'] = 'Чанк оформления всех результатов, игнорируется при выводе в плейсходер';
+
