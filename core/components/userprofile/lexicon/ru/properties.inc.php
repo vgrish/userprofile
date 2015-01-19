@@ -83,4 +83,8 @@ $_lang['userprofile_prop_tplSectionTabContentOuter'] = 'Чанк-обертка 
 $_lang['userprofile_prop_tplSectionTabContentPane'] = 'Чанк оформления для ссылки на секцию.';
 $_lang['userprofile_prop_tplSectionTabContentRow'] = 'Чанк оформления поля.';
 
+$_lang['userprofile_prop_tplUserInfo'] = 'Общий чанк оформления информации о пользователе.';
+$_lang['userprofile_prop_tplNoUserInfo'] = 'Общий чанк оформления если пользователе не указан';
+
+
 
