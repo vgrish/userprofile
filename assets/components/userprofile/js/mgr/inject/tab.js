@@ -46,7 +46,7 @@ Ext.ComponentMgr.onAvailable('modx-user-tabs', function () {
             Ext.each(tabsList, function(tab) {
                 var tabItems = [];
                 for (v in fields[tab]) {
-                    //console.log(tab);
+                    //console.log(data[v]);
                     var tabItem = {
                         xtype: (fields[tab][v] == '') ? 'textfield' : fields[tab][v],
                         fieldLabel: _('up_field_' + v) || 'up_field_' + v,
@@ -55,7 +55,10 @@ Ext.ComponentMgr.onAvailable('modx-user-tabs', function () {
                         allowBlank: (!!!requires[v]) ? true : false,
                         value: data[v] || data[tab][v],
                         anchor: '99%', id: 'up-extended-current-' + v + '-' + type,
-                        style: 'margin:0px 0px 15px 10px;',
+                        //style: 'margin:0px 0px 15px 10px;',
+                        //labelStyle: 'margin:0px 0px 0px 0px;',
+                        itemCls: 'upblock',
+                        ctCls: 'updiv',
                         disabled: (tab == disabledTabs) ? 1 : 0,
                     };
                     tabItems.push(tabItem);
