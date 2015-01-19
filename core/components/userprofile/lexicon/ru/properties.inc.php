@@ -62,5 +62,10 @@ $_lang['userprofile_prop_activeTab'] = 'Указать активный таб.'
 $_lang['userprofile_prop_excludeFields'] = 'Список исключенных полей, через запятую.';
 $_lang['userprofile_prop_excludeTabs'] = 'Список исключенных табов, через запятую.';
 
-$_lang['userprofile_prop_tplUserInfo'] = '.';
+$_lang['userprofile_prop_ReturnTo'] = 'Id ресурса. Пользователь будет отправлен на данную страницу если не авторизован и страница закрыта для неавторизованных пользователей';
+$_lang['userprofile_prop_allowGuest'] = 'Разрешить просмотр неавторизованным пользователям.';
+$_lang['userprofile_prop_filters'] = 'Список секций, через запятую. Указывается в формате "секция|имя(сниппета/чанка):(сниппет/чанк)".';
+$_lang['userprofile_prop_defaultSection'] = 'Секция по умолчанию.';
+$_lang['userprofile_prop_allowedSections'] = 'Разрешенные к работе секции.';
+
 
