@@ -56,3 +56,11 @@ $_lang['userprofile_prop_totalVar'] = 'Имя плейсхолдера для с
 $_lang['userprofile_prop_select'] = 'Список полей для выборки, через запятую. Можно указывать JSON строку с массивом, например {"modResource":"id,pagetitle,content"}.';
 $_lang['userprofile_prop_loadModels'] = 'Список компонентов, через запятую, чьи модели нужно загрузить для построения запроса. Например: "&loadModels=`ms2gallery,msearch2`".';
 
+$_lang['userprofile_prop_user_id'] = 'Id пользователя для вывода.';
+$_lang['userprofile_prop_enabledTabs'] = 'Включить обработку табов.';
+$_lang['userprofile_prop_activeTab'] = 'Указать активный таб.';
+$_lang['userprofile_prop_excludeFields'] = 'Список исключенных полей, через запятую.';
+$_lang['userprofile_prop_excludeTabs'] = 'Список исключенных табов, через запятую.';
+
+$_lang['userprofile_prop_tplUserInfo'] = '.';
+
