@@ -12,10 +12,10 @@ $tmp = array(
 		'type' => 'textfield',
 		'value' => '@INLINE <div class="tab-content userprofile-page"><div class="tab-pane fade in active">[[+content]]</div></div>',
 	),
-	'tplSectionEmpty' => array(
+/*	'tplSectionEmpty' => array(
 		'type' => 'textfield',
 		'value' => '',
-	),
+	),*/
 	'tplSectionOuter' => array(
 		'type' => 'textfield',
 		'value' => '@INLINE <ul class="nav nav-tabs">[[+rows]]</ul>',

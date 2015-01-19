@@ -57,15 +57,19 @@ $_lang['userprofile_prop_select'] = 'Список полей для выборк
 $_lang['userprofile_prop_loadModels'] = 'Список компонентов, через запятую, чьи модели нужно загрузить для построения запроса. Например: "&loadModels=`ms2gallery,msearch2`".';
 
 $_lang['userprofile_prop_user_id'] = 'Id пользователя для вывода.';
-$_lang['userprofile_prop_enabledTabs'] = 'Включить обработку табов.';
-$_lang['userprofile_prop_activeTab'] = 'Указать активный таб.';
+$_lang['userprofile_prop_enabledTabs'] = 'Включить обработку вкладок.';
+$_lang['userprofile_prop_activeTab'] = 'Указать активную вкладку.';
 $_lang['userprofile_prop_excludeFields'] = 'Список исключенных полей, через запятую.';
-$_lang['userprofile_prop_excludeTabs'] = 'Список исключенных табов, через запятую.';
+$_lang['userprofile_prop_excludeTabs'] = 'Список исключенных вкладок, через запятую.';
 
 $_lang['userprofile_prop_ReturnTo'] = 'Id ресурса. Пользователь будет отправлен на данную страницу если не авторизован и страница закрыта для неавторизованных пользователей';
 $_lang['userprofile_prop_allowGuest'] = 'Разрешить просмотр неавторизованным пользователям.';
 $_lang['userprofile_prop_filters'] = 'Список секций, через запятую. Указывается в формате "секция|имя(сниппета/чанка):(сниппет/чанк)".';
 $_lang['userprofile_prop_defaultSection'] = 'Секция по умолчанию.';
 $_lang['userprofile_prop_allowedSections'] = 'Разрешенные к работе секции.';
-
+$_lang['userprofile_prop_js'] = 'Подключаемый скрипт.';
+$_lang['userprofile_prop_tplUserProfile'] = 'Общий чанк страницы профиля пользователя.';
+$_lang['userprofile_prop_tplSectionContent'] = 'Чанк контента страницы профиля пользователя.';
+$_lang['userprofile_prop_tplSectionOuter'] = 'Чанк-обертка для секции вкладок.';
+$_lang['userprofile_prop_tplSectionRow'] = 'Чанк оформления для ссылки на секцию.';
 
