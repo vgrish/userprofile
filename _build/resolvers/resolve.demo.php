@@ -10,7 +10,8 @@ switch ($options[xPDOTransport::PACKAGE_ACTION]) {
 		$modx = & $object->xpdo;
 		$lang = $modx->getOption('manager_language') == 'en' ? 1 : 0;
 
-		if ($template = $modx->getObject('modTemplate', array('templatename' => 'Bootstrap.inner'))) {
+		//if ($template = $modx->getObject('modTemplate', array('templatename' => 'Bootstrap.inner'))) {
+
 			if (!$resource = $modx->getObject('modResource', array('alias' => 'users'))) {
 				$resource = $modx->newObject('modResource');
 			}
@@ -49,7 +50,7 @@ switch ($options[xPDOTransport::PACKAGE_ACTION]) {
 					$resource->save();
 				}
 			}
-		}
+		//}
 
 
 
