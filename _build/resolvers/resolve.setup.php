@@ -20,10 +20,14 @@ if ($object->xpdo) {
 					'version_major' => 1,
 					'version_minor:>=' => 9,
 				),
+				/*'MinifyX' => array(
+					'version_major' => 1,
+					'version_minor:>=' =>  2,
+				),
 				'Theme.Bootstrap' => array(
 					'version_major' => 2,
 					'version_minor:>=' => 1,
-				)
+				)*/
 			);
 			foreach ($packages as $package => $options) {
 				$query = array('package_name' => $package);
@@ -64,8 +68,8 @@ if ($object->xpdo) {
 function installPackage($packageName) {
 	global $modx;
 
-	/** @var modTransportProvider $provider */
-	if (!$provider = $modx->getObject('transport.modTransportProvider', array('service_url:LIKE' => '%simpledream%'))) {
+	/* @var modTransportProvider $provider */
+	if (!$provider = $modx->getObject('transport.modTransportProvider', array('service_url:LIKE' => '%simpledream.ru%', 'OR:service_url:LIKE' => '%modstore.pro%'))) {
 		$provider = $modx->getObject('transport.modTransportProvider', 1);
 	}
 
@@ -122,7 +126,7 @@ function installPackage($packageName) {
 					}
 				}
 
-				if ($package->save() && $package->install()) {
+				if ($package->save() && $package->install(array(0=>'xPDOTransport::ACTION_INSTALL'))) {
 					return array(
 						'success' => 1,
 						'message' => '<b>' . $packageName . '</b> was successfully installed',
@@ -147,7 +151,6 @@ function installPackage($packageName) {
 
 	return true;
 }
-
 
 /**
  * @param $src
