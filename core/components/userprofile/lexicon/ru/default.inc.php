@@ -15,7 +15,7 @@ $_lang['up_extended_intro'] = 'Вы можете указать дополнит
 // fields
 $_lang['up_lastname'] = 'Фамилия';
 $_lang['up_firstname'] = 'Имя';
-$_lang['up_secondname'] = 'Отчество'; 
+$_lang['up_secondname'] = 'Отчество';
 
 // title
 $_lang['up_id'] = 'Id';
