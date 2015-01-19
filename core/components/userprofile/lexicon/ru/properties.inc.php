@@ -70,6 +70,17 @@ $_lang['userprofile_prop_allowedSections'] = 'Разрешенные к рабо
 $_lang['userprofile_prop_js'] = 'Подключаемый скрипт.';
 $_lang['userprofile_prop_tplUserProfile'] = 'Общий чанк страницы профиля пользователя.';
 $_lang['userprofile_prop_tplSectionContent'] = 'Чанк контента страницы профиля пользователя.';
+
 $_lang['userprofile_prop_tplSectionOuter'] = 'Чанк-обертка для секции вкладок.';
 $_lang['userprofile_prop_tplSectionRow'] = 'Чанк оформления для ссылки на секцию.';
+
+$_lang['userprofile_prop_tplProfile'] = 'Чанк для вывода и редактирования профиля пользователя.';
+$_lang['userprofile_prop_tplConfirm'] = 'Чанк для оформления письма подтверждения.';
+$_lang['userprofile_prop_tplSectionNavOuter'] = 'Чанк-обертка для секции вкладок.';
+$_lang['userprofile_prop_tplSectionNavRow'] = 'Чанк оформления для ссылки на секцию.';
+
+$_lang['userprofile_prop_tplSectionTabContentOuter'] = 'Чанк-обертка для секции контента.';
+$_lang['userprofile_prop_tplSectionTabContentPane'] = 'Чанк оформления для ссылки на секцию.';
+$_lang['userprofile_prop_tplSectionTabContentRow'] = 'Чанк оформления поля.';
+
 
