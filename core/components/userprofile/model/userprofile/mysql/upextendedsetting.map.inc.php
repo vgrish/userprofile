@@ -8,7 +8,7 @@ $xpdo_meta_map['upExtendedSetting']= array (
   array (
     'name' => NULL,
     'description' => NULL,
-    'tabfields' => '',
+    'tabfields' => '{}',
     'requires' => '',
     'rank' => 0,
     'active' => 1,
@@ -33,11 +33,10 @@ $xpdo_meta_map['upExtendedSetting']= array (
     ),
     'tabfields' => 
     array (
-      'dbtype' => 'varchar',
-      'precision' => '255',
+      'dbtype' => 'text',
       'phptype' => 'string',
       'null' => true,
-      'default' => '',
+      'default' => '{}',
     ),
     'requires' => 
     array (
