@@ -195,154 +195,6 @@ class userprofile
 	}
 
 	/**
-	 * @param $sp
-	 */
-	public function OnUserFormPrerender($sp)
-	{
-		if ($this->isNew($sp)) return;
-		$this->modx->controller->addLexiconTopic('userprofile:default');
-		$id = $sp['id'];
-		$user = $sp['user'];
-		$up_extended = array();
-		$profile = $user->getOne('Profile')->toArray();
-		$profile = array_merge($profile, array(
-				'gravatar' => $this->config['gravatarUrl'] . md5(strtolower($profile['email'])) . '?s=' . $this->config['gravatarSize'] . '&d=' . $this->config['gravatarIcon'],
-			)
-		);
-		if ($upExtended = $this->modx->getObject('upExtended', array('user_id' => $id))) {
-			$up_extended = $upExtended->toArray();
-		}
-		// если extended пуст
-		if (!is_array($profile['extended'])) $profile['extended'] = array();
-		$up_extended = array_merge($profile['extended'], $up_extended);
-		//
-		if (!$extSetting = $this->modx->getObject('upExtendedSetting', array('id' => $up_extended['type_id']))) {
-			$extSetting = $this->modx->getObject('upExtendedSetting', array('active' => 1, 'default' => 1));
-		}
-		$ext_setting = $extSetting->toArray();
-		// requires
-		$requires = array(1);
-		$requires = array_flip(array_merge($requires, explode(',', $ext_setting['requires'])));
-//		$this->modx->log(1, print_r($ext_setting, 1));
-		$data_js = preg_replace(array('/^\n/', '/\t{6}/'), '', '
-			userprofile = {};
-			userprofile.config = ' . $this->modx->toJSON(array(
-				'connectorUrl' => $this->config['connectorUrl'],
-				'extSetting' => $ext_setting,
-				'upExtended' => $up_extended,
-				'profile' => $profile,
-				'tabs' => implode(',', array_keys($this->modx->fromJSON($ext_setting['tabfields']))),
-				'disabledTabs' => $this->config['disabledTabs'],
-				'requires' => $this->modx->toJSON($requires),
-			)) . ';
-		');
-		$this->modx->regClientStartupScript("<script type=\"text/javascript\">\n" . $data_js . "\n</script>", true);
-		$this->modx->regClientCSS($this->getOption('cssUrl') . 'mgr/main.css');
-		$this->modx->regClientStartupScript($this->getOption('jsUrl') . 'mgr/misc/up.combo.js');
-		$this->modx->regClientStartupScript($this->getOption('jsUrl') . 'mgr/inject/tab.js');
-	}
-
-	/**
-	 * @param $sp
-	 */
-	public function OnBeforeUserFormSave($sp)
-	{
-		if ($this->isNew($sp)) {return;}
-		if (!$this->modx->user->hasSessionContext('mgr')) {return;}
-		//
-		$this->config['json_response'] = 1;
-		$data = $sp['data'];
-		$user_id = $data['id'];
-
-		$real = array_merge($data['up']['real'], $data['up']['personal']);
-		unset(
-		$data['up']['real'],
-		$data['up']['personal'],
-		$data['up']['activity']
-		);
-		if (!$upExtended = $this->modx->getObject('upExtended', array('user_id' => $user_id))) {
-			$upExtended = $this->modx->newObject('upExtended', array(
-				'user_id' => $user_id,
-				'registration' => date('Y-m-d H:i:s'),
-				'lastactivity' => date('Y-m-d H:i:s'),
-			));
-		}
-		$upExtended->fromArray(
-			$real
-		);
-		if (!$upExtended->save()) {
-			echo $this->error('up_save_extended_err');
-			exit;
-		}
-		// extended
-		$user = $sp['user'];
-		$profile = $user->getOne('Profile');
-		$profileArr = $profile->toArray();
-		//
-		$extended = array();
-		$extended = array_merge($extended, $profileArr['extended']);
-		foreach ($data as $k => $dd) {
-			if (is_array($dd) && ($k =='up')) {
-				$extended = array_merge($extended, $dd);
-			}
-		}
-		$profile->set('extended', $extended);
-		$profile->save();
-	}
-
-	/**
-	 * @param $sp
-	 */
-	public function OnUserSave($sp)
-	{
-		if (!$this->isNew($sp)) return;
-		$user = $sp['user'];
-		$userArr = $user->toArray();
-		$id = $userArr['id'];
-		if (!$upExtended = $this->modx->getObject('upExtended', array('user_id' => $id))) {
-			$upExtended = $this->modx->newObject('upExtended', array('user_id' => $id));
-		}
-		$upExtended->fromArray(array(
-			'type_id' => $this->defaultTypeId,
-			'registration' => date('Y-m-d H:i:s'),
-		));
-		$upExtended->save();
-	}
-
-	/**
-	 * @param $sp
-	 */
-	public function OnLoadWebDocument($sp)
-	{
-		if ($this->modx->user->isAuthenticated($this->modx->context->get('key'))) {
-			if (!$this->modx->user->active || $this->modx->user->Profile->blocked) {
-				$this->logOut();
-			} else {
-				$id = $this->modx->user->id;
-				if (!$upExtended = $this->modx->getObject('upExtended', array('user_id' => $id))) {
-					$upExtended = $this->modx->newObject('upExtended', array('user_id' => $id, 'registration' => date('Y-m-d H:i:s')));
-				}
-				$upExtended->fromArray(array(
-					'type_id' => $this->defaultTypeId,
-					'lastactivity' => date('Y-m-d H:i:s'),
-					'ip' => $this->modx->request->getClientIp()['ip'],
-				));
-				$upExtended->save();
-			}
-		}
-	}
-
-	/**
-	 * @param $sp
-	 */
-	public function OnHandleRequest($sp)
-	{
-		if (!empty($_REQUEST['action'])) {
-			$this->loadAction($_REQUEST['action'], $_REQUEST);
-		}
-	}
-
-	/**
 	 * @param $action
 	 * @param array $sp
 	 * @return bool|string
@@ -543,73 +395,6 @@ class userprofile
 			$this->modx->log(modX::LOG_LEVEL_ERROR, '[UserProfile] logout error. Username: ' . $this->modx->user->get('username') . ', uid: ' . $this->modx->user->get('id') . '. Message: ' . $errors);
 		}
 		$this->modx->sendRedirect($this->modx->makeUrl((!empty($id)) ? $id : $this->modx->getOption('site_start'), '', '', 'full'));
-	}
-
-	/**
-	 * @param $sp
-	 */
-	public function OnPageNotFound($sp)
-	{
-		if (!$this->modx->getOption('friendly_urls')) {
-			return false;
-		}
-		// q
-		$q = trim(@$_REQUEST[$this->modx->context->getOption('request_param_alias', 'q')]);
-		$rarr = explode('/', rtrim($q, '/'));
-		// work
-		if ($rarr[0] == $this->config['main_url']) {
-			$uri = $rarr[0];
-			$section = $rarr[2];
-			$id = (int)$rarr[1];
-			// default placehoder
-			$sectionPl = $this->config['defaultSection'];
-			//
-			if ($this->isHide($id)) {
-				return false;
-			}
-			$userPage = $this->getUserPage($uri);
-
-//			$this->modx->log(1, print_r($userPage, 1));
-//			$this->modx->log(1, print_r('work', 1));
-			// allowedSections
-			$allowedSections = $this->getAllowedSections(true);
-			unset($allowedSections[array_search('info', $allowedSections)]);
-
-			if (!empty($section) && (!in_array($section, $allowedSections))) {
-				$this->modx->sendRedirect(
-					$this->modx->makeUrl($this->modx->getOption('site_start'), '', '', 'full')
-					. $this->config['main_url']
-					. '/'
-					. $id
-					. '/'
-					,
-					$this->redirectArr['moved']
-				);
-			} elseif (in_array($section, $allowedSections)) {
-				$sectionPl = $section;
-			} elseif (($id == 0) && (!empty($rarr[1])) && (!in_array($rarr[1], $allowedSections))) {
-				return false;
-			}
-			// set placeholders
-			$this->modx->setPlaceholder('user_id', $id);
-			$this->modx->setPlaceholder('active_section', $sectionPl);
-
-			$this->modx->sendForward($userPage);
-		}
-	}
-
-	/**
-	 * чистим таблицы при удалении пользователя
-	 *
-	 * @param $sp
-	 */
-	public function OnUserRemove($sp)
-	{
-		$user = $sp['user'];
-		$id = $user->get('id');
-		$this->modx->removeCollection('upExtended', array(
-			'user_id:=' => $id,
-		));
 	}
 
 	/**
@@ -1103,5 +888,232 @@ class userprofile
 		$this->modx->getParser()->processElementTags('', $html, true, true, '[[', ']]', array(), $maxIterations);
 		return $html;
 	}
+
+	/*
+	 * *************************
+	 *		 MODx Events
+	 * *************************
+	 */
+
+	/**
+	 * @param $sp
+	 */
+	public function OnUserFormPrerender($sp)
+	{
+		if ($this->isNew($sp)) return;
+		$this->modx->controller->addLexiconTopic('userprofile:default');
+		$id = $sp['id'];
+		$user = $sp['user'];
+		$up_extended = array();
+		$profile = $user->getOne('Profile')->toArray();
+		$profile = array_merge($profile, array(
+				'gravatar' => $this->config['gravatarUrl'] . md5(strtolower($profile['email'])) . '?s=' . $this->config['gravatarSize'] . '&d=' . $this->config['gravatarIcon'],
+			)
+		);
+		if ($upExtended = $this->modx->getObject('upExtended', array('user_id' => $id))) {
+			$up_extended = $upExtended->toArray();
+		}
+		// если extended пуст
+		if (!is_array($profile['extended'])) $profile['extended'] = array();
+		$up_extended = array_merge($profile['extended'], $up_extended);
+		//
+		if (!$extSetting = $this->modx->getObject('upExtendedSetting', array('id' => $up_extended['type_id']))) {
+			$extSetting = $this->modx->getObject('upExtendedSetting', array('active' => 1, 'default' => 1));
+		}
+		$ext_setting = $extSetting->toArray();
+		// requires
+		$requires = array(1);
+		$requires = array_flip(array_merge($requires, explode(',', $ext_setting['requires'])));
+//		$this->modx->log(1, print_r($ext_setting, 1));
+		$data_js = preg_replace(array('/^\n/', '/\t{6}/'), '', '
+			userprofile = {};
+			userprofile.config = ' . $this->modx->toJSON(array(
+				'connectorUrl' => $this->config['connectorUrl'],
+				'extSetting' => $ext_setting,
+				'upExtended' => $up_extended,
+				'profile' => $profile,
+				'tabs' => implode(',', array_keys($this->modx->fromJSON($ext_setting['tabfields']))),
+				'disabledTabs' => $this->config['disabledTabs'],
+				'requires' => $this->modx->toJSON($requires),
+			)) . ';
+		');
+		$this->modx->regClientStartupScript("<script type=\"text/javascript\">\n" . $data_js . "\n</script>", true);
+		$this->modx->regClientCSS($this->getOption('cssUrl') . 'mgr/main.css');
+		$this->modx->regClientStartupScript($this->getOption('jsUrl') . 'mgr/misc/up.combo.js');
+		$this->modx->regClientStartupScript($this->getOption('jsUrl') . 'mgr/inject/tab.js');
+	}
+
+	/**
+	 * @param $sp
+	 */
+	public function OnPageNotFound($sp)
+	{
+		if (!$this->modx->getOption('friendly_urls')) {
+			return false;
+		}
+		// q
+		$q = trim(@$_REQUEST[$this->modx->context->getOption('request_param_alias', 'q')]);
+		$rarr = explode('/', rtrim($q, '/'));
+		// work
+		if ($rarr[0] == $this->config['main_url']) {
+			$uri = $rarr[0];
+			$section = $rarr[2];
+			$id = (int)$rarr[1];
+			// default placehoder
+			$sectionPl = $this->config['defaultSection'];
+			//
+			if ($this->isHide($id)) {
+				return false;
+			}
+			$userPage = $this->getUserPage($uri);
+
+//			$this->modx->log(1, print_r($userPage, 1));
+//			$this->modx->log(1, print_r('work', 1));
+			// allowedSections
+			$allowedSections = $this->getAllowedSections(true);
+			unset($allowedSections[array_search('info', $allowedSections)]);
+
+			if (!empty($section) && (!in_array($section, $allowedSections))) {
+				$this->modx->sendRedirect(
+					$this->modx->makeUrl($this->modx->getOption('site_start'), '', '', 'full')
+					. $this->config['main_url']
+					. '/'
+					. $id
+					. '/'
+					,
+					$this->redirectArr['moved']
+				);
+			} elseif (in_array($section, $allowedSections)) {
+				$sectionPl = $section;
+			} elseif (($id == 0) && (!empty($rarr[1])) && (!in_array($rarr[1], $allowedSections))) {
+				return false;
+			}
+			// set placeholders
+			$this->modx->setPlaceholder('user_id', $id);
+			$this->modx->setPlaceholder('active_section', $sectionPl);
+
+			$this->modx->sendForward($userPage);
+		}
+	}
+
+	/**
+	 * @param $sp
+	 */
+	public function OnBeforeUserFormSave($sp)
+	{
+		if ($this->isNew($sp)) {return;}
+		if (!$this->modx->user->hasSessionContext('mgr')) {return;}
+		//
+		$this->config['json_response'] = 1;
+		$data = $sp['data'];
+		$user_id = $data['id'];
+
+		$real = array_merge($data['up']['real'], $data['up']['personal']);
+		unset(
+		$data['up']['real'],
+		$data['up']['personal'],
+		$data['up']['activity']
+		);
+		if (!$upExtended = $this->modx->getObject('upExtended', array('user_id' => $user_id))) {
+			$upExtended = $this->modx->newObject('upExtended', array(
+				'user_id' => $user_id,
+				'registration' => date('Y-m-d H:i:s'),
+				'lastactivity' => date('Y-m-d H:i:s'),
+			));
+		}
+		$upExtended->fromArray(
+			$real
+		);
+		if (!$upExtended->save()) {
+			echo $this->error('up_save_extended_err');
+			exit;
+		}
+		// extended
+		$user = $sp['user'];
+		$profile = $user->getOne('Profile');
+		$profileArr = $profile->toArray();
+		//
+		$extended = array();
+		$extended = array_merge($extended, $profileArr['extended']);
+		foreach ($data as $k => $dd) {
+			if (is_array($dd) && ($k =='up')) {
+				$extended = array_merge($extended, $dd);
+			}
+		}
+		$profile->set('extended', $extended);
+		$profile->save();
+	}
+
+	/**
+	 * @param $sp
+	 */
+	public function OnUserSave($sp)
+	{
+		if (!$this->isNew($sp)) return;
+		$user = $sp['user'];
+		$userArr = $user->toArray();
+		$id = $userArr['id'];
+		if (!$upExtended = $this->modx->getObject('upExtended', array('user_id' => $id))) {
+			$upExtended = $this->modx->newObject('upExtended', array('user_id' => $id));
+		}
+		$upExtended->fromArray(array(
+			'type_id' => $this->defaultTypeId,
+			'registration' => date('Y-m-d H:i:s'),
+		));
+		$upExtended->save();
+	}
+
+	/**
+	 * @param $sp
+	 */
+	public function OnLoadWebDocument($sp)
+	{
+		if ($this->modx->user->isAuthenticated($this->modx->context->get('key'))) {
+			if (!$this->modx->user->active || $this->modx->user->Profile->blocked) {
+				$this->logOut();
+			} else {
+				$id = $this->modx->user->id;
+				if (!$upExtended = $this->modx->getObject('upExtended', array('user_id' => $id))) {
+					$upExtended = $this->modx->newObject('upExtended', array('user_id' => $id, 'registration' => date('Y-m-d H:i:s')));
+				}
+				$upExtended->fromArray(array(
+					'type_id' => $this->defaultTypeId,
+					'lastactivity' => date('Y-m-d H:i:s'),
+					'ip' => $this->modx->request->getClientIp()['ip'],
+				));
+				$upExtended->save();
+			}
+		}
+	}
+
+	/**
+	 * @param $sp
+	 */
+	public function OnHandleRequest($sp)
+	{
+		if (!empty($_REQUEST['action'])) {
+			$this->loadAction($_REQUEST['action'], $_REQUEST);
+		}
+	}
+
+	/**
+	 * clean tables when deleting a user
+	 *
+	 * @param $sp
+	 */
+	public function OnUserRemove($sp)
+	{
+		$user = $sp['user'];
+		$id = $user->get('id');
+		$this->modx->removeCollection('upExtended', array(
+			'user_id:=' => $id,
+		));
+	}
+
+	/*
+	 * *************************
+	 *		 MODx Events
+	 * *************************
+	 */
 
 }
