@@ -55,7 +55,7 @@ $tmp = array(
 		'area' => 'payandsee_main',
 	),*/
 
-		//временные 
+		//временные
 
 				'assets_path' => array(
 					'xtype' => 'textfield',

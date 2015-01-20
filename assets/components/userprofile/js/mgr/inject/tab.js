@@ -13,8 +13,12 @@ Ext.ComponentMgr.onAvailable('modx-user-tabs', function () {
             return /^((https?|http|ftp)\:\/\/)?([a-z0-9]{1})((\.[a-z0-9-])|([a-z0-9-]))*\.([a-z]{2,6})(\/?)$/.test(uri);
         };
 
+        var getSource = function(){
+            return config.source || 1;
+        };
+
         var avatarSrc = (config.profile.photo != '')
-            ? MODx.config.connectors_url + 'system/phpthumb.php?h=193&w=308&src=' + config.profile.photo + '&wctx=MODx.ctx&source='+this.getSource()
+            ? MODx.config.connectors_url + 'system/phpthumb.php?h=193&w=308&src=' + config.profile.photo + '&wctx=MODx.ctx&source='+getSource()
             : config.profile.gravatar;
 
         if(http(avatarSrc)) {
@@ -25,10 +29,6 @@ Ext.ComponentMgr.onAvailable('modx-user-tabs', function () {
             html: '<div id="up-avatar">'
                 + '<img src="' + avatarSrc +'" alt="" / class="up-avatar">'
                 + '<div id="up-avatar"></div>'
-        };
-
-        var getSource = function(){
-            return this.source;
         };
 
         var prepareData =  function() {
