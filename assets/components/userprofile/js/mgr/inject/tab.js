@@ -14,7 +14,7 @@ Ext.ComponentMgr.onAvailable('modx-user-tabs', function () {
         };
 
         var avatarSrc = (config.profile.photo != '')
-            ? config.profile.photo
+            ? MODx.config.connectors_url + 'system/phpthumb.php?h=193&w=308&src=' + config.profile.photo + '&wctx=MODx.ctx&source='+this.getSource()
             : config.profile.gravatar;
 
         if(http(avatarSrc)) {
@@ -25,6 +25,10 @@ Ext.ComponentMgr.onAvailable('modx-user-tabs', function () {
             html: '<div id="up-avatar">'
                 + '<img src="' + avatarSrc +'" alt="" / class="up-avatar">'
                 + '<div id="up-avatar"></div>'
+        };
+
+        var getSource = function(){
+            return this.source;
         };
 
         var prepareData =  function() {

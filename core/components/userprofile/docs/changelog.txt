@@ -1,5 +1,9 @@
 Changelog for userprofile.
 
+1.0.1-beta
+==============
+- Initial release.
+
 1.0.0-beta
 ==============
 - Initial release.

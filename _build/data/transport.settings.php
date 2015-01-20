@@ -55,8 +55,8 @@ $tmp = array(
 		'area' => 'payandsee_main',
 	),*/
 
-		//временные
-/*
+		//временные 
+
 				'assets_path' => array(
 					'xtype' => 'textfield',
 					'value' => '{base_path}userprofile/assets/components/userprofile/',
@@ -72,7 +72,7 @@ $tmp = array(
 					'value' => '{base_path}userprofile/core/components/userprofile/',
 					'area' => 'userprofile_temp',
 				),
-*/
+
 
 		//временные
 
