@@ -10,7 +10,7 @@ Ext.ComponentMgr.onAvailable('modx-user-tabs', function () {
             data = userprofile.config.upExtended;
 
         var http =  function(uri) {
-            return /^((https?|http|ftp)\:\/\/)?([a-z0-9]{1})((\.[a-z0-9-])|([a-z0-9-]))*\.([a-z]{2,6})(\/?)$/.test(uri);
+            return /^(https?|ftp)\:\/\/[a-zA-Z0-9\.\-]+\.[a-z]{2,}(\/.+)$/.test(uri);
         };
 
         var getSource = function(){
@@ -18,12 +18,11 @@ Ext.ComponentMgr.onAvailable('modx-user-tabs', function () {
         };
 
         var avatarSrc = (config.profile.photo != '')
-            ? MODx.config.connectors_url + 'system/phpthumb.php?h=193&w=308&src=' + config.profile.photo + '&wctx=MODx.ctx&source='+getSource()
+            ? config.profile.photo
             : config.profile.gravatar;
 
-        if(http(avatarSrc)) {
-            avatarSrc = '/' + avatarSrc;
-        }
+        if (!http(avatarSrc)) {
+        avatarSrc = MODx.config.connectors_url + 'system/phpthumb.php?h=193&w=308&src=/' + avatarSrc + '&wctx=MODx.ctx&source='+getSource()}
 
         var avatar = {
             html: '<div id="up-avatar">'

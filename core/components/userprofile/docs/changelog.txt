@@ -2,7 +2,8 @@ Changelog for userprofile.
 
 1.0.1-beta
 ==============
-- Initial release.
+- fix avatar
+- fix validation groups
 
 1.0.0-beta
 ==============

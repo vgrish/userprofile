@@ -547,10 +547,6 @@ class userprofile
 				return true;
 			}
 			foreach ($this->modx->getIterator('modUserGroupMember', array('member' => $id)) as $group) {
-				//$groupId = $group->toArray()['user_group'];
-
-				$this->modx->log(1, print_r($group->user_group ,1));
-
 				if (in_array($group->user_group, $groupsArr)) {
 					return true;
 				}
